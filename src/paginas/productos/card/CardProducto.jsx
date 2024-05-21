@@ -8,7 +8,7 @@ const CardProducto = ({ producto }) => {
          <CardActionArea>
            <CardMedia
              component="img"
-             image={'/src/assets/fotosProductos/pantalones.jpg'}
+             image={producto.imagen}
              alt="green iguana"
            />
            <CardContent
@@ -20,10 +20,10 @@ const CardProducto = ({ producto }) => {
            }}
           >
              <Typography textAlign='center' color='#AA0000' gutterBottom variant="h5" component="div">
-               Pantalones deportivos
+               {producto.nombre}
              </Typography>
              <Typography textAlign='center'  variant="body2" color="text.secondary">
-              Pantalones cortos deportivos de color negro de la marca adidas
+              {producto.descripcion}
              </Typography>
              <Box
              width='100%'
@@ -31,7 +31,7 @@ const CardProducto = ({ producto }) => {
              flexDirection='row'
              alignItems= 'center'>
              <Typography margin={0} color='#AA0000' gutterBottom variant="h5" component="div">Precio</Typography>
-             <Typography marginLeft={1} variant="body2" color="text.secondary">15,00€</Typography>
+             <Typography marginLeft={1} variant="body2" color="text.secondary">{producto.precio}€</Typography>
              </Box>
            </CardContent>
            </CardActionArea>

@@ -1,27 +1,16 @@
 import {  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import DialogCustom from '../DialogCustom';
+import DialogCustom from '../../paginas/dashboard/dialog/DialogCustom';
 
-const Tabla = () => {
-    const rows = [
-        {
-            nombre: 'Juan',
-            apellido: 'Perez',
-        },
-        {
-            nombre: 'Maria',
-            apellido: 'Gomez',
-        },
-        {
-            nombre: 'Pedro',
-            apellido: 'Gonzalez',
-        },
-    ]
+const Tabla = ({rows}) => {
+    
 
+  console.log("tabla");
     const [openDialog, setOpenDialog] = useState(false);
+    const [rowDialog, setRowDialog] = useState({});
     return (
         <TableContainer sx={{width: "100%", height:"100%"}} component={Paper}>
-          <DialogCustom openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+          <DialogCustom row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
         <Table  aria-label="simple table">
           <TableHead>
             <TableRow >
@@ -30,7 +19,7 @@ const Tabla = () => {
           </TableHead>
           <TableBody>
             {rows.map((row, index) => (
-              <TableRow onClick={()=> setOpenDialog(true)}  sx={{"&:hover":{backgroundColor:"#A6EEA1"}, cursor:"pointer"}} >
+              <TableRow onClick={()=> {setRowDialog(row); setOpenDialog(true)}}  sx={{"&:hover":{backgroundColor:"#A6EEA1"}, cursor:"pointer"}} >
                  {Object.entries(row).map(([key, value]) => <TableCell>{value}</TableCell>)}
               </TableRow>
             ))}

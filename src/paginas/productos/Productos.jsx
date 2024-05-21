@@ -1,46 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CardProducto from './card/CardProducto';
 import { Grid } from '@mui/material';
+import productoServices from '../../services/productosServices';
+import { useParams } from 'react-router-dom';
 
-const PRODUCTOS = [
-    {
-        id: 1,
-        nombre: 'Pantalones deportivos',
-        descripcion: 'Pantalones cortos deportidos',
-        precio: 15.00
-    },
 
-    {
-        id: 2,
-        nombre: 'Camiseta',
-        descripcion: 'Camiseta de algodón',
-        precio: 10.00
-    },
-    {
-        id: 3,
-        nombre: 'Zapatos',
-        descripcion: 'Zapatos deportivos',
-        precio: 50.00
-    },
-    {
-        id: 4,
-        nombre: 'Gorra',
-        descripcion: 'Gorra de béisbol',
-        precio: 8.00
-    },
-    {
-        id: 5,
-        nombre: 'Calcetines',
-        descripcion: 'Calcetines deportivos',
-        precio: 5.00
-    }
-]
+
+
 
 const Productos = () => {
+
+    const [productos, setProductos] = useState([]);
+    const {getProductos} = productoServices;
+    const { id } = useParams();
+
+    useEffect(()=>{
+        (async() => setProductos(await getProductos(id)))();
+    }
+    ,[]);
+
+    useEffect(()=>console.log(productos),[productos]);
+
     return (
         <Grid container
         padding={2}>
-            {PRODUCTOS.map((producto)=> {
+            {productos.map((producto)=> {
                 return <Grid item xs={3} key={producto.id} 
                 display='flex'
                 justifyContent='center'>

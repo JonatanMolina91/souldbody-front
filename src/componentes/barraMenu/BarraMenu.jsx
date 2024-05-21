@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const BarraMenu = () => {
   const pages = ['home', 'productos', 'clases', 'contactar'];
-  const settings = ['login'];
+  const settings = ['login', 'dashboard'];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   
@@ -30,7 +30,7 @@ const BarraMenu = () => {
   function botonMenu(contenido, index) {
     return (
       <Button onClick={handleCloseNavMenu} key={index}>
-        <Typography  to={contenido} component={Link}  fontSize={medidasBarraMenu.letrasMenu} sx={{ fontWeight: 'bold', color: 'menu.color.letras', textDecoration: 'none' }} variant='h5'>{contenido}</Typography>
+        <Typography  to={"/"+contenido} component={Link}  fontSize={medidasBarraMenu.letrasMenu} sx={{ fontWeight: 'bold', color: 'menu.color.letras', textDecoration: 'none' }} variant='h5'>{contenido}</Typography>
       </Button>
     );
   }
@@ -105,7 +105,7 @@ const BarraMenu = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography to={setting} component={Link} textAlign="center">{setting}</Typography>
+                  <Typography sx={{textDecoration: "none", color:"black"}} to={"/"+setting} component={Link} textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

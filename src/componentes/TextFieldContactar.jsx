@@ -1,7 +1,7 @@
 import { TextField, ThemeProvider, createTheme,  } from '@mui/material';
 import React from 'react';
 
-const TextFieldContactar = ({id, label, type, width}) => {
+const TextFieldContactar = ({id, label, type, width, value}) => {
     const theme = createTheme({
         palette: {
           myCustomColor: {
@@ -13,6 +13,7 @@ const TextFieldContactar = ({id, label, type, width}) => {
         <ThemeProvider theme={theme}>
         <TextField
         id={id}
+        defaultValue={value}
         label={label} 
         color='myCustomColor'
         variant='outlined'

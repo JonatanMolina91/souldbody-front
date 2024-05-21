@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
 import { Box, IconButton } from '@mui/material';
 import Tabla from '../../componentes/tabla/Tabla';
 import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import productosService from '../../services/productosServices';
+import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 
 const Categoria = () => {
 
+  const [openMenu, setOpenMenu] = useState(false);
+  const [categorias, setCategorias] = useState([]);
+  const {getCategorias} = productosService;
+  const {funciones, setFunciones} = useFunciones();
+  
 
-  const [openMenu, setOpenMenu] = useState(true);
+
+
+
+  useEffect(()=>{
+    (async() => setCategorias(await getCategorias()))();
+  },[])
+
+  useEffect(()=>{
+    console.log(categorias);
+  },[categorias])
 
   return (
     <Box component={"div"}>
@@ -43,7 +59,7 @@ const Categoria = () => {
         <Box component={"div"}
           display={"flex"}
           flexDirection={"column"}
-          width={"80%"}
+          width={"100%"}
           justifyContent={"center"}
           alignContent={"center"}
           alignItems={"center"}>
@@ -60,9 +76,7 @@ const Categoria = () => {
               width={300} />
             <BotonCustom label={"Crear"} />
           </Box>
-
-          <Tabla />
-
+          {categorias.length>0?<Tabla rows={categorias}/>:null}
         </Box>
       </Box>
     </Box>
