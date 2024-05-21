@@ -5,8 +5,11 @@ const BotonCustom = ({label}) => {
     return (
         <Button 
         sx={{ width: 'fit-content',
+        height: 'fit-content',
     backgroundColor: '#001B00', 
-    borderRadius: '10px',}} 
+    borderRadius: '10px',
+    '&:hover': {backgroundColor:"#087000"}}} 
+    
         variant="contained">{label}</Button>
     );
 };
