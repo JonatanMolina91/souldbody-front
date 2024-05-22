@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import CartProducto from './card/CardFamilia';
 import { Box, Grid } from '@mui/material';
-import productoServices from '../../services/productosServices';
+import categoriaServices from '../../services/categoriaServices';
 
 
 
 function Familias() {
-    const {getCategorias} = productoServices;
+    const {getCategorias} = categoriaServices;
 
     const [categorias, setCategorias] = useState([]);
 

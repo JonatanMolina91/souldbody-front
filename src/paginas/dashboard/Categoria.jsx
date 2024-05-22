@@ -5,21 +5,24 @@ import Tabla from '../../componentes/tabla/Tabla';
 import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import productosService from '../../services/productosServices';
+import categoriaService from '../../services/categoriaServices';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 
 const Categoria = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [categorias, setCategorias] = useState([]);
-  const {getCategorias} = productosService;
+  const {getCategorias, putCategoria} = categoriaService;
   const {funciones, setFunciones} = useFunciones();
   
 
-
+async function send(id, data){
+  console.log(await putCategoria(id, data));
+}
 
 
   useEffect(()=>{
+    setFunciones({send});
     (async() => setCategorias(await getCategorias()))();
   },[])
 

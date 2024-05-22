@@ -3,14 +3,20 @@ import React, { useState } from 'react';
 import DialogCustom from '../../paginas/dashboard/dialog/DialogCustom';
 
 const Tabla = ({rows}) => {
-  
+    
+  const CABECERAS = [
+    "Nombre",
+    "Apellidos",
+    "Email",
+    "Foto"
+  ]
 
   console.log("tabla");
     const [openDialog, setOpenDialog] = useState(false);
     const [rowDialog, setRowDialog] = useState({});
     return (
         <TableContainer sx={{width: "100%", height:"100%"}} component={Paper}>
-          <DialogCustom setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+          <DialogCustom row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
         <Table  aria-label="simple table">
           <TableHead>
             <TableRow >

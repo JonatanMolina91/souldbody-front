@@ -6,7 +6,7 @@ import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
-const Categoria = () => {
+const Clientes = () => {
 
 
   const [openMenu, setOpenMenu] = useState(true);
@@ -70,4 +70,4 @@ const Categoria = () => {
   );
 };
 
-export default Categoria;
+export default Clientes;

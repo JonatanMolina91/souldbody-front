@@ -2,14 +2,22 @@ import { Box, Dialog, DialogTitle } from '@mui/material';
 import React from 'react';
 import TextFieldContactar from '../../../componentes/TextFieldContactar';
 import BotonCustom from '../../../componentes/BotonCustom';
+import { useFunciones } from '../../../context/dialogProvider';
 
 const DialogCustom = ({ openDailog, setOpenDialog, row }) => {
+
+  const {funciones} = useFunciones();
 
 
   const handleClose = () => {
     console.log(row);
     setOpenDialog(false);
   };
+
+  function Guardar() {
+    console.log(row);
+    funciones.send(row.id, row);
+  }
 
   return (
     <Dialog
@@ -26,6 +34,7 @@ const DialogCustom = ({ openDailog, setOpenDialog, row }) => {
       id={key}
       label={key}
       value={value}
+      onChange={(e) => row[key] = e.target.value}
       type="text" 
       width="90%"
       />)
@@ -35,7 +44,7 @@ const DialogCustom = ({ openDailog, setOpenDialog, row }) => {
       padding={2}
       display={"flex"}
       justifyContent={"space-around"}>
-        <BotonCustom label="Guardar"/>
+        <BotonCustom onClick={Guardar} label="Guardar"/>
         <BotonCustom onClick={()=>setOpenDialog(false)} label="Volver"/>
       </Box>
     </Dialog>

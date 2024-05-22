@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CardProducto from './card/CardProducto';
 import { Grid } from '@mui/material';
-import productoServices from '../../services/productosServices';
+import categoriaServices from '../../services/categoriaServices';
 import { useParams } from 'react-router-dom';
 
 
@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 const Productos = () => {
 
     const [productos, setProductos] = useState([]);
-    const {getProductos} = productoServices;
+    const {getProductos} = categoriaServices;
     const { id } = useParams();
 
     useEffect(()=>{
