@@ -19,6 +19,16 @@ async function putCategoria(id, categoria) {
   return datos.data;
 }
 
+async function postCategoria(categoria) {
+  let datos = await axios.post(URL, JSON.stringify(categoria), {headers:{'Content-Type': 'application/json'}});
+  return datos.data;
+}
+
+async function deleteCategoria(id) {
+  let datos = await axios.delete(URL+'/'+id);
+  return datos.data;
+}
 
 
-export default { getCategorias, getProductos, putCategoria };
+
+export default { getCategorias, getProductos, putCategoria,  postCategoria, deleteCategoria};

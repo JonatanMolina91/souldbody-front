@@ -1,19 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
 import { Box, IconButton } from '@mui/material';
 import Tabla from '../../componentes/tabla/Tabla';
 import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import categoriaService from '../../services/categoriaServices';
+import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
+import DialogCustom from './dialog/DialogCustom';
 
-const Clientes = () => {
+const Categoria = () => {
+
+  const [openMenu, setOpenMenu] = useState(false);
+  const [categorias, setCategorias] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [rowDialog, setRowDialog] = useState({id:0, nombre: '', imagen:'', descripcion: ''});
+  const {getCategorias, putCategoria, postCategoria, deleteCategoria} = categoriaService;
+  const {funciones, setFunciones} = useFunciones();
+
+  
+
+async function update(id, data){
+  console.log("update");
+  console.log(await putCategoria(id, data));
+}
+
+async function create(data){
+  console.log("create");
+  let response = await postCategoria(data);
+  console.log(response.id);
+  data = {id: response.id, ...data };
+  setCategorias([...categorias, data]);
+  setRowDialog({id:0, nombre: '', imagen:'', descripcion: ''});
+}
+
+async function deleter(id){
+  console.log("delete");
+  console.log(await deleteCategoria(id));
+  setCategorias(categorias.filter(categoria => categoria.id !== id));
+}
 
 
-  const [openMenu, setOpenMenu] = useState(true);
+  useEffect(()=>{
+    (async() => setCategorias(await getCategorias()))();
+  },[])
+
+  useEffect(()=>{
+    console.log(categorias);
+  },[categorias])
 
   return (
     <Box component={"div"}>
-
+      <DialogCustom  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -43,7 +81,7 @@ const Clientes = () => {
         <Box component={"div"}
           display={"flex"}
           flexDirection={"column"}
-          width={"80%"}
+          width={"100%"}
           justifyContent={"center"}
           alignContent={"center"}
           alignItems={"center"}>
@@ -58,11 +96,9 @@ const Clientes = () => {
               label="Buscar Usuario"
               type={"text"}
               width={300} />
-            <BotonCustom label={"Crear"} />
+            <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-
-          <Tabla />
-
+          {categorias.length>0?<Tabla deleter={deleter} update={update} rows={categorias}/>:null}
         </Box>
       </Box>
     </Box>
@@ -70,4 +106,4 @@ const Clientes = () => {
   );
 };
 
-export default Clientes;
+export default Categoria;

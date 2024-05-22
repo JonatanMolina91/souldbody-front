@@ -5,6 +5,7 @@ const BotonCustom = ({ label, onClick }) => {
   return (
     <Button
       sx={{
+        margin: 1,
         width: 'fit-content',
         height: 'fit-content',
         backgroundColor: '#001B00',

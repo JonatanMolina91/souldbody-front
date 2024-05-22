@@ -7,22 +7,41 @@ import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import categoriaService from '../../services/categoriaServices';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
+import DialogCustom from './dialog/DialogCustom';
 
 const Categoria = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [categorias, setCategorias] = useState([]);
-  const {getCategorias, putCategoria} = categoriaService;
+  const [openDialog, setOpenDialog] = useState(false);
+  const [rowDialog, setRowDialog] = useState({id:0, nombre: '', imagen:'', descripcion: ''});
+  const {getCategorias, putCategoria, postCategoria, deleteCategoria} = categoriaService;
   const {funciones, setFunciones} = useFunciones();
+
   
 
-async function send(id, data){
+async function update(id, data){
+  console.log("update");
   console.log(await putCategoria(id, data));
+}
+
+async function create(data){
+  console.log("create");
+  let response = await postCategoria(data);
+  console.log(response.id);
+  data = {id: response.id, ...data };
+  setCategorias([...categorias, data]);
+  setRowDialog({id:0, nombre: '', imagen:'', descripcion: ''});
+}
+
+async function deleter(id){
+  console.log("delete");
+  console.log(await deleteCategoria(id));
+  setCategorias(categorias.filter(categoria => categoria.id !== id));
 }
 
 
   useEffect(()=>{
-    setFunciones({send});
     (async() => setCategorias(await getCategorias()))();
   },[])
 
@@ -32,7 +51,7 @@ async function send(id, data){
 
   return (
     <Box component={"div"}>
-
+      <DialogCustom  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -77,9 +96,9 @@ async function send(id, data){
               label="Buscar Usuario"
               type={"text"}
               width={300} />
-            <BotonCustom label={"Crear"} />
+            <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {categorias.length>0?<Tabla rows={categorias}/>:null}
+          {categorias.length>0?<Tabla deleter={deleter} update={update} rows={categorias}/>:null}
         </Box>
       </Box>
     </Box>

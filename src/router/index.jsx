@@ -10,7 +10,7 @@ import Login from "../paginas/login/Login";
 import Categoria from "../paginas/dashboard/Categoria";
 import Horarios from "../paginas/dashboard/Horarios";
 import Asistencias from "../paginas/dashboard/Asistencias";
-import Usuarios from "../paginas/dashboard/Usuarios";
+import Clientes from "../paginas/dashboard/Clientes";
 import ProductosEdit from "../paginas/dashboard/Productos";
 import ClasesEdit from "../paginas/dashboard/Clases";
 
@@ -27,8 +27,8 @@ const invitadoRutas = [
   ];
 
   const logeadoRutas = [
-    { index: true, element:  <Usuarios/>},
-    { path: 'usuarios', element: <Usuarios/> },
+    { index: true, element:  <Clientes/>},
+    { path: 'usuarios', element: <Clientes/> },
     { path: 'categoria', element: <Categoria/> },
     { path: 'productos', element: <ProductosEdit/>},
     { path: 'clases', element: <ClasesEdit/>},

@@ -2,7 +2,7 @@ import {  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 import React, { useState } from 'react';
 import DialogCustom from '../../paginas/dashboard/dialog/DialogCustom';
 
-const Tabla = ({rows}) => {
+const Tabla = ({rows, deleter}) => {
     
   const CABECERAS = [
     "Nombre",
@@ -16,7 +16,7 @@ const Tabla = ({rows}) => {
     const [rowDialog, setRowDialog] = useState({});
     return (
         <TableContainer sx={{width: "100%", height:"100%"}} component={Paper}>
-          <DialogCustom row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+          <DialogCustom deleter={deleter} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
         <Table  aria-label="simple table">
           <TableHead>
             <TableRow >
