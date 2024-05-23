@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
 import { Box, IconButton } from '@mui/material';
-import Tabla from '../../componentes/tabla/Tabla';
 import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import categoriaService from '../../services/categoriaServices';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
-import DialogCustom from './dialog/DialogCustom';
+import CategoriaDialog from './dialog/CategoriaDialog';
+import CategoriaTabla from './tablas/CategoriaTabla';
 
 const Categoria = () => {
 
@@ -20,25 +20,29 @@ const Categoria = () => {
 
   
 
-async function update(id, data){
-  console.log("update");
-  console.log(await putCategoria(id, data));
-}
 
-async function create(data){
-  console.log("create");
-  let response = await postCategoria(data);
-  console.log(response.id);
-  data = {id: response.id, ...data };
-  setCategorias([...categorias, data]);
-  setRowDialog({id:0, nombre: '', imagen:'', descripcion: ''});
-}
-
-async function deleter(id){
-  console.log("delete");
-  console.log(await deleteCategoria(id));
-  setCategorias(categorias.filter(categoria => categoria.id !== id));
-}
+  async function update(id, data){
+    console.log("update");
+    console.log(await putCategoria(id, data));
+    setCategorias(categorias.map(categoria => categoria.id === id ? data : categoria));
+  }
+  
+  async function create(data){
+    setRowDialog({id:0, nombre: '', imagen:'', descripcion: ''});
+    console.log(data);
+    let response = await postCategoria(data);
+    console.log(response.id);
+    data.id = response.id;
+    console.log(data);
+    setCategorias([...categorias, data]);
+  }
+  
+  async function deleter(id){
+    console.log("delete");
+    console.log(await deleteCategoria(id));
+    setCategorias(categorias.filter(categoria => categoria.id !== id));
+  }
+  
 
 
   useEffect(()=>{
@@ -51,7 +55,7 @@ async function deleter(id){
 
   return (
     <Box component={"div"}>
-      <DialogCustom  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <CategoriaDialog  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -98,7 +102,7 @@ async function deleter(id){
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {categorias.length>0?<Tabla deleter={deleter} update={update} rows={categorias}/>:null}
+          {categorias.length>0?<CategoriaTabla deleter={deleter} update={update} rows={categorias}/>:null}
         </Box>
       </Box>
     </Box>

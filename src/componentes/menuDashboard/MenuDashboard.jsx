@@ -15,7 +15,7 @@ const MenuDashboard = ({openMenu}) => {
   ]
 
     return (
-      <Collapse in={openMenu} orientation='horizontal'>
+      <Collapse  in={openMenu} orientation='horizontal'>
       <Paper elevation={3}  >
          <List>
           <ListItem sx={{display: "flex", flexDirection: "column", height: "50vh"}}>

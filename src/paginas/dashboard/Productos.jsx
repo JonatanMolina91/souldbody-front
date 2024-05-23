@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
 import { Box, IconButton } from '@mui/material';
-import Tabla from '../../componentes/tabla/Tabla';
 import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import productoServices from '../../services/productoServices';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
-import DialogCustom from './dialog/DialogCustom';
+import ProductoDialog from './dialog/ProductosDialog';
+import ProductoTabla from './tablas/ProductoTabla';
 
 const Productos = () => {
 
@@ -23,6 +23,7 @@ const Productos = () => {
 async function update(id, data){
   console.log("update");
   console.log(await putProducto(id, data));
+  setProductos(productos.map(producto => producto.id === id ? data : producto));
 }
 
 async function create(data){
@@ -51,7 +52,7 @@ async function deleter(id){
 
   return (
     <Box component={"div"}>
-      <DialogCustom  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <ProductoDialog  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -98,7 +99,7 @@ async function deleter(id){
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {productos.length>0?<Tabla deleter={deleter} update={update} rows={productos}/>:null}
+          {productos.length>0?<ProductoTabla deleter={deleter} update={update} rows={productos}/>:null}
         </Box>
       </Box>
     </Box>

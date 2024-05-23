@@ -2,12 +2,12 @@ import { Box, Dialog, DialogTitle } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import TextFieldContactar from '../../../componentes/TextFieldContactar';
 import BotonCustom from '../../../componentes/BotonCustom';
-import  {useFunciones}  from '../../../context/dialogProvider';
+import { useFunciones } from '../../../context/dialogProvider';
 
-const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
+const UsuarioDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
 
   const {funciones} = useFunciones();
-  const [actual, setActual] = useState({id:-1, nombre: '', imagen: '', descripcion: ''});
+  const [actual, setActual] = useState({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
 
 
   const handleClose = () => {
@@ -50,18 +50,26 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
       width="90%"
       />
       <TextFieldContactar 
-      id={'foto'}
-      label={'Foto'}
-      value={row?.imagen}
-      onChange={(e) => actual.imagen = e.target.value}
+      id={'apellidos'}
+      label={'Apellidos'}
+      value={row?.apellidos}
+      onChange={(e) => actual.apellidos = e.target.value}
       type="text" 
       width="90%"
       />
-       <TextFieldContactar 
-      id={'descripcion'}
-      label={'Descripción'}
-      value={row?.descripcion}
-      onChange={(e) => actual.descripcion = e.target.value}
+      <TextFieldContactar 
+      id={'email'}
+      label={'Email'}
+      value={row?.email}
+      onChange={(e) => actual.email = e.target.value}
+      type="email" 
+      width="90%"
+      />
+      <TextFieldContactar 
+      id={'foto'}
+      label={'Foto'}
+      value={row?.foto}
+      onChange={(e) => actual.foto = e.target.value}
       type="text" 
       width="90%"
       />
@@ -78,4 +86,4 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
   );
 };
 
-export default CategoriaDialog;
+export default UsuarioDialog;
