@@ -8,11 +8,9 @@ import Clases from "../paginas/clases/Clases";
 import Contactar from "../paginas/contactar/Contactar";
 import Login from "../paginas/login/Login";
 import Categoria from "../paginas/dashboard/Categoria";
-import Horarios from "../paginas/dashboard/Horarios";
-import Asistencias from "../paginas/dashboard/Asistencias";
 import Clientes from "../paginas/dashboard/Clientes";
+import Coaches from "../paginas/dashboard/Coaches";
 import ProductosEdit from "../paginas/dashboard/Productos";
-import ClasesEdit from "../paginas/dashboard/Clases";
 
 const LOGEADO = true;
 
@@ -28,12 +26,10 @@ const invitadoRutas = [
 
   const logeadoRutas = [
     { index: true, element:  <Clientes/>},
-    { path: 'usuarios', element: <Clientes/> },
+    { path: 'clientes', element: <Clientes/> },
     { path: 'categoria', element: <Categoria/> },
-    { path: 'productos', element: <ProductosEdit/>},
-    { path: 'clases', element: <ClasesEdit/>},
-    { path: 'horarios', element: <Horarios/>},
-    { path: 'asistencias', element: <Asistencias/> }
+    { path: 'coaches', element: <Coaches/> },
+    { path: 'productos', element: <ProductosEdit/> },
   ];
 
 const router = createBrowserRouter([

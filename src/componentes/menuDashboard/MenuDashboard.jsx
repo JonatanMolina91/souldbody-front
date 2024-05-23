@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 const MenuDashboard = ({openMenu}) => {
 
   const TEXT = [
-    'usuarios',
+    'clientes',
+    'coaches',
     'categoria',
     'productos',
     'clases',

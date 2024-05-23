@@ -5,50 +5,49 @@ import Tabla from '../../componentes/tabla/Tabla';
 import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import productoServices from '../../services/productoServices';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import DialogCustom from './dialog/DialogCustom';
-import  clientesServices  from '../../services/clientesServices';
 
-const Clientes = () => {
+const Productos = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
-  const [clientes, setClientes] = useState([]);
+  const [productos, setProductos] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
-  const { getClientes, postCliente, putCliente, deleteCliente} = clientesServices;
+  const [rowDialog, setRowDialog] = useState({id:0, nombre: '', imagen:'', descripcion: '', precio: 0, categoria: ''});
+  const { getProductos, putProducto,  postProducto, deleteProducto } = productoServices;
   const {funciones, setFunciones} = useFunciones();
 
   
 
 async function update(id, data){
   console.log("update");
-  console.log(await putCliente(id, data));
+  console.log(await putProducto(id, data));
 }
 
 async function create(data){
-  setRowDialog({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
-  console.log(data);
-  let response = await postCliente(data);
+  setRowDialog({id:0, nombre: '', imagen:'', descripcion: '', precio: 0, categoria: ''});
+  console.log("create");
+  let response = await postProducto(data);
   console.log(response.id);
-  data.id = response.id;
-  console.log(data);
-  setClientes([...clientes, data]);
+  data = {id: response.id, ...data };
+  setProductos([...productos, data]);
 }
 
 async function deleter(id){
   console.log("delete");
-  console.log(await deleteCliente(id));
-  setClientes(clientes.filter(cliente => cliente.id !== id));
+  console.log(await deleteProducto(id));
+  setProductos(productos.filter(producto => producto.id !== id));
 }
 
 
   useEffect(()=>{
-    (async() => setClientes(await getClientes()))();
+    (async() => setProductos(await getProductos()))();
   },[])
 
   useEffect(()=>{
-    console.log(clientes);
-  },[clientes])
+    console.log(productos);
+  },[productos])
 
   return (
     <Box component={"div"}>
@@ -99,7 +98,7 @@ async function deleter(id){
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {clientes.length>0?<Tabla deleter={deleter} update={update} rows={clientes}/>:null}
+          {productos.length>0?<Tabla deleter={deleter} update={update} rows={productos}/>:null}
         </Box>
       </Box>
     </Box>
@@ -107,4 +106,4 @@ async function deleter(id){
   );
 };
 
-export default Clientes;
+export default Productos;

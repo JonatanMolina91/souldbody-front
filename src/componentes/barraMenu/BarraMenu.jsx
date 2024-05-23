@@ -105,7 +105,7 @@ const BarraMenu = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{textDecoration: "none", color:"black"}} to={"/"+setting} component={Link} textAlign="center">{setting}</Typography>
+                  <Typography sx={{textDecoration: "none", color:"black"}} to={"/"+setting} component={Link} textAlign="center">{setting.toUpperCase()}</Typography>
                 </MenuItem>
               ))}
             </Menu>

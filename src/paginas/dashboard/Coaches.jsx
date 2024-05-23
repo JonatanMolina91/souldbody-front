@@ -7,48 +7,48 @@ import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import DialogCustom from './dialog/DialogCustom';
-import  clientesServices  from '../../services/clientesServices';
+import  coachService  from '../../services/coachServices';
 
-const Clientes = () => {
+const Coaches = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
-  const [clientes, setClientes] = useState([]);
+  const [coaches, setCoaches] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
-  const { getClientes, postCliente, putCliente, deleteCliente} = clientesServices;
+  const { getCoaches, postCoach, putCoach, deleteCoach } = coachService;
   const {funciones, setFunciones} = useFunciones();
 
   
 
 async function update(id, data){
   console.log("update");
-  console.log(await putCliente(id, data));
+  console.log(await putCoach(id, data));
 }
 
 async function create(data){
   setRowDialog({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
   console.log(data);
-  let response = await postCliente(data);
+  let response = await postCoach(data);
   console.log(response.id);
   data.id = response.id;
   console.log(data);
-  setClientes([...clientes, data]);
+  setCoaches([...coaches, data]);
 }
 
 async function deleter(id){
   console.log("delete");
-  console.log(await deleteCliente(id));
-  setClientes(clientes.filter(cliente => cliente.id !== id));
+  console.log(await deleteCoach(id));
+  setCoaches(coaches.filter(coach => coach.id !== id));
 }
 
 
   useEffect(()=>{
-    (async() => setClientes(await getClientes()))();
+    (async() => setCoaches(await getCoaches()))();
   },[])
 
   useEffect(()=>{
-    console.log(clientes);
-  },[clientes])
+    console.log(coaches);
+  },[coaches])
 
   return (
     <Box component={"div"}>
@@ -99,7 +99,7 @@ async function deleter(id){
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {clientes.length>0?<Tabla deleter={deleter} update={update} rows={clientes}/>:null}
+          {coaches.length>0?<Tabla deleter={deleter} update={update} rows={coaches}/>:null}
         </Box>
       </Box>
     </Box>
@@ -107,4 +107,4 @@ async function deleter(id){
   );
 };
 
-export default Clientes;
+export default Coaches;
