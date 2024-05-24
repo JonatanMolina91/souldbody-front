@@ -5,7 +5,7 @@ import BotonCustom from '../../../componentes/BotonCustom';
 import { useFunciones } from '../../../context/dialogProvider';
 import categoriaService from '../../../services/categoriaServices';
 
-const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
+const ProductosDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
 
   const { funciones } = useFunciones();
   const [inputValue, setInputValue] = useState('');
@@ -113,4 +113,4 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
   );
 };
 
-export default CategoriaDialog;
+export default ProductosDialog;
