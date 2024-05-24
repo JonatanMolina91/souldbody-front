@@ -1,59 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
 import { Box, IconButton } from '@mui/material';
+import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import DateCustom from '../../componentes/DateCustom';
-import horarioServices from '../../services/horarioServices';
-import {  useFunciones } from '../../context/dialogProvider';
-import HorarioDialog from './dialog/HorarioDialog';
-import HorarioTabla from './tablas/HorarioTabla';
+import claseServices from '../../services/claseServices';
+import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
+import ClaseDialog from './dialog/ClaseDialog';
+import ClaseTabla from './tablas/ClaseTabla';
 
-const Horarios = () => {
-
+const Productos = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
-  const [horarios, setHorarios] = useState([]);
+  const [clases, setClases] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({id:0, nombre: '', fecha: '',  inicio:'',  fin: '', huecos: 0});
-  const { getHorario,  putHorario,  postHorario, deleteHorario } = horarioServices;
+  const [rowDialog, setRowDialog] = useState({id:0, nombre: '', descripcion: '',  video:'',  coach: ''});
+  const { getClase, putClase,  postClase, deleteClase } = claseServices;
   const {funciones, setFunciones} = useFunciones();
 
-  async function update(id, data){
-    console.log("update");
-    console.log(await putHorario(id, data));
-    delete data.coach_id;
-    setHorarios(horarios.map(horario => horario.id === id ? data : horario));
-  }
   
-  async function create(data){
-    setRowDialog({id:0, nombre: '', fecha: '',  inicio:'',  fin: '', huecos: 0});
-    console.log("create");
-    let response = await postHorario(data);
-    console.log(response.id);
-    data.id = response.id;
-    delete data.coach_id;
-    setHorarios([...horarios, data]);
-  }
-  
-  async function deleter(id){
-    console.log("delete");
-    console.log(await deleteHorario(id));
-    setHorarios(horarios.filter(horario => horario.id !== id));
-  }
-  
-  
-    useEffect(()=>{
-      (async() => setHorarios(await getHorario()))();
-    },[])
-  
-    useEffect(()=>{
-      console.log(horarios);
-    },[horarios])
+
+async function update(id, data){
+  console.log("update");
+  console.log(await putClase(id, data));
+  delete data.coach_id;
+  setClases(clases.map(clase => clase.id === id ? data : clase));
+}
+
+async function create(data){
+  setRowDialog({id:0, nombre: '', descripcion: '',  video:'',  coach: ''});
+  console.log("create");
+  let response = await postClase(data);
+  console.log(response.id);
+  data.id = response.id;
+  delete data.coach_id;
+  setClases([...clases, data]);
+}
+
+async function deleter(id){
+  console.log("delete");
+  console.log(await deleteClase(id));
+  setClases(clases.filter(clase => clase.id !== id));
+}
+
+
+  useEffect(()=>{
+    (async() => setClases(await getClase()))();
+  },[])
+
+  useEffect(()=>{
+    console.log(clases);
+  },[clases])
 
   return (
     <Box component={"div"}>
-      <HorarioDialog  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <ClaseDialog  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -93,10 +94,14 @@ const Horarios = () => {
             width={"100%"}
             justifyContent={"space-between"}
             alignItems={"center"}>
-            <DateCustom />
+            <TextFieldContactar
+              id="busquedaUsuario"
+              label="Buscar Usuario"
+              type={"text"}
+              width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {horarios.length>0?<HorarioTabla deleter={deleter} update={update} rows={horarios}/>:null}
+          {clases.length>0?<ClaseTabla deleter={deleter} update={update} rows={clases}/>:null}
         </Box>
       </Box>
     </Box>
@@ -104,4 +109,4 @@ const Horarios = () => {
   );
 };
 
-export default Horarios;
+export default Productos;

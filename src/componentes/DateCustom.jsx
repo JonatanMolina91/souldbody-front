@@ -1,17 +1,23 @@
 import React from 'react';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
-const DateCustom = () => {
+const DateCustom = ({value, id, onChange}) => {
     const currentDate = new Date();
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DatePicker']}>
-            <DatePicker label="Basic date picker" />
-          </DemoContainer>
+            <DatePicker 
+        defaultValue={value ? dayjs(value) : null}
+        format='DD/MM/YYYY'
+        id={id}
+        name={id}
+        label="Fecha"
+        onChange={onChange}
+        views={['year', 'month', 'day']}
+         />
         </LocalizationProvider>
       );
 };
