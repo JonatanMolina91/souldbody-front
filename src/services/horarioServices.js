@@ -19,6 +19,11 @@ async function postHorario(clase) {
   return datos.data;
 }
 
+async function showHorario(fecha) {
+  let datos = await axios.get(URL+'/'+fecha);
+  return datos.data;
+}
+
 async function deleteHorario(id) {
   let datos = await axios.delete(URL+'/'+id);
   return datos.data;
@@ -26,4 +31,4 @@ async function deleteHorario(id) {
 
 
 
-export default { getHorario,  putHorario,  postHorario, deleteHorario };
+export default { getHorario,  putHorario,  postHorario, deleteHorario, showHorario };

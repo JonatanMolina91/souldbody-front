@@ -1,13 +1,14 @@
 import { Autocomplete, Box, Dialog, DialogTitle, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';;
 import BotonCustom from '../../../componentes/BotonCustom';
-import horarioClaseServices from '../../../services/horarioClaseServices';
+import TextFieldContactar from '../../../componentes/TextFieldContactar';
 
-const ProductosDialog = ({ openDailog, setOpenDialog, clases, schedule_id  }) => {
+const ProductosDialog = ({ openDailog, setOpenDialog, clases, schedule_id, guardar  }) => {
 
 const [inputValue, setInputValue] = useState('');
-const [clase, setClase] = useState('');
-const {postHorarioClase} = horarioClaseServices
+const [clase, setClase] = useState(null);
+const [huecos, setHuecos] = useState(0);
+
 
 
 
@@ -17,10 +18,8 @@ const {postHorarioClase} = horarioClaseServices
 
    
   
-  async function Guardar() {
-    console.log(clase);
-    let training_id = clases.find(clase => clase.label === clase).id;
-    await postHorarioClase({schedule_id: 1, training_id: training_id});
+  async function handleSave() {
+    guardar({schedule_id: schedule_id, training_id: clase.id, huecos: huecos});
   }
 
   return (
@@ -40,18 +39,28 @@ const {postHorarioClase} = horarioClaseServices
           onInputChange={(event, newInputValue) => {
               setInputValue(newInputValue);
           }} 
+          getOptionLabel={(option) => option.nombre}
+          getOptionKey={(option) => option.id}
           options={clases}
           value={clase}
-          onChange={(e, value) => setClase(value.label)}
+          defaultValue={{ label: "Seleccione una clase", id: 0 }}
+          onChange={(e, value) => setClase(value)}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Clases" />}
+        />
+        <TextFieldContactar
+        id="huecos"
+        label="Huecos"
+        type="number"
+        value={huecos}
+        onChange={(e) => setHuecos(e.target.value)}
         />
       </Box>
       <Box
         padding={2}
         display={"flex"}
         justifyContent={"space-around"}>
-        <BotonCustom onClick={Guardar} label="Guardar" />
+        <BotonCustom onClick={handleSave} label="Guardar" />
         <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
       </Box>
     </Dialog>

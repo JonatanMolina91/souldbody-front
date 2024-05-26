@@ -1,7 +1,7 @@
 import URL_API from '../../env';
 import axios from 'axios';
 
-const URL = URL_API() + 'horarios';
+const URL = URL_API() + 'horarioClase';
 
 
 
@@ -10,8 +10,18 @@ async function postHorarioClase(clase) {
   return datos.data;
 }
 
-async function deleteHorarioClase(id) {
-  let datos = await axios.delete(URL+'/'+id);
+async function deleteHorarioClase(clase) {
+  console.log(JSON.stringify(clase));
+  let datos = await axios(
+    {
+      method: 'DELETE',
+      url: URL,
+      data: JSON.stringify(clase),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  );
   return datos.data;
 }
 

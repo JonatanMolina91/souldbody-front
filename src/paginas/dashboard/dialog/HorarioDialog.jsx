@@ -11,7 +11,7 @@ const HorarioDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
 
   const { funciones } = useFunciones();
   const [inputValue, setInputValue] = useState('');
-  const [actual, setActual] = useState({ id: -1, fecha:'', inicio: '', fin: '', huecos: 0});
+  const [actual, setActual] = useState({ id: -1, fecha:'', inicio: '', fin: '', clases:[]});
 
 
   const handleClose = () => {
@@ -66,16 +66,9 @@ const HorarioDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
         value={row?.fin} 
         id={'fin'} 
         label={'Fin'}
-        onChange={(e) => actual.inicio = e.format("HH:mm")}/>
+        onChange={(e) => actual.fin = e.format("HH:mm")}/>
 
-       <TextFieldContactar
-          id={'huecos'}
-          label={'Huecos'}
-          value={row?.huecos}
-          onChange={(e) => actual.huecos = e.target.value}
-          type="number"
-          width="90%"
-        />
+  
       
       </Box>
       <Box

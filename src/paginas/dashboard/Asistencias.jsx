@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
 import { Avatar, Box, Grid, IconButton, Paper, Typography } from '@mui/material';
-import Tabla from '../../componentes/tabla/Tabla';
-import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import DateCustom from '../../componentes/DateCustom';
+import horarioServices from '../../services/horarioServices';
+import dayjs from 'dayjs';
 
 const Asistencias = () => {
 
 
-  const [openMenu, setOpenMenu] = useState(true);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [fecha, setFecha] = useState();
+  const [horarios, setHorarios] = useState([]);
+  const {showHorario} = horarioServices;
+
 
   const HORARIOS = [
     "7:00",
@@ -30,6 +34,10 @@ const Asistencias = () => {
     "14:00",
     "14:30"
   ]
+
+  async function changeFecha(e) {
+    setHorarios(await showHorario(e));
+  }
 
   const HUECOS = 10;
 
@@ -75,7 +83,11 @@ const Asistencias = () => {
             width={"100%"}
             justifyContent={"center"}
             alignItems={"center"}>
-            <DateCustom />
+            <DateCustom 
+            value={fecha}
+            id={'fecha'}
+            onChange={(e) => changeFecha(e.format('YYYY-MM-DD'))}
+            />
           </Box>
 
           <Paper 
@@ -88,7 +100,7 @@ const Asistencias = () => {
               justifyContent="center"
               alignItems="center"
             padding={1}>
-              {HORARIOS.map((horario) =><Typography variant='h4' padding={1}>{horario}</Typography>)
+              {horarios.map((horario) =><Typography variant='h4' padding={1}>{dayjs(horario.inicio, "HH:mm:ss").format("HH:mm")}</Typography>)
               }
             </Grid>
 
