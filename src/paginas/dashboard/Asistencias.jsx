@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
 import { Avatar, Box, Grid, IconButton, Paper, Typography } from '@mui/material';
 import BotonCustom from '../../componentes/BotonCustom';
@@ -16,30 +16,30 @@ const Asistencias = () => {
   const {showHorario} = horarioServices;
 
 
-  const HORARIOS = [
-    "7:00",
-    "7:30",
-    "8:00",
-    "8:30",
-    "9:00",
-    "9:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30"
-  ]
+  useEffect(() => {
+    (async()=>setHorarios(await showHorario("2021-10-01")))();
+  }, []);
+
+  useEffect(() => {
+    console.log(horarios);
+  }, [horarios]);
 
   async function changeFecha(e) {
     setHorarios(await showHorario(e));
   }
 
-  const HUECOS = 10;
+
+
+  function avatar(huecos) {
+    let salida = [];
+    for (let i = 0; i < huecos; i++) {
+      salida.push (<Avatar 
+      sx={{width:100, height:100, margin:1}} 
+      src="/broken-image.jpg" />);
+    }
+
+    return salida;
+  }
 
   return (
     <Box component={"div"}>
@@ -100,14 +100,17 @@ const Asistencias = () => {
               justifyContent="center"
               alignItems="center"
             padding={1}>
-              {horarios.map((horario) =><Typography variant='h4' padding={1}>{dayjs(horario.inicio, "HH:mm:ss").format("HH:mm")}</Typography>)
+              {horarios.map((horario) =><Typography variant='h4' padding={1}>{horario.inicio}</Typography>)
               }
             </Grid>
 
             
           </Paper>
 
-          {HORARIOS.map((horario) => {
+        
+
+          {horarios.map((horario) => {
+           return horario.clases.map((clase) => {
            return (
             <Paper  sx={{marginBottom:3, width:"80%", backgroundColor:"rgba(166, 238, 161, 0.5)"}} elevation={3}>
            <Grid
@@ -115,14 +118,16 @@ const Asistencias = () => {
               direction="row"
              
             >
-              <Typography margin={3} variant='h4'>{horario}</Typography>
+              <Typography margin={3} variant='h4'>{horario.inicio}</Typography>
+              <Typography margin={3} variant='h4'>{clase.nombre}</Typography>
+              <Typography margin={3} variant='h4'>{clase.coach}</Typography>
               <Grid
               container
               direction="row"
               alignItems="center">
-                {HORARIOS.map(() =><Avatar 
-                sx={{width:100, height:100, margin:1}} 
-                src="/broken-image.jpg" />)}
+
+               { avatar(clase.huecos) }
+
               </Grid>
             </Grid>
             <Box 
@@ -130,6 +135,7 @@ const Asistencias = () => {
             <BotonCustom label={"Apuntarse"} />
             </Box>
             </Paper>)
+          })  
             }
           )}
 

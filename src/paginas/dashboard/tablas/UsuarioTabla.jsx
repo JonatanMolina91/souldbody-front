@@ -2,10 +2,13 @@ import {  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePa
 import React, { useState } from 'react';
 import { useFunciones } from '../../../context/dialogProvider';
 import UsuarioDialog from '../dialog/UsuarioDialog';
+import BotonCustom from '../../../componentes/BotonCustom';
+import FotoDialog from '../dialog/FotoDialog';
 
 const UsuarioTabla = ({rows, update, deleter}) => {
   
     const [openDialog, setOpenDialog] = useState(false);
+    const [openFoto, setOpenFoto] = useState(false);
     const [rowDialog, setRowDialog] = useState({});
     const {funciones, setFunciones} = useFunciones();
     const [page, setPage] = useState(0);
@@ -18,14 +21,15 @@ const UsuarioTabla = ({rows, update, deleter}) => {
     const CABECERA = [
       'ID',
       'Nombre',
-      'Email',
       'Apellidos',
+      'Email',
       'Foto'
     ]
 
     return (
       <Paper sx={{width: "90%", height:"100%"}} elevation={3}>
         <TableContainer >
+          <FotoDialog openDailog={openFoto} setOpenDailog={setOpenFoto} url={rowDialog.foto}/>
           <UsuarioDialog deleter={deleter} setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
         <Table  aria-label="simple table">
           <TableHead>
@@ -35,8 +39,12 @@ const UsuarioTabla = ({rows, update, deleter}) => {
           </TableHead>
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-              <TableRow onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}  sx={{"&:hover":{backgroundColor:"#A6EEA1"}, cursor:"pointer"}} >
-                 {Object.entries(row).map(([key, value]) => <TableCell>{value}</TableCell>)}
+              <TableRow   sx={{"&:hover":{backgroundColor:"#A6EEA1"}, cursor:"pointer"}} >
+                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}>{row.id}</TableCell>
+                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}>{row.nombre}</TableCell>
+                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}>{row.apellidos}</TableCell>
+                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}>{row.email}</TableCell>
+                 <TableCell><BotonCustom onClick={()=>{setRowDialog(row); setOpenFoto(true)}} label={"Ver"}/></TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -23,7 +23,9 @@ const Clientes = () => {
 async function update(id, data){
   console.log("update");
   console.log(await putCliente(id, data));
-  setClientes(clientes.map(cliente => cliente.id === id ? data : cliente));
+  let copia = {...data};
+  copia.foto = data.foto;
+  setClientes(clientes.map(cliente => cliente.id === id ? copia : cliente));
 }
 
 async function create(data){
@@ -33,7 +35,9 @@ async function create(data){
   console.log(response.id);
   data.id = response.id;
   console.log(data);
-  setClientes([...clientes, data]);
+  let copia = {...data};
+  copia.foto = response.foto;
+  setClientes([...clientes, copia]);
 }
 
 async function deleter(id){
