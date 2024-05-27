@@ -22,7 +22,12 @@ const Coaches = () => {
 
 async function update(id, data){
   console.log("update");
-  console.log(await putCoach(id, data));
+  let respuesta = await putCoach(id, data);
+  let copia = {...data};
+  copia.foto = respuesta.foto;
+  console.log(copia);
+  let copiacoaches = coaches.map(coach => coach.id === id? copia: coach);
+  setCoaches(copiacoaches);
 }
 
 async function create(data){
@@ -32,7 +37,9 @@ async function create(data){
   console.log(response.id);
   data.id = response.id;
   console.log(data);
-  setCoaches([...coaches, data]);
+  let copia = {...data};
+  copia.foto = response.foto;
+  setCoaches([...coaches, copia]);
 }
 
 async function deleter(id){

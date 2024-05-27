@@ -21,11 +21,14 @@ const Clientes = () => {
   
 
 async function update(id, data){
+  setRowDialog({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
   console.log("update");
-  console.log(await putCliente(id, data));
+  let respuesta = await putCliente(id, data);
   let copia = {...data};
-  copia.foto = data.foto;
-  setClientes(clientes.map(cliente => cliente.id === id ? copia : cliente));
+  copia.foto = respuesta.foto;
+  console.log(copia);
+  let copiaclientes = clientes.map(cliente => cliente.id === id? copia: cliente);
+  setClientes(copiaclientes);
 }
 
 async function create(data){

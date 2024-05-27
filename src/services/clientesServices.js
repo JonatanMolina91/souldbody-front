@@ -22,22 +22,13 @@ async function postCliente(data) {
 
 async function putCliente(id, data) {
   console.log(data);
-  let formDataa = require('form-data');
-  let actualizar = new formDataa();
-  actualizar.append("_method", "PUT"),
+  let actualizar = new FormData();
   actualizar.append('nombre', data.nombre);
   actualizar.append('apellidos', data.apellidos);
   actualizar.append('email', data.email);
   actualizar.append('foto', data.foto);
-  let datos = await axios(
-    {
-      method: 'PUT',
-      url: URL+'/'+id,
-      data: actualizar,
-      headers:actualizar.getHeaders()
-    }
-  );
-  return datos;
+  let response = await axios.post(URL+"/actualizar/"+id, actualizar);
+  return response.data;
 }
 
 async function deleteCliente(id) {

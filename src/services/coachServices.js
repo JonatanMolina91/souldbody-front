@@ -9,12 +9,24 @@ async function getCoaches() {
 }
 
 async function postCoach(data) {
-  let response = await axios.post(URL, JSON.stringify(data), {headers:{'Content-Type': 'application/json'}});
+  console.log(data.foto);
+  let enviar = new FormData();
+  enviar.append('nombre', data.nombre);
+  enviar.append('apellidos', data.apellidos);
+  enviar.append('email', data.email);
+  enviar.append('foto', data.foto);
+  let response = await axios.post(URL, enviar);
   return response.data;
 }
 
 async function putCoach(id, data) {
-  let response = await axios.put(URL+'/'+id, JSON.stringify(data), {headers:{'Content-Type': 'application/json'}});
+  console.log(data);
+  let actualizar = new FormData();
+  actualizar.append('nombre', data.nombre);
+  actualizar.append('apellidos', data.apellidos);
+  actualizar.append('email', data.email);
+  actualizar.append('foto', data.foto);
+  let response = await axios.post(URL+"/actualizar/"+id, actualizar);
   return response.data;
 }
 

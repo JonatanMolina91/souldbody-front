@@ -30,9 +30,16 @@ const Asistencias = () => {
 
 
 
-  function avatar(huecos) {
+  function avatar(huecos, clientes) {
+    console.log(huecos, clientes);
     let salida = [];
-    for (let i = 0; i < huecos; i++) {
+    for (let i = 0; i < clientes.length; i++) {
+      console.log(clientes[i].foto);
+      salida.push (<Avatar 
+      sx={{width:100, height:100, margin:1}} 
+      src={"http://127.0.0.1:8000/"+clientes[i].foto} />);
+    }
+    for (let i = 0; i < (huecos-clientes.length); i++) {
       salida.push (<Avatar 
       sx={{width:100, height:100, margin:1}} 
       src="/broken-image.jpg" />);
@@ -126,7 +133,7 @@ const Asistencias = () => {
               direction="row"
               alignItems="center">
 
-               { avatar(clase.huecos) }
+               { avatar(clase.huecos, horario.clientes) }
 
               </Grid>
             </Grid>
