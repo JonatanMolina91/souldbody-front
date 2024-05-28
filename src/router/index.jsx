@@ -14,6 +14,7 @@ import ProductosEdit from "../paginas/dashboard/Productos";
 import ClasesEdit from "../paginas/dashboard/Clases";
 import Horarios from "../paginas/dashboard/Horarios";
 import Asistencias from "../paginas/dashboard/Asistencias";
+import { useUser } from "../context/userProvider";
 
 const LOGEADO = true;
 
@@ -26,6 +27,8 @@ const invitadoRutas = [
     { path: 'login', element: <Login/> },
     { path: '*', element: <Navigate to="/" /> }
   ];
+
+  
 
   const logeadoRutas = [
     { index: true, element:  <Clientes/>},

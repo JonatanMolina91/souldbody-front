@@ -1,6 +1,7 @@
 import URL_API from '../../env';
 import axios from 'axios';
 import {require} from 'form-data';
+import '../utils/http';
 
 const URL = URL_API() + 'clientes';
 

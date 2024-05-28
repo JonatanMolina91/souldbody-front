@@ -1,7 +1,11 @@
 import URL_API from '../../env';
 import axios from 'axios';
+import {useUser} from '../context/userProvider';
+import '../utils/http';
 
 const URL = URL_API() + 'coaches';
+
+
 
 async function getCoaches() {
   let datos = await axios.get(URL);

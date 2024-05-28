@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-const BotonCustom = ({ label, onClick }) => {
+const BotonCustom = ({ label, onClick, type }) => {
   return (
     <Button
       sx={{
@@ -12,6 +12,7 @@ const BotonCustom = ({ label, onClick }) => {
         borderRadius: '10px',
         '&:hover': { backgroundColor: "#087000" }
       }}
+      type={type}
       variant="contained"
       onClick={onClick}>
         {label}

@@ -3,13 +3,17 @@ import { Button, Box, AppBar, Typography, IconButton, Toolbar, Menu, MenuItem } 
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import { medidasBarraMenu } from './medidasBarraMenu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../../context/userProvider';
 
 const BarraMenu = () => {
   const pages = ['home', 'productos', 'clases', 'contactar'];
-  const settings = ['login', 'dashboard'];
+  const {user} = useUser();
+  const settings = user.rol===''?['login']: ['logout', 'dashboard'];
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const {setLogout} = useUser();
+  const navigate = useNavigate();
   
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -33,6 +37,38 @@ const BarraMenu = () => {
         <Typography  to={"/"+contenido} component={Link}  fontSize={medidasBarraMenu.letrasMenu} sx={{ fontWeight: 'bold', color: 'menu.color.letras', textDecoration: 'none' }} variant='h5'>{contenido}</Typography>
       </Button>
     );
+  }
+
+  function menuSetting() {
+    if(user.rol===""){
+      return (
+        <MenuItem>
+      <Typography sx={{textDecoration: "none", color:"black"}} 
+      to={"/login"} component={Link} 
+      textAlign="center">{"login".toUpperCase()}</Typography>
+    </MenuItem>);
+    } else {
+      return( 
+        <Box>
+      <MenuItem  onClick={handleCloseUserMenu}>
+        <Typography sx={{textDecoration: "none", color:"black"}} 
+       component={Link} 
+       onClick={halderLogout}
+        textAlign="center">{"logout".toUpperCase()}</Typography>
+      </MenuItem>
+      <MenuItem  onClick={handleCloseUserMenu}>
+      <Typography sx={{textDecoration: "none", color:"black"}} 
+      to={"/dashboard"} component={Link} 
+      textAlign="center">{"dashboard".toUpperCase()}</Typography>
+    </MenuItem>
+    </Box>);
+    }
+  }
+
+  function halderLogout() {
+    console.log("logout");
+    setLogout();
+    navigate('/');
   }
 
   return (
@@ -103,11 +139,8 @@ const BarraMenu = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{textDecoration: "none", color:"black"}} to={"/"+setting} component={Link} textAlign="center">{setting.toUpperCase()}</Typography>
-                </MenuItem>
-              ))}
+              {menuSetting()}
+         
             </Menu>
 
       </Toolbar>

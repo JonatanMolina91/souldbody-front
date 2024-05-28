@@ -8,6 +8,7 @@ import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import  coachService  from '../../services/coachServices';
 import UsuarioDialog from './dialog/UsuarioDialog';
 import UsuarioTabla from './tablas/UsuarioTabla';
+import { useUser } from '../../context/userProvider';
 
 const Coaches = () => {
 
@@ -16,6 +17,7 @@ const Coaches = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
   const { getCoaches, postCoach, putCoach, deleteCoach } = coachService;
+  const {user} = useUser();
   const {funciones, setFunciones} = useFunciones();
 
   
@@ -50,7 +52,7 @@ async function deleter(id){
 
 
   useEffect(()=>{
-    (async() => setCoaches(await getCoaches()))();
+    (async() => setCoaches(await getCoaches(user.token)))();
   },[])
 
   useEffect(()=>{

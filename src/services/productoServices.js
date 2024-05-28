@@ -1,5 +1,6 @@
 import URL_API from '../../env';
 import axios from 'axios';
+import '../utils/http';
 
 const URL = URL_API() + 'productos';
 

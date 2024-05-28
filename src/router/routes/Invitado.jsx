@@ -2,10 +2,16 @@ import { Outlet } from "react-router-dom";
 import Cabecera from "../../componentes/cabecera/Cabecera";
 import BarraMenu from "../../componentes/barraMenu/BarraMenu";
 import Pie from "../../componentes/pie/Pie";
-import React from "react";
+import React, { useEffect } from "react";
+import { useUser } from "../../context/userProvider";
 
 
 export default function Invitado() {
+    const {setLogin} = useUser();
+    useEffect(() => {
+        setLogin(); 
+    }, [])
+  
     return (
         <React.Fragment>
             <Cabecera/>
