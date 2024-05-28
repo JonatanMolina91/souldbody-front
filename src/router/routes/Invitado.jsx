@@ -7,11 +7,6 @@ import { useUser } from "../../context/userProvider";
 
 
 export default function Invitado() {
-    const {setLogin} = useUser();
-    useEffect(() => {
-        setLogin(); 
-    }, [])
-  
     return (
         <React.Fragment>
             <Cabecera/>

@@ -8,7 +8,6 @@ import { UserProvider, useUser } from './context/userProvider';
 
 function App() {
 
-  
 
   const theme = createTheme({
     palette: {

@@ -133,7 +133,7 @@ const Asistencias = () => {
               direction="row"
               alignItems="center">
 
-               { avatar(clase.huecos, horario.clientes) }
+               { avatar(clase.huecos, clase.clientes) }
 
               </Grid>
             </Grid>
