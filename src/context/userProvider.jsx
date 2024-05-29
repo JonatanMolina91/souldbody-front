@@ -6,7 +6,15 @@ const UserContext = createContext();
 
 export const UserProvider = ({children}) => {
 
-  const [user, setUser] = useState({token: '', rol: ''});
+  const [user, setUser] = useState({
+    token: '', 
+    rol: '', 
+    id: -1,
+    nombre: '',
+    apellidos: '',
+    email: '',
+    foto: ''
+  });
   const {logout} = loginServices;
 
   
@@ -18,16 +26,32 @@ export const UserProvider = ({children}) => {
     return matches ? decodeURIComponent(matches[1]) : undefined;
   }
 
-  function setLogin(){
+  function setLogin(user){
     let token = getCookie('token');
     console.log(token);
-    if(token !== undefined)
-    setUser({token: token, rol: getCookie('rol')});
+    if(token !== undefined){
+    setUser({
+      token: token, 
+      rol: getCookie('rol'), 
+      id: getCookie('id'),
+      nombre: getCookie('nombre'),
+      apellidos: getCookie('apellidos'),
+      email: getCookie('email'),
+      foto: getCookie('foto')
+    });}
   }
 
   async function setLogout(){
     await logout();
-    setUser({token: '', rol: ''});
+    setUser({
+      token: '', 
+      rol: '', 
+      id: -1,
+      nombre: '',
+      apellidos: '',
+      email: '',
+      foto: ''
+    });
   }
 
   return (

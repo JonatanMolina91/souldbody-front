@@ -20,7 +20,11 @@ const UsuarioTabla = ({rows, update, deleter}) => {
       'Nombre',
       'Descripción',
       'Video',
-      'Couch'
+      'Couch',
+      'Fecha',
+      'inicio',
+      'Fin',
+      'huecos',
     ]
 
     return (
@@ -36,7 +40,15 @@ const UsuarioTabla = ({rows, update, deleter}) => {
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}  sx={{"&:hover":{backgroundColor:"#A6EEA1"}, cursor:"pointer"}} >
-                 {Object.entries(row).map(([key, value]) => <TableCell>{value}</TableCell>)}
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{row.nombre}</TableCell>
+                  <TableCell>{row.descripcion}</TableCell>
+                  <TableCell>{row.video}</TableCell>
+                  <TableCell>{row.couch}</TableCell>
+                  <TableCell>{row.fecha}</TableCell>
+                  <TableCell>{row.inicio}</TableCell>
+                  <TableCell>{row.fin}</TableCell>
+                  <TableCell>{row.huecos}</TableCell>
               </TableRow>
             ))}
           </TableBody>

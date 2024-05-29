@@ -9,6 +9,11 @@ async function getClase() {
   return datos.data;
 }
 
+async function showClase(fecha) {
+  let datos = await axios.get(URL+'/'+fecha);
+  return datos.data;
+}
+
 async function putClase(id, clase) {
   console.log(URL+'/'+id);
   let datos = await axios.put(URL+'/'+id, JSON.stringify(clase), {headers:{'Content-Type': 'application/json'}});
@@ -27,4 +32,4 @@ async function deleteClase(id) {
 
 
 
-export default { getClase, putClase,  postClase, deleteClase };
+export default { getClase, putClase,  postClase, deleteClase, showClase };

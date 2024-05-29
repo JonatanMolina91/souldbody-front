@@ -46,6 +46,11 @@ async function send(event) {
   if(datos.status === 200){
     setCookie("token", datos.data.token);
     setCookie("rol", datos.data.rol);
+    setCookie("id", datos.data.user.id);
+    setCookie("email", datos.data.user.email);
+    setCookie("nombre", datos.data.user.nombre);
+    setCookie("apellidos", datos.data.user.apellidos);
+    setCookie("foto", datos.data.user.foto);
     setLogin();
   } 
   

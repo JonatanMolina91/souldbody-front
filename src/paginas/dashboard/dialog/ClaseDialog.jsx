@@ -4,6 +4,8 @@ import TextFieldContactar from '../../../componentes/TextFieldContactar';
 import BotonCustom from '../../../componentes/BotonCustom';
 import { useFunciones } from '../../../context/dialogProvider';
 import coachService from '../../../services/coachServices';
+import TimeCustom from '../../../componentes/TimeCustom';
+import DateCustom from '../../../componentes/DateCustom';
 
 const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
 
@@ -11,7 +13,17 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
   const [inputValue, setInputValue] = useState('');
   const { getCoaches } = coachService;
   const [coaches, setCoaches] = useState();
-  const [actual, setActual] = useState({ id: -1, nombre: '', descripcion: '', video: '', coach_id: '' });
+  const [actual, setActual] = useState({
+    id: -1,
+    nombre: '',
+    descripcion: '',
+    video: '',
+    coach_id: '',
+    fecha: '',
+    inicio: '',
+    fin: '',
+    huecos: ''
+  });
 
 
   const handleClose = () => {
@@ -38,13 +50,13 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
   function Guardar() {
     actual.coach_id = coaches.find(coach => coach.label === actual.coach).id;
     console.log(actual);
-     if (funciones.create !== undefined) {
+    if (funciones.create !== undefined) {
       funciones.create(actual);
     }
 
     if (funciones.update !== undefined) {
       funciones.update(actual.id, actual);
-    } 
+    }
   }
 
   return (
@@ -82,6 +94,33 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
           type="text"
           width="90%"
         />
+
+        <TextFieldContactar
+          id={'huecos'}
+          label={'Huecos'}
+          value={row?.huecos}
+          onChange={(e) => actual.huecos = e.target.value}
+          type="number"
+          width="90%"
+        />
+
+        <DateCustom
+          value={row?.fecha}
+          id={'fecha'}
+          onChange={(e) => actual.fecha = e.format('YYYY-MM-DD')}
+        />
+        <TimeCustom
+          value={row?.inicio}
+          id={'inicio'}
+          label={'Inicio'}
+          onChange={(e) => actual.inicio = e.format("HH:mm")}
+        />
+
+        <TimeCustom
+          value={row?.fin}
+          id={'fin'}
+          label={'Fin'}
+          onChange={(e) => actual.fin = e.format("HH:mm")} />
         <Autocomplete
           disablePortal
           id="coach"
@@ -90,7 +129,7 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
             setInputValue(newInputValue);
           }}
           options={coaches}
-          value={actual.coach === undefined ? null :  actual.coach }
+          value={actual.coach === undefined ? null : actual.coach}
           onChange={(e, value) => actual.coach = value.label}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Coach" />}

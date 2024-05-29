@@ -16,7 +16,6 @@ const MenuDashboard = ({openMenu}) => {
           'categoria',
           'productos',
           'clases',
-          'horarios',
           'asistencias',
         ];
         break;

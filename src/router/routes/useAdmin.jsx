@@ -19,7 +19,6 @@ const UseAdmin = (user) => {
           { path: 'coaches', element: <Coaches/> },
           { path: 'productos', element: <ProductosEdit/> },
           { path: 'clases', element: <ClasesEdit/> },
-          { path: 'horarios', element: <Horarios/> },
           { path: 'asistencias', element: <Asistencias/> },
         ];
         break;

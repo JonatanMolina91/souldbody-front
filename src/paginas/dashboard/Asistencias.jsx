@@ -4,28 +4,32 @@ import { Avatar, Box, Grid, IconButton, Paper, Typography } from '@mui/material'
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import DateCustom from '../../componentes/DateCustom';
-import horarioServices from '../../services/horarioServices';
+import claseServices from '../../services/claseServices';
+
+
 import dayjs from 'dayjs';
+import { useUser } from '../../context/userProvider';
 
 const Asistencias = () => {
 
 
   const [openMenu, setOpenMenu] = useState(false);
   const [fecha, setFecha] = useState();
-  const [horarios, setHorarios] = useState([]);
-  const {showHorario} = horarioServices;
+  const [clases, setClases] = useState([]);
+  const {showClase} = claseServices;
+  const {user} = useUser();
 
 
   useEffect(() => {
-    (async()=>setHorarios(await showHorario("2021-10-01")))();
+    (async()=>setClases(await showClase("2024-05-29")))();
   }, []);
 
   useEffect(() => {
-    console.log(horarios);
-  }, [horarios]);
+    console.log(clases);
+  }, [clases]);
 
   async function changeFecha(e) {
-    setHorarios(await showHorario(e));
+    setClases(await showClase(e));
   }
 
 
@@ -49,7 +53,17 @@ const Asistencias = () => {
     return salida;
   }
 
-  return (horarios.length === 0) ? <div>Cargando...</div> : (
+  function apuntarse(clase) {
+    let copiaUser = {...user};
+    delete copiaUser.token;
+    delete copiaUser.rol;
+    console.log(copiaUser);
+    console.log(clase);
+    let apuntado = clase.clientes.some((cliente) => +copiaUser.id === cliente.user_id);
+    console.log(apuntado);
+  }
+
+  return (
     <Box component={"div"}>
 
       <Box component={"div"}
@@ -108,7 +122,7 @@ const Asistencias = () => {
               justifyContent="center"
               alignItems="center"
             padding={1}>
-              {horarios.map((horario) =><Typography variant='h4' padding={1}>{horario.inicio}</Typography>)
+              {clases.map((clase) =><Typography variant='h4' padding={1}>{clase.inicio}</Typography>)
               }
             </Grid>
 
@@ -117,8 +131,7 @@ const Asistencias = () => {
 
         
 
-          {horarios.map((horario) => {
-           return horario.clases.map((clase) => {
+          {clases.map((clase) => {
            return (
             <Paper  sx={{marginBottom:3, width:"80%", backgroundColor:"rgba(166, 238, 161, 0.5)"}} elevation={3}>
            <Grid
@@ -126,7 +139,7 @@ const Asistencias = () => {
               direction="row"
              
             >
-              <Typography margin={3} variant='h4'>{horario.inicio}</Typography>
+              <Typography margin={3} variant='h4'>{clase.inicio}</Typography>
               <Typography margin={3} variant='h4'>{clase.nombre}</Typography>
               <Typography margin={3} variant='h4'>{clase.coach}</Typography>
               <Grid
@@ -134,18 +147,17 @@ const Asistencias = () => {
               direction="row"
               alignItems="center">
 
-               { avatar(clase.huecos, horario.clientes) }
+               { avatar(clase.huecos, clase.clientes) }
 
               </Grid>
             </Grid>
             <Box 
             padding={1}>
-            <BotonCustom label={"Apuntarse"} />
+            {user.rol==="customer"?<BotonCustom onClick={()=>apuntarse(clase)} label={"Apuntarse"} />:null}
             </Box>
             </Paper>)
           })  
             }
-          )}
 
         </Box>
       </Box>
