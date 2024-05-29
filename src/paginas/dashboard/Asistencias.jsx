@@ -33,6 +33,7 @@ const Asistencias = () => {
   function avatar(huecos, clientes) {
     console.log(huecos, clientes);
     let salida = [];
+    if(clientes === undefined) clientes = [];
     for (let i = 0; i < clientes.length; i++) {
       console.log(clientes[i].foto);
       salida.push (<Avatar 
@@ -48,7 +49,7 @@ const Asistencias = () => {
     return salida;
   }
 
-  return (
+  return (horarios.length === 0) ? <div>Cargando...</div> : (
     <Box component={"div"}>
 
       <Box component={"div"}
@@ -133,7 +134,7 @@ const Asistencias = () => {
               direction="row"
               alignItems="center">
 
-               { avatar(clase.huecos, clase.clientes) }
+               { avatar(clase.huecos, horario.clientes) }
 
               </Grid>
             </Grid>
