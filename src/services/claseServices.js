@@ -30,6 +30,18 @@ async function deleteClase(id) {
   return datos.data;
 }
 
+async function postApuntarse(datos) {
+  let response = await axios.post(URL_API() + 'apuntarse', JSON.stringify(datos), 
+  {headers:{'Content-Type': 'application/json'}});
+  return response.data;
+}
+
+async function postDesapuntarse(datos) {
+  let response = await axios.post(URL_API() + 'desapuntarse', JSON.stringify(datos), 
+  {headers:{'Content-Type': 'application/json'}});
+  return response.data;
+}
 
 
-export default { getClase, putClase,  postClase, deleteClase, showClase };
+
+export default { getClase, putClase,  postClase, deleteClase, showClase, postApuntarse, postDesapuntarse };

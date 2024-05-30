@@ -8,8 +8,8 @@ const CardProducto = ({ producto }) => {
          <CardActionArea>
            <CardMedia
              component="img"
-             image={producto.imagen}
-             alt="green iguana"
+             image={"http://127.0.0.1:8000/"+producto.imagen}
+             alt={"producto "+producto.nombre}
            />
            <CardContent
            sx={{

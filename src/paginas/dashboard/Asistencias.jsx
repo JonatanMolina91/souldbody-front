@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
-import { Avatar, Box, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { Autocomplete, Avatar, Box, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import DateCustom from '../../componentes/DateCustom';
 import claseServices from '../../services/claseServices';
+import clientesServices from '../../services/clientesServices';
 
 
 import dayjs from 'dayjs';
@@ -16,12 +17,19 @@ const Asistencias = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [fecha, setFecha] = useState();
   const [clases, setClases] = useState([]);
-  const {showClase} = claseServices;
+  const [clientes, setClientes] = useState([]);
+  const [selectCliente, setSelectCliente] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const {showClase, postApuntarse, postDesapuntarse} = claseServices;
+  const {getClientes} = clientesServices;
   const {user} = useUser();
 
 
   useEffect(() => {
-    (async()=>setClases(await showClase("2024-05-29")))();
+    (async()=>{
+      setClases(await showClase("2024-05-29"));
+      if(user.rol==="admin")setClientes(await getClientes());
+    })();
   }, []);
 
   useEffect(() => {
@@ -54,13 +62,50 @@ const Asistencias = () => {
   }
 
   function apuntarse(clase) {
+     let copiaUser = {...user};
+    delete copiaUser.token;
+    delete copiaUser.rol;
+    copiaUser.user_id = copiaUser.id;
+    delete copiaUser.id;
+    let apuntado = clase.clientes.some((cliente) => +copiaUser.user_id === +cliente.user_id);
+    if(!apuntado && clase.huecos !== clase.clientes.length) {
+      clase.clientes.push(copiaUser);
+      setClases(clases.map((claseMap) => claseMap.id === clase.id ? clase : claseMap));
+      postApuntarse({customer_id: +copiaUser.user_id, training_id: +clase.id})
+    } else {
+      alert(clase.huecos === clase.clientes.length?"la clase esta llena":"ya estas apuntado");
+    } 
+  }
+
+  function apuntarseAdmin(clase) {
+    if(selectCliente !== null) {
+     let apuntado = clase.clientes.some((cliente) => +selectCliente.user_id === +cliente.user_id);
+   if(!apuntado && clase.huecos !== clase.clientes.length) {
+     clase.clientes.push(selectCliente);
+     setClases(clases.map((claseMap) => claseMap.id === clase.id ? clase : claseMap));
+     postApuntarse({customer_id: +selectCliente.user_id, training_id: +clase.id})
+   } else {
+     alert(clase.huecos === clase.clientes.length?"la clase esta llena":"ya estas apuntado");
+   }  
+  } else {
+    alert("selecciona un cliente");
+  } 
+ }
+
+  async function Desapuntarse(clase) {
     let copiaUser = {...user};
     delete copiaUser.token;
     delete copiaUser.rol;
-    console.log(copiaUser);
-    console.log(clase);
-    let apuntado = clase.clientes.some((cliente) => +copiaUser.id === cliente.user_id);
-    console.log(apuntado);
+    copiaUser.user_id = copiaUser.id;
+    delete copiaUser.id;
+    let apuntado = clase.clientes.some((cliente) => +copiaUser.user_id === +cliente.user_id);
+    if(apuntado) {
+      clase.clientes = clase.clientes.filter((cliente) => +copiaUser.user_id !== +cliente.user_id);
+      await postDesapuntarse({customer_id: +copiaUser.user_id, training_id: +clase.id});
+      setClases(clases.map((claseMap) => claseMap.id === clase.id ? clase : claseMap));
+    } else {
+      alert("no estas apuntado");
+    } 
   }
 
   return (
@@ -153,7 +198,26 @@ const Asistencias = () => {
             </Grid>
             <Box 
             padding={1}>
-            {user.rol==="customer"?<BotonCustom onClick={()=>apuntarse(clase)} label={"Apuntarse"} />:null}
+            {user.rol==="customer" && !clase.clientes.some((cliente) => +user.id === +cliente.user_id) && clase.huecos !== clase.clientes.length?<BotonCustom onClick={()=>apuntarse(clase)} label={"Apuntarse"} />:null}
+            {user.rol==="customer" && clase.clientes.some((cliente) => +user.id === +cliente.user_id) && clase.huecos?<BotonCustom label="Desapuntarse" onClick={() => Desapuntarse(clase)} />:null}
+            <Box>
+              <BotonCustom onClick={()=>apuntarseAdmin(clase)} label="Apuntar"/>
+              <Autocomplete
+          disablePortal
+          id="coach"
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
+          options={clientes}
+          getOptionLabel={(option) => option.nombre}
+          value={selectCliente === undefined ? null : selectCliente}
+          onChange={(e, value) => setSelectCliente(value)}
+          sx={{ width: 300, marginTop:1 }}
+          renderInput={(params) => <TextField {...params} label="Clientes" />}
+        />
+
+            </Box>
             </Box>
             </Paper>)
           })  

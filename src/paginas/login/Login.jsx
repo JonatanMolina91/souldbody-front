@@ -4,6 +4,7 @@ import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import loginServices from '../../services/loginServices';
 import { useUser } from '../../context/userProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
@@ -11,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const {login} = loginServices;
   const {setLogin} = useUser();
+  const navigate = useNavigate();
 
   function setCookie(name, value, options = {}) {
 
@@ -52,6 +54,7 @@ async function send(event) {
     setCookie("apellidos", datos.data.user.apellidos);
     setCookie("foto", datos.data.user.foto);
     setLogin();
+    navigate('/dashboard');
   } 
   
 }
@@ -76,7 +79,7 @@ async function send(event) {
       height='90%'
       padding={1}
       >
-        <TextFieldContactar value={user} onChange={(event)=>setUser(event.target.value)} id='user' label='Usuario' type='text' />
+        <TextFieldContactar value={user} onChange={(event)=>setUser(event.target.value)} id='user' label='Email' type='email' />
         <TextFieldContactar value={password} onChange={(event)=>setPassword(event.target.value)} id='password' label='Contraseña' type='password' />
         <BotonCustom type="submit" label='Iniciar Sesión' />
       </Box>

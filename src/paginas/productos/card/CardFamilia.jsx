@@ -15,8 +15,8 @@ export default function CardFamilia({categoria}) {
         <Box sx={{textDecoration: "none", color:"black"}} to={"/productos/"+categoria.id} component={Link}>
         <CardMedia
           component="img"
-          image={categoria.imagen}
-          alt="green iguana"
+          image={"http://127.0.0.1:8000/"+categoria.imagen}
+          alt={"foto categoria "+ categoria.nombre}
         />
         <CardContent
         sx={{textAlign:'center'}}>
