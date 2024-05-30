@@ -13,6 +13,7 @@ const Productos = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [productos, setProductos] = useState([]);
+  const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:0, nombre: '', imagen:'', descripcion: '', precio: 0, categoria: ''});
   const { getProductos, putProducto,  postProducto, deleteProducto } = productoServices;
@@ -21,18 +22,23 @@ const Productos = () => {
   
 
 async function update(id, data){
-  console.log("update");
-  console.log(await putProducto(id, data));
-  setProductos(productos.map(producto => producto.id === id ? data : producto));
+  let respuesta = await putProducto(id, data);
+  let copia = {...data};
+  copia.imagen = respuesta.imagen;
+  copia.descripcion = data.descripcion.nombre;
+  let copiaProducto = productos.map(producto => producto.id === id? copia: producto);
+  setProductos(copiaProducto);
 }
 
 async function create(data){
-  setRowDialog({id:0, nombre: '', imagen:'', descripcion: '', precio: 0, categoria: ''});
-  console.log("create");
+  console.log(data);
+  setRowDialog({id:0, nombre: '', imagen:'', descripcion: '', precio: 0, categoria: null});
   let response = await postProducto(data);
-  console.log(response.id);
-  data = {id: response.id, ...data };
-  setProductos([...productos, data]);
+  data.id = response.id;
+  let copia = {...data};
+  copia.imagen = response.imagen;
+  copia.categoria = data.categoria.nombre;
+  setProductos([...productos, copia]);
 }
 
 async function deleter(id){
@@ -47,8 +53,16 @@ async function deleter(id){
   },[])
 
   useEffect(()=>{
-    console.log(productos);
+    setProductosFiltrados(productos);
   },[productos])
+
+  function filtrar(event){
+    if(event.target.value !== ''){
+      setProductosFiltrados(productos.filter(producto => producto.nombre.toLowerCase().includes(event.target.value.toLowerCase())  || producto.categoria.toLowerCase().includes(event.target.value.toLowerCase())));
+  } else {
+    setProductosFiltrados(productos);
+  }
+  }
 
   return (
     <Box component={"div"}>
@@ -93,13 +107,14 @@ async function deleter(id){
             justifyContent={"space-between"}
             alignItems={"center"}>
             <TextFieldContactar
-              id="busquedaUsuario"
-              label="Buscar Usuario"
+              id="busquedaProducto"
+              label="Buscar Producto"
+              onChange={filtrar}
               type={"text"}
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {productos.length>0?<ProductoTabla deleter={deleter} update={update} rows={productos}/>:null}
+          {productos.length>0?<ProductoTabla deleter={deleter} update={update} rows={productosFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

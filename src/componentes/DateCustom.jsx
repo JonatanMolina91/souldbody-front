@@ -10,7 +10,7 @@ const DateCustom = ({value, id, onChange}) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker 
-        defaultValue={value ? dayjs(value) : null}
+        defaultValue={value!==undefined && value !== null  ? dayjs(value) : dayjs()}
         format='DD/MM/YYYY'
         id={id}
         name={id}

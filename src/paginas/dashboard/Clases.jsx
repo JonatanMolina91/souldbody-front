@@ -13,6 +13,7 @@ const Productos = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [clases, setClases] = useState([]);
+  const [clasesFiltrados, setClasesFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:0, nombre: '', descripcion: '',  video:'',  coach: ''});
   const { getClase, putClase,  postClase, deleteClase } = claseServices;
@@ -49,8 +50,16 @@ async function deleter(id){
   },[])
 
   useEffect(()=>{
-    console.log(clases);
+    setClasesFiltrados(clases);
   },[clases])
+
+  function filtrar(event){
+    if(event.target.value !== ''){
+      setClasesFiltrados(clases.filter(clase => clase.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || clase.coach.toLowerCase().includes(event.target.value.toLowerCase()) || clase.fecha.toLowerCase().includes(event.target.value.toLowerCase())));
+    }else{
+      setClasesFiltrados(clases);
+    }
+  }
 
   return (
     <Box component={"div"}>
@@ -95,13 +104,14 @@ async function deleter(id){
             justifyContent={"space-between"}
             alignItems={"center"}>
             <TextFieldContactar
-              id="busquedaUsuario"
-              label="Buscar Usuario"
+              id="busquedaClase"
+              label="Buscar Clase"
+              onChange={filtrar}
               type={"text"}
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {clases.length>0?<ClaseTabla deleter={deleter} update={update} rows={clases}/>:null}
+          {clases.length>0?<ClaseTabla deleter={deleter} update={update} rows={clasesFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

@@ -29,7 +29,8 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
 
     if (funciones.update !== undefined) {
       funciones.update(actual.id, actual);
-    } 
+    }
+    setOpenDialog(false); 
   }
 
   return (
@@ -49,14 +50,6 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
       type="text" 
       width="90%"
       />
-      <TextFieldContactar 
-      id={'foto'}
-      label={'Foto'}
-      value={row?.imagen}
-      onChange={(e) => actual.imagen = e.target.value}
-      type="text" 
-      width="90%"
-      />
        <TextFieldContactar 
       id={'descripcion'}
       label={'Descripción'}
@@ -65,13 +58,14 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
       type="text" 
       width="90%"
       />
+      <input onChange={(e)=>actual.imagen=e.target.files[0]} accept='image/*'   type='file'/>
       </Box>
       <Box
       padding={2}
       display={"flex"}
       justifyContent={"space-around"}>
         <BotonCustom onClick={Guardar} label="Guardar"/>
-        {funciones.update !== undefined?<BotonCustom onClick={()=>deleter(row.id)} label="Eliminar"/>:null}
+        {funciones.update !== undefined?<BotonCustom onClick={()=>{deleter(row.id); setOpenDialog(false);}} label="Eliminar"/>:null}
         <BotonCustom onClick={()=>setOpenDialog(false)} label="Volver"/>
       </Box>
     </Dialog>

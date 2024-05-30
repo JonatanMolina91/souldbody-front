@@ -15,13 +15,21 @@ async function getProductos(id) {
 }
 
 async function putCategoria(id, categoria) {
-  console.log(URL+'/'+id);
-  let datos = await axios.put(URL+'/'+id, JSON.stringify(categoria), {headers:{'Content-Type': 'application/json'}});
+  let enviar = new FormData();
+  enviar.append('nombre', categoria.nombre);
+  enviar.append('apellidos', categoria.apellidos);
+  enviar.append('email', categoria.email);
+  enviar.append('foto', categoria.foto);
+  let datos = await axios.post(URL+'/'+id, enviar);
   return datos.data;
 }
 
 async function postCategoria(categoria) {
-  let datos = await axios.post(URL, JSON.stringify(categoria), {headers:{'Content-Type': 'application/json'}});
+  let enviar = new FormData();
+  enviar.append('nombre', categoria.nombre);
+  enviar.append('imagen', categoria.imagen);
+  enviar.append('descripcion', categoria.descripcion);
+  let datos = await axios.post(URL, enviar);
   return datos.data;
 }
 

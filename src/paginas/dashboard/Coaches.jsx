@@ -14,6 +14,7 @@ const Coaches = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [coaches, setCoaches] = useState([]);
+  const [coachesFiltrados, setCoachesFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
   const { getCoaches, postCoach, putCoach, deleteCoach } = coachService;
@@ -56,8 +57,17 @@ async function deleter(id){
   },[])
 
   useEffect(()=>{
-    console.log(coaches);
+    setCoachesFiltrados(coaches);
   },[coaches])
+
+  function filtrar(event) {
+    console.log(event.target.value);
+    if(event.target.value !== ''){
+      setCoachesFiltrados(coaches.filter(coach => coach.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || coach.apellidos.toLowerCase().includes(event.target.value.toLowerCase()) || coach.email.toLowerCase().includes(event.target.value.toLowerCase())));
+  } else {
+    setCoachesFiltrados(coaches);
+  }
+  }
 
   return (
     <Box component={"div"}>
@@ -102,13 +112,14 @@ async function deleter(id){
             justifyContent={"space-between"}
             alignItems={"center"}>
             <TextFieldContactar
-              id="busquedaUsuario"
-              label="Buscar Usuario"
+              id="busquedaCoach"
+              label="Buscar Coach"
+              onChange={filtrar}
               type={"text"}
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {coaches.length>0?<UsuarioTabla deleter={deleter} update={update} rows={coaches}/>:null}
+          {coaches.length>0?<UsuarioTabla deleter={deleter} update={update} rows={coachesFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

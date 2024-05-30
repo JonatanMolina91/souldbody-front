@@ -2,9 +2,7 @@ import {  Card, CardHeader, CardMedia, Dialog, DialogTitle } from '@mui/material
 import React from 'react';
 
 
-const DialogCustom = ({openDailog, setOpenDailog, url }) => {
-    console.log(url);
-  
+const DialogCustom = ({openDailog, setOpenDailog, url }) => { 
   return (
     <Dialog
     open={openDailog}

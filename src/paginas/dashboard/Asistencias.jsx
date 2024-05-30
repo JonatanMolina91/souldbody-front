@@ -6,10 +6,8 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import DateCustom from '../../componentes/DateCustom';
 import claseServices from '../../services/claseServices';
 import clientesServices from '../../services/clientesServices';
-
-
-import dayjs from 'dayjs';
 import { useUser } from '../../context/userProvider';
+import dayjs from 'dayjs';
 
 const Asistencias = () => {
 
@@ -25,9 +23,10 @@ const Asistencias = () => {
   const {user} = useUser();
 
 
+
   useEffect(() => {
     (async()=>{
-      setClases(await showClase("2024-05-29"));
+      setClases(await showClase(dayjs().format('YYYY-MM-DD')));
       if(user.rol==="admin")setClientes(await getClientes());
     })();
   }, []);

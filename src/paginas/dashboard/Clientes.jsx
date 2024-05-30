@@ -13,6 +13,7 @@ const Clientes = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [clientes, setClientes] = useState([]);
+  const [clientesFiltrados, setClientesFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
   const { getClientes, postCliente, putCliente, deleteCliente} = clientesServices;
@@ -49,13 +50,23 @@ async function deleter(id){
   setClientes(clientes.filter(cliente => cliente.id !== id));
 }
 
+function filtrar(event) {
+  console.log(event.target.value);
+  if(event.target.value !== ''){
+    setClientesFiltrados(clientes.filter(cliente => cliente.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || cliente.apellidos.toLowerCase().includes(event.target.value.toLowerCase()) || cliente.email.toLowerCase().includes(event.target.value.toLowerCase())));
+} else {
+  setClientesFiltrados(clientes);
+}
+}
+
+
 
   useEffect(()=>{
     (async() => setClientes(await getClientes()))();
   },[])
 
   useEffect(()=>{
-    console.log(clientes);
+    setClientesFiltrados(clientes);
   },[clientes])
 
   return (
@@ -104,10 +115,10 @@ async function deleter(id){
               id="busquedaUsuario"
               label="Buscar Usuario"
               type={"text"}
-              width={300} />
+              width={300} onChange={filtrar} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {clientes.length>0?<UsuarioTabla deleter={deleter} update={update} rows={clientes}/>:null}
+          {clientes.length>0?<UsuarioTabla deleter={deleter} update={update} rows={clientesFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

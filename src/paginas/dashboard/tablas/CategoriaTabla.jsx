@@ -21,8 +21,8 @@ const UsuarioTabla = ({rows, update, deleter}) => {
     const CABECERA = [
       'ID',
       'Nombre',
-      'Imagen',
       'Descripción',
+      'Imagen',
     ]
 
     return (

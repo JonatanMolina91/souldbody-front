@@ -13,6 +13,7 @@ const Categoria = () => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [categorias, setCategorias] = useState([]);
+  const [categoriasFiltrados, setCategoriasFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:0, nombre: '', imagen:'', descripcion: ''});
   const {getCategorias, putCategoria, postCategoria, deleteCategoria} = categoriaService;
@@ -23,18 +24,20 @@ const Categoria = () => {
 
   async function update(id, data){
     console.log("update");
-    console.log(await putCategoria(id, data));
-    setCategorias(categorias.map(categoria => categoria.id === id ? data : categoria));
+    let respuesta = await putCategoria(id, data);
+    let copia = {...data};
+    copia.imagen = respuesta.imagen;
+    let copiaCategoria = categorias.map(categoria => categoria.id === id? copia: categoria);
+    setCategorias(copiaCategoria);
   }
   
   async function create(data){
     setRowDialog({id:0, nombre: '', imagen:'', descripcion: ''});
-    console.log(data);
     let response = await postCategoria(data);
-    console.log(response.id);
     data.id = response.id;
-    console.log(data);
-    setCategorias([...categorias, data]);
+    let copia = {...data};
+    copia.imagen = response.imagen;
+    setCategorias([...categorias, copia]);
   }
   
   async function deleter(id){
@@ -50,8 +53,16 @@ const Categoria = () => {
   },[])
 
   useEffect(()=>{
-    console.log(categorias);
+    setCategoriasFiltrados(categorias);
   },[categorias])
+
+  function filtrar(event){
+    if(event.target.value !== ''){
+      setCategoriasFiltrados(categorias.filter(categoria => categoria.nombre.toLowerCase().includes(event.target.value.toLowerCase())));
+    } else {
+      setCategoriasFiltrados(categorias);
+    }
+  }
 
   return (
     <Box component={"div"}>
@@ -96,13 +107,14 @@ const Categoria = () => {
             justifyContent={"space-between"}
             alignItems={"center"}>
             <TextFieldContactar
-              id="busquedaUsuario"
-              label="Buscar Usuario"
+              id="busquedaCategoria"
+              label="Buscar Categoria"
+              onChange={filtrar}
               type={"text"}
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {categorias.length>0?<CategoriaTabla deleter={deleter} update={update} rows={categorias}/>:null}
+          {categorias.length>0?<CategoriaTabla deleter={deleter} update={update} rows={categoriasFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

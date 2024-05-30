@@ -38,6 +38,7 @@ const HorarioDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
     if (funciones.update !== undefined) {
       funciones.update(actual.id, actual);
     }  
+    setOpenDialog(false);
   }
 
   return (
@@ -76,7 +77,7 @@ const HorarioDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
         display={"flex"}
         justifyContent={"space-around"}>
         <BotonCustom onClick={Guardar} label="Guardar" />
-        {funciones.update !== undefined ? <BotonCustom onClick={() => deleter(row.id)} label="Eliminar" /> : null}
+        {funciones.update !== undefined ? <BotonCustom onClick={() => {deleter(row.id); setOpenDialog(false);}} label="Eliminar" /> : null}
         <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
       </Box>
     </Dialog>

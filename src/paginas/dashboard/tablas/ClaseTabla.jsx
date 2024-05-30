@@ -44,7 +44,7 @@ const UsuarioTabla = ({rows, update, deleter}) => {
                   <TableCell>{row.nombre}</TableCell>
                   <TableCell>{row.descripcion}</TableCell>
                   <TableCell>{row.video}</TableCell>
-                  <TableCell>{row.couch}</TableCell>
+                  <TableCell>{row.coach}</TableCell>
                   <TableCell>{row.fecha}</TableCell>
                   <TableCell>{row.inicio}</TableCell>
                   <TableCell>{row.fin}</TableCell>

@@ -10,13 +10,26 @@ async function getProductos() {
 }
 
 async function putProducto(id, producto) {
-  console.log(URL+'/'+id);
-  let datos = await axios.put(URL+'/'+id, JSON.stringify(producto), {headers:{'Content-Type': 'application/json'}});
+  let enviar = new FormData();
+  enviar.append('nombre', producto.nombre);
+  enviar.append('imagen', producto.imagen);
+  enviar.append('descripcion', producto.descripcion);
+  enviar.append('precio', producto.precio);
+  enviar.append('imagen', producto.imagen);
+  enviar.append('category_id', producto.caregoria.id);
+  let datos = await axios.post(URL+'/'+id, enviar);
   return datos.data;
 }
 
 async function postProducto(producto) {
-  let datos = await axios.post(URL, JSON.stringify(producto), {headers:{'Content-Type': 'application/json'}});
+  let enviar = new FormData();
+  enviar.append('nombre', producto.nombre);
+  enviar.append('imagen', producto.imagen);
+  enviar.append('descripcion', producto.descripcion);
+  enviar.append('precio', producto.precio);
+  enviar.append('imagen', producto.imagen);
+  enviar.append('category_id', producto.categoria.id);
+  let datos = await axios.post(URL, enviar);
   return datos.data;
 }
 

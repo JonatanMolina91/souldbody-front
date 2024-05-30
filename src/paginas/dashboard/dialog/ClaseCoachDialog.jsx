@@ -20,6 +20,7 @@ const [huecos, setHuecos] = useState(0);
   
   async function handleSave() {
     guardar({schedule_id: schedule_id, training_id: clase.id, huecos: huecos});
+    setOpenDialog(false);
   }
 
   return (

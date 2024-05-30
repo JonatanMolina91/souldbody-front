@@ -4,9 +4,7 @@ import Categoria from '../../paginas/dashboard/Categoria';
 import Coaches from '../../paginas/dashboard/Coaches';
 import ProductosEdit from '../../paginas/dashboard/Productos';
 import ClasesEdit from '../../paginas/dashboard/Clases';
-import Horarios from '../../paginas/dashboard/Horarios';
 import Asistencias from '../../paginas/dashboard/Asistencias';
-import { useUser } from '../../context/userProvider';
 
 const UseAdmin = (user) => {
     console.log(user);
