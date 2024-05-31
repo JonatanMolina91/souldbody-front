@@ -36,8 +36,8 @@ const MenuDashboard = ({openMenu}) => {
       <Collapse  in={openMenu} orientation='horizontal'>
       <Paper elevation={3}  >
          <List>
-          <ListItem sx={{display: "flex", flexDirection: "column", height: "50vh"}}>
-            {text().map((tex)=><ListItemButton><Typography to={"/dashboard/"+tex} sx={{textDecoration: "none", color:"black"}} component={Link} variant='h6'>{tex.toUpperCase()}</Typography></ListItemButton>)}
+          <ListItem sx={{display: "flex", flexDirection: "column", }}>
+            {text().map((tex)=><ListItemButton sx={{flex: 0}}><Typography to={"/dashboard/"+tex} sx={{textDecoration: "none", color:"black"}} component={Link} variant='h6'>{tex.toUpperCase()}</Typography></ListItemButton>)}
           </ListItem>
          </List>
          </Paper>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Box, AppBar, Typography, IconButton, Toolbar, Menu, MenuItem, Avatar } from '@mui/material';
+import { Button, Box, AppBar, Typography, IconButton, Toolbar, Menu, MenuItem, Avatar, Tooltip } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import { medidasBarraMenu } from './medidasBarraMenu';
@@ -119,11 +119,13 @@ const BarraMenu = () => {
             </Box>
           </Menu>
         </Box>
+        <Tooltip title={user.nombre}>
         <Avatar
         sx={{cursor: "pointer"}}
           onClick={handleOpenUserMenu}
           src={user.foto === ""?"/broken-image.jpg":"http://127.0.0.1:8000/"+user.foto}
         />
+        </Tooltip>
         <Menu
           sx={{ mt: '45px' }}
           id="menu-appbar"

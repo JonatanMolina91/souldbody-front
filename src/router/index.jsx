@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import Invitado from "./routes/Invitado";
 import UseInvitado from "./routes/useInvitado";
-import UseAdmin from "./routes/useAdmin";
+import UseLogin from "./routes/useLogin";
 import { useEffect } from "react";
 import { useUser } from "../context/userProvider";
 
@@ -21,7 +21,7 @@ import { useUser } from "../context/userProvider";
     
     let router = createBrowserRouter([
       { path: '/', element: <Invitado/> , children: UseInvitado()}, 
-      { path: '/dashboard', element: <Invitado/>,  children: UseAdmin(user)},
+      { path: '/dashboard', element: <Invitado/>,  children: UseLogin(user)},
       { path: '*', element: <Navigate to="/" /> },
     ]);
     

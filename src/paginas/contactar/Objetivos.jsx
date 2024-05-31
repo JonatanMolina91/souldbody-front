@@ -2,15 +2,15 @@ import {FormGroup, Typography} from '@mui/material';
 import React from 'react';
 import CheckBoxContacto from './componentes/CheckBoxContacto';
 
-const Objetivos = () => {
+const Objetivos = (formik) => {
   return (
-    <FormGroup>
+    <FormGroup  sx={{marginBottom: 5}}>
       <Typography variant="h6">¿Cual es tus objetivos?</Typography>
-      <CheckBoxContacto label="Perder Grasas" />
-      <CheckBoxContacto label="Conseguir musculatura" />
-      <CheckBoxContacto label="Conseguir elasticidad" />
-      <CheckBoxContacto label="Preparación para un puesto de trabajo" />
-      <CheckBoxContacto label="Rehabilitación" />
+      <CheckBoxContacto id="grasa" formik={formik}  label="Perder Grasas" />
+      <CheckBoxContacto id="musculatura" formik={formik} label="Conseguir musculatura" />
+      <CheckBoxContacto id="elasticidad" formik={formik} label="Conseguir elasticidad" />
+      <CheckBoxContacto id="trabajo" formik={formik} label="Preparación para un puesto de trabajo" />
+      <CheckBoxContacto id="rehabilitacion" formik={formik} label="Rehabilitación" />
     </FormGroup>
   );
 };

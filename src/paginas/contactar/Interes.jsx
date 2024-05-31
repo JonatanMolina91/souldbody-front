@@ -2,14 +2,14 @@ import {FormGroup, Typography} from '@mui/material';
 import React from 'react';
 import CheckBoxContacto from './componentes/CheckBoxContacto';
 
-const Interes = () => {
+const Interes = (formik) => {
   return (
-    <FormGroup>
-      <Typography variant="h6">¿Que te interesa?</Typography>
-      <CheckBoxContacto label="Clase Bodyten" />
-      <CheckBoxContacto label="Clase Edurece" />
-      <CheckBoxContacto label="Clase SouldFit" />
-      <CheckBoxContacto label="Por libre" />
+    <FormGroup sx={{marginBottom: 5}}>
+      <Typography  variant="h6">¿Que te interesa?</Typography>
+      <CheckBoxContacto id="bodyTen" formik={formik} label="Clase Bodyten" />
+      <CheckBoxContacto id="edurece" formik={formik}  label="Clase Edurece" />
+      <CheckBoxContacto id="souldFit" formik={formik}  label="Clase SouldFit" />
+      <CheckBoxContacto id="libre" formik={formik}  label="Por libre" />
     </FormGroup>
   );
 };

@@ -199,7 +199,7 @@ const Asistencias = () => {
             padding={1}>
             {user.rol==="customer" && !clase.clientes.some((cliente) => +user.id === +cliente.user_id) && clase.huecos !== clase.clientes.length?<BotonCustom onClick={()=>apuntarse(clase)} label={"Apuntarse"} />:null}
             {user.rol==="customer" && clase.clientes.some((cliente) => +user.id === +cliente.user_id) && clase.huecos?<BotonCustom label="Desapuntarse" onClick={() => Desapuntarse(clase)} />:null}
-            <Box>
+           {user.rol==="admin"?<Box>
               <BotonCustom onClick={()=>apuntarseAdmin(clase)} label="Apuntar"/>
               <Autocomplete
           disablePortal
@@ -216,7 +216,7 @@ const Asistencias = () => {
           renderInput={(params) => <TextField {...params} label="Clientes" />}
         />
 
-            </Box>
+            </Box>:null}
             </Box>
             </Paper>)
           })  

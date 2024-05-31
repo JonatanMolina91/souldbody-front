@@ -14,6 +14,11 @@ async function showClase(fecha) {
   return datos.data;
 }
 
+async function getVista() {
+  let datos = await axios.get(URL+'/vista');
+  return datos.data;
+}
+
 async function putClase(id, clase) {
   console.log(URL+'/'+id);
   let datos = await axios.put(URL+'/'+id, JSON.stringify(clase), {headers:{'Content-Type': 'application/json'}});
@@ -44,4 +49,4 @@ async function postDesapuntarse(datos) {
 
 
 
-export default { getClase, putClase,  postClase, deleteClase, showClase, postApuntarse, postDesapuntarse };
+export default { getClase, putClase,  postClase, deleteClase, showClase, postApuntarse, postDesapuntarse, getVista };

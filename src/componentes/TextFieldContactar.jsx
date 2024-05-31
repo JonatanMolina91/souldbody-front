@@ -14,6 +14,7 @@ const TextFieldContactar = ({id, label, type, width, value, onChange}) => {
         <TextField
         id={id}
         defaultValue={value}
+        sx={{width: width}}
         label={label} 
         color='myCustomColor'
         variant='outlined'

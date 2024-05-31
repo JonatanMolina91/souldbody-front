@@ -13,7 +13,7 @@ const Clase = () => {
        flexDirection={{xs: 'column', sm: 'column', md: 'row'}}
        >
         <Box  height={{xs:"1000px", sm:"1000px", md:"500px", lg:"600px",  xl: "800px"}}  width={{xs: '100%', sm: '100%', md: '50%'}}component='div'>
-        <iframe width={"100%"} height={"100%"} src="https://www.youtube.com/embed/c07OkDyphyE" title="Warcraft Cronicas - Historia Completa de World of Warcraft" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width={"100%"} height={"100%"} src="https://www.youtube.com/embed/NOz-k29LcdI" title="hola"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  ></iframe>
         </Box>
        <Box padding={"3%"}  width={{xs: '100%', sm: '100%', md: '50%'}} component='div'>
         <Typography textAlign="center" color="#AA0000" variant='h4'>Warcraft Cronicas - Historia Completa de World of Warcraft</Typography>

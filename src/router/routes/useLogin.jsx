@@ -6,7 +6,7 @@ import ProductosEdit from '../../paginas/dashboard/Productos';
 import ClasesEdit from '../../paginas/dashboard/Clases';
 import Asistencias from '../../paginas/dashboard/Asistencias';
 
-const UseAdmin = (user) => {
+const UseLogin = (user) => {
     console.log(user);
     switch(user.rol){
       case "admin":
@@ -36,4 +36,4 @@ const UseAdmin = (user) => {
     
 };
 
-export default UseAdmin;
+export default UseLogin;
