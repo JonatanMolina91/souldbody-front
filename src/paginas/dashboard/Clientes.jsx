@@ -8,6 +8,9 @@ import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import  clientesServices  from '../../services/clientesServices';
 import UsuarioDialog from './dialog/UsuarioDialog';
 import UsuarioTabla from './tablas/UsuarioTabla';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 
 const Clientes = () => {
 
@@ -15,33 +18,66 @@ const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
+  const [rowDialog, setRowDialog] = useState({});
   const { getClientes, postCliente, putCliente, deleteCliente} = clientesServices;
   const {funciones, setFunciones} = useFunciones();
+
+  const formik = useFormik({
+    initialValues: {
+      id:  -1,
+      nombre: '',
+      apellidos:  '',
+      email: '',
+      password: '',
+      repeatPassword:  '',
+    },
+    onSubmit: values => {
+      console.log(values);
+     values.id === -1? create(values): update(values.id, values);
+    },
+    validationSchema: Yup.object({
+      nombre: Yup.string().required('El nombre es obligatorio'),
+      email: Yup.string().email('El email no es válido').required('El email es obligatorio'),
+    })
+  });
+
+
+
+  
 
   
 
 async function update(id, data){
-  setRowDialog({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
+  if(data.password === data.repeatPassword){
   console.log("update");
   let respuesta = await putCliente(id, data);
   let copia = {...data};
   copia.foto = respuesta.foto;
+  copia.password = '';
+  copia.repeatPassword = '';
   console.log(copia);
   let copiaclientes = clientes.map(cliente => cliente.id === id? copia: cliente);
   setClientes(copiaclientes);
+  } else {
+    alert("Las contraseñas no coinciden");
+  }
 }
 
 async function create(data){
-  setRowDialog({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
   console.log(data);
+  if(data.password === data.repeatPassword){
   let response = await postCliente(data);
   console.log(response.id);
   data.id = response.id;
   console.log(data);
   let copia = {...data};
   copia.foto = response.foto;
+  copia.password = '';
+  copia.repeatPassword = '';
   setClientes([...clientes, copia]);
+  }else {
+    alert("Las contraseñas no coinciden");
+  }
 }
 
 async function deleter(id){
@@ -71,7 +107,7 @@ function filtrar(event) {
 
   return (
     <Box component={"div"}>
-      <UsuarioDialog  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <UsuarioDialog   formik={formik} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -115,10 +151,11 @@ function filtrar(event) {
               id="busquedaUsuario"
               label="Buscar Usuario"
               type={"text"}
-              width={300} onChange={filtrar} />
-            <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
+              width={300} 
+              onChange={filtrar} />
+            <BotonCustom onClick={()=>{ setFunciones({create}); formik.setValues({});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {clientes.length>0?<UsuarioTabla deleter={deleter} update={update} rows={clientesFiltrados}/>:null}
+          {clientes.length>0?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={clientesFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

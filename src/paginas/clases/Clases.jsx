@@ -12,14 +12,16 @@ const Clases = () => {
         (async()=>setClases(await getVista()))();
     }, []);
 
-    
+    useEffect(() => {
+        console.log(clases);
+    }, [clases]);
 
     return (
        <Box component='div'
        >
-              {clases.map(clase => (
+              {clases.length !== 0?clases.map(clase => (
                 <Clase key={clase.id} clase={clase}/>
-              ))}
+              )):null}
        </Box>
     );
 };

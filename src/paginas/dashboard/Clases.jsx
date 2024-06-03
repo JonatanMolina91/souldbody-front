@@ -22,7 +22,7 @@ const Productos = () => {
   
 
 async function update(id, data){
-  console.log("update");
+  data.video = data.video.split("=")[1];
   console.log(await putClase(id, data));
   delete data.coach_id;
   setClases(clases.map(clase => clase.id === id ? data : clase));
@@ -30,12 +30,12 @@ async function update(id, data){
 
 async function create(data){
   setRowDialog({id:0, nombre: '', descripcion: '',  video:'',  coach: ''});
-  console.log("create");
-  let response = await postClase(data);
+  data.video = data.video.split("=")[1];
+   let response = await postClase(data);
   console.log(response.id);
   data.id = response.id;
   delete data.coach_id;
-  setClases([...clases, data]);
+  setClases([...clases, data]); 
 }
 
 async function deleter(id){

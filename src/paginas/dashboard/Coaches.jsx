@@ -9,6 +9,8 @@ import  coachService  from '../../services/coachServices';
 import UsuarioDialog from './dialog/UsuarioDialog';
 import UsuarioTabla from './tablas/UsuarioTabla';
 import { useUser } from '../../context/userProvider';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Coaches = () => {
 
@@ -16,33 +18,63 @@ const Coaches = () => {
   const [coaches, setCoaches] = useState([]);
   const [coachesFiltrados, setCoachesFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
+  const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', password: '', repeatPassword: '', email: '', foto: ''});
   const { getCoaches, postCoach, putCoach, deleteCoach } = coachService;
   const {user} = useUser();
   const {funciones, setFunciones} = useFunciones();
 
+  const formik = useFormik({
+    initialValues: {
+      id:  -1,
+      nombre: '',
+      apellidos:  '',
+      email: '',
+      password: '',
+      repeatPassword:  '',
+    },
+    onSubmit: values => {
+      console.log(values);
+     values.id === -1? create(values): update(values.id, values);
+    },
+    validationSchema: Yup.object({
+      nombre: Yup.string().required('El nombre es obligatorio'),
+      email: Yup.string().email('El email no es válido').required('El email es obligatorio'),
+    })
+  });
+
   
 
 async function update(id, data){
-  console.log("update");
+  setRowDialog({id:-1, nombre: '', apellidos:'', password: '', repeatPassword: '', email: '', foto: ''});
+  if(data.password === data.repeatPassword){
   let respuesta = await putCoach(id, data);
   let copia = {...data};
   copia.foto = respuesta.foto;
+  copia.password = '';
+  copia.repeatPassword = '';
   console.log(copia);
   let copiacoaches = coaches.map(coach => coach.id === id? copia: coach);
   setCoaches(copiacoaches);
+  } else {
+    alert("Las contraseñas no coinciden");
+  }
 }
 
 async function create(data){
-  setRowDialog({id:-1, nombre: '', apellidos:'', email: '', foto: ''});
   console.log(data);
+  if(data.password === data.repeatPassword){
   let response = await postCoach(data);
   console.log(response.id);
   data.id = response.id;
   console.log(data);
   let copia = {...data};
+  copia.password = '';
+  copia.repeatPassword = '';
   copia.foto = response.foto;
   setCoaches([...coaches, copia]);
+  } else {
+    alert("Las contraseñas no coinciden");
+  }
 }
 
 async function deleter(id){
@@ -71,7 +103,7 @@ async function deleter(id){
 
   return (
     <Box component={"div"}>
-      <UsuarioDialog setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <UsuarioDialog  formik={formik} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}

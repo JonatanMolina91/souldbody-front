@@ -1,11 +1,11 @@
 import {  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFunciones } from '../../../context/dialogProvider';
 import UsuarioDialog from '../dialog/UsuarioDialog';
 import BotonCustom from '../../../componentes/BotonCustom';
 import FotoDialog from '../dialog/FotoDialog';
 
-const UsuarioTabla = ({rows, update, deleter}) => {
+const UsuarioTabla = ({rows, update, deleter, formik}) => {
   
     const [openDialog, setOpenDialog] = useState(false);
     const [openFoto, setOpenFoto] = useState(false);
@@ -26,11 +26,18 @@ const UsuarioTabla = ({rows, update, deleter}) => {
       'Foto'
     ]
 
+    function handleRow(row) {
+      formik.setValues(row);
+      setOpenDialog(true);
+    }
+
+
+
     return (
       <Paper sx={{width: "90%", height:"100%"}} elevation={3}>
         <TableContainer >
+        <UsuarioDialog deleter={deleter}  formik={formik} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
           <FotoDialog openDailog={openFoto} setOpenDailog={setOpenFoto} url={rowDialog.foto}/>
-          <UsuarioDialog deleter={deleter} setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
         <Table  aria-label="simple table">
           <TableHead>
             <TableRow >
@@ -39,11 +46,11 @@ const UsuarioTabla = ({rows, update, deleter}) => {
           </TableHead>
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-              <TableRow   sx={{"&:hover":{backgroundColor:"#A6EEA1"}, cursor:"pointer"}} >
-                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}>{row.id}</TableCell>
-                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}>{row.nombre}</TableCell>
-                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}>{row.apellidos}</TableCell>
-                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}}>{row.email}</TableCell>
+              <TableRow   sx={{"&:hover":{backgroundColor:"#A6EEA1"}, cursor:"pointer"}} >                         
+                 <TableCell onClick={()=> handleRow(row)}>{row.id}</TableCell>
+                 <TableCell onClick={()=> handleRow(row)}>{row.nombre}</TableCell>
+                 <TableCell onClick={()=> handleRow(row)}>{row.apellidos}</TableCell>
+                 <TableCell onClick={()=> handleRow(row)}>{row.email}</TableCell>
                  <TableCell><BotonCustom onClick={()=>{setRowDialog(row); setOpenFoto(true)}} label={"Ver"}/></TableCell>
               </TableRow>
             ))}

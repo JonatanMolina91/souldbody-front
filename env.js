@@ -1,7 +1,7 @@
  
  
  export default function getURL() {
-    return 'http://127.0.0.1:8000/api/v1/';
+    return 'https://souldbody-337c4235c4cf.herokuapp.com/api/v1/';
  }
  
  

@@ -5,11 +5,12 @@ import BotonCustom from '../../componentes/BotonCustom';
 import loginServices from '../../services/loginServices';
 import { useUser } from '../../context/userProvider';
 import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Login = () => {
 
-  const [user, setUser] = useState('');
-  const [password, setPassword] = useState('');
+  
   const {login} = loginServices;
   const {setLogin} = useUser();
   const navigate = useNavigate();
@@ -40,11 +41,8 @@ const Login = () => {
   }
   
 
-async function send(event) {
-  event.preventDefault();
-  
-  let datos = await login({email:user, password:password});
-  
+async function send(values) {
+  let datos = await login(values); 
   if(datos.status === 200){
     setCookie("token", datos.data.token);
     setCookie("rol", datos.data.rol);
@@ -56,8 +54,21 @@ async function send(event) {
     setLogin();
     navigate('/dashboard');
   } 
-  
 }
+
+const formik = useFormik({
+  initialValues: {
+    email: '',
+    password: '',
+  },
+  onSubmit: values => {
+    send(values);
+  },
+  validationSchema: Yup.object({
+    email: Yup.string().email("Email no válido").required("Email requerido"),
+    password: Yup.string().required("Contraseña requerida"),
+  })
+});
 
 
   return (
@@ -71,7 +82,7 @@ async function send(event) {
     <Paper sx={{ padding:3 }} elevation={3}>
       <Box component='form'
       display='flex'
-      onSubmit={send}
+      onSubmit={formik.handleSubmit}
       flexDirection='column'
       alignItems='center'
       justifyContent='center'
@@ -79,8 +90,21 @@ async function send(event) {
       height='90%'
       padding={1}
       >
-        <TextFieldContactar value={user} onChange={(event)=>setUser(event.target.value)} id='user' label='Email' type='email' />
-        <TextFieldContactar value={password} onChange={(event)=>setPassword(event.target.value)} id='password' label='Contraseña' type='password' />
+        <TextFieldContactar 
+        value={formik.values.email} 
+        label={'Email'}
+        id='email'
+        type={'email'}
+        onChange={formik.handleChange}
+        error={formik.errors.email}
+        />
+        <TextFieldContactar 
+        value={formik.values.password} 
+        label={'Contraseña'}
+        id='password'
+        type={'password'}
+        onChange={formik.handleChange}
+        error={formik.errors.password}/>
         <BotonCustom type="submit" label='Iniciar Sesión' />
       </Box>
 

@@ -17,6 +17,7 @@ async function postCliente(data) {
   enviar.append('apellidos', data.apellidos);
   enviar.append('email', data.email);
   enviar.append('foto', data.foto);
+  enviar.append('password', data.password);
   let response = await axios.post(URL, enviar);
   return response.data;
 }
@@ -28,6 +29,7 @@ async function putCliente(id, data) {
   actualizar.append('apellidos', data.apellidos);
   actualizar.append('email', data.email);
   actualizar.append('foto', data.foto);
+  actualizar.append('password', data.password);
   let response = await axios.post(URL+"/actualizar/"+id, actualizar);
   return response.data;
 }

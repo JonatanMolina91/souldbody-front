@@ -15,16 +15,19 @@ const InformacionPersonal = ({formik}) => {
           <Typography variant="h6">Información personal</Typography>
         <TextFieldContactar
           id="nombre"
+          error={formik.errors.nombre}
           onChange={formik.handleChange}
           width={300}
           label="Nombre" />
         <TextFieldContactar
           id="apellidos"
+          error={formik.errors.apellidos}
           onChange={formik.handleChange}
           width={300}
           label="Apellidos" />
         <TextFieldContactar
           id="email"
+          error={formik.errors.email}
           onChange={formik.handleChange}
           width={300}
           label="Email" />
