@@ -8,7 +8,7 @@ const CardProducto = ({ producto }) => {
          <CardActionArea>
            <CardMedia
              component="img"
-             image={"http://127.0.0.1:8000/"+producto.imagen}
+             image={"https://souldbody-337c4235c4cf.herokuapp.com/"+producto.imagen}
              alt={"producto "+producto.nombre}
            />
            <CardContent

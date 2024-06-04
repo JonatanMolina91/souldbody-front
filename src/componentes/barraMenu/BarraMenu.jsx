@@ -123,7 +123,7 @@ const BarraMenu = () => {
         <Avatar
         sx={{cursor: "pointer"}}
           onClick={handleOpenUserMenu}
-          src={user.foto === ""?"/broken-image.jpg":"http://127.0.0.1:8000/"+user.foto}
+          src={user.foto === ""?"/broken-image.jpg":"https://souldbody-337c4235c4cf.herokuapp.com/"+user.foto}
         />
         </Tooltip>
         <Menu

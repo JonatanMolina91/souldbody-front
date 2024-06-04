@@ -15,7 +15,7 @@ export default function CardFamilia({categoria}) {
         <Box sx={{textDecoration: "none", color:"black"}} to={"/productos/"+categoria.id} component={Link}>
         <CardMedia
           component="img"
-          image={"http://127.0.0.1:8000/"+categoria.imagen}
+          image={"https://souldbody-337c4235c4cf.herokuapp.com/"+categoria.imagen}
           alt={"foto categoria "+ categoria.nombre}
         />
         <CardContent

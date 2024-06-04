@@ -11,7 +11,7 @@ const DialogCustom = ({openDailog, setOpenDailog, url }) => {
             <CardMedia
         component="img"
         height="194"
-        image={"http://127.0.0.1:8000/"+url}
+        image={"https://souldbody-337c4235c4cf.herokuapp.com/"+url}
         alt="Foto avatar"
       />
         </Card>
