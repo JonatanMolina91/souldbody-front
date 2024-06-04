@@ -3,7 +3,7 @@ import axios from 'axios';
 import {useUser} from '../context/userProvider';
 import '../utils/http';
 
-const URL = URL_API() + 'coaches';
+const URL = URL_API() + 'api/v1/coaches';
 
 
 

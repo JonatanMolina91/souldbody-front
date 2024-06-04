@@ -7,6 +7,7 @@ import { useUser } from '../../context/userProvider';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import AlertCustom from '../../componentes/AlertCustom';
 
 const Login = () => {
 
@@ -14,6 +15,7 @@ const Login = () => {
   const {login} = loginServices;
   const {setLogin} = useUser();
   const navigate = useNavigate();
+  const [alert, setAlert] = useState({message: '', type: '', show: false});
 
   function setCookie(name, value, options = {}) {
 
@@ -43,6 +45,7 @@ const Login = () => {
 
 async function send(values) {
   let datos = await login(values); 
+  console.log(datos);
   if(datos.status === 200){
     setCookie("token", datos.data.token);
     setCookie("rol", datos.data.rol);
@@ -53,7 +56,17 @@ async function send(values) {
     setCookie("foto", datos.data.user.foto);
     setLogin();
     navigate('/dashboard');
-  } 
+  } else{
+  if(datos.status === 401){
+    setAlert({message: datos.data.message, type: "error", show: true});
+  }
+  if(datos.status === 500){
+    setAlert({message: datos.data.message, type: "error", show: true});
+  }
+  setTimeout(() => {
+    setAlert({message: '', type: '', show: false});
+  }, 3000);
+}
 }
 
 const formik = useFormik({
@@ -107,8 +120,8 @@ const formik = useFormik({
         error={formik.errors.password}/>
         <BotonCustom type="submit" label='Iniciar Sesión' />
       </Box>
-
     </Paper>
+    {alert.show? <AlertCustom message={alert.message} type={alert.type}></AlertCustom>:null}
     </Box>
   );
 };

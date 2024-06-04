@@ -1,8 +1,10 @@
 import {  Card, CardHeader, CardMedia, Dialog, DialogTitle } from '@mui/material';
 import React from 'react';
+import getURL from '../../../../env';
 
 
 const DialogCustom = ({openDailog, setOpenDailog, url }) => { 
+  const baseURL = getURL();
   return (
     <Dialog
     open={openDailog}
@@ -11,7 +13,7 @@ const DialogCustom = ({openDailog, setOpenDailog, url }) => {
             <CardMedia
         component="img"
         height="194"
-        image={"https://souldbody-337c4235c4cf.herokuapp.com/"+url}
+        image={baseURL+url}
         alt="Foto avatar"
       />
         </Card>

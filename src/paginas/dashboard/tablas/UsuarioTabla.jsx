@@ -1,16 +1,14 @@
 import {  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useFunciones } from '../../../context/dialogProvider';
 import UsuarioDialog from '../dialog/UsuarioDialog';
 import BotonCustom from '../../../componentes/BotonCustom';
 import FotoDialog from '../dialog/FotoDialog';
 
-const UsuarioTabla = ({rows, update, deleter, formik}) => {
+const UsuarioTabla = ({rows, deleter, formik}) => {
   
     const [openDialog, setOpenDialog] = useState(false);
     const [openFoto, setOpenFoto] = useState(false);
     const [rowDialog, setRowDialog] = useState({});
-    const {funciones, setFunciones} = useFunciones();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 

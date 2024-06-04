@@ -11,36 +11,11 @@ const UsuarioDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
 
   const { funciones } = useFunciones();
 
-  useEffect(() => {
-    console.log("creacion del duialogo"); 
-  }, []);
-
-  
-
-
   const handleClose = () => {
-    console.log(row);
     setOpenDialog(false);
   };
 
-  
 
-
-
-
-
-  function Guardar() {
-    console.log(values);
-    if (funciones.create !== undefined) {
-     console.log(values);
-     funciones.create(values);
-   }
-
-   if (funciones.update !== undefined) {
-     funciones.update(values.id, values);
-   }
-   setOpenDialog(false); 
-  }
 
   return (
    formik?.handleSubmit !== undefined?<Dialog
@@ -99,7 +74,7 @@ const UsuarioDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
             type="password"
             width="90%"
           />
-          <input onChange={(e) => formik.setFieldValue(e.target.files[0])} accept='image/*' type='file' />
+          <input onChange={(e) => formik.setFieldValue('foto',e.target.files[0])} accept='image/*' type='file' />
         </Box>
         <Box
           padding={2}

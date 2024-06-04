@@ -8,6 +8,8 @@ import productoServices from '../../services/productoServices';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import ProductoDialog from './dialog/ProductosDialog';
 import ProductoTabla from './tablas/ProductoTabla';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Productos = () => {
 
@@ -15,58 +17,82 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({id:0, nombre: '', imagen:'', descripcion: '', precio: 0, categoria: ''});
-  const { getProductos, putProducto,  postProducto, deleteProducto } = productoServices;
-  const {funciones, setFunciones} = useFunciones();
-
-  
-
-async function update(id, data){
-  let respuesta = await putProducto(id, data);
-  let copia = {...data};
-  copia.imagen = respuesta.imagen;
-  copia.descripcion = data.descripcion.nombre;
-  let copiaProducto = productos.map(producto => producto.id === id? copia: producto);
-  setProductos(copiaProducto);
-}
-
-async function create(data){
-  console.log(data);
-  setRowDialog({id:0, nombre: '', imagen:'', descripcion: '', precio: 0, categoria: null});
-  let response = await postProducto(data);
-  data.id = response.id;
-  let copia = {...data};
-  copia.imagen = response.imagen;
-  copia.categoria = data.categoria.nombre;
-  setProductos([...productos, copia]);
-}
-
-async function deleter(id){
-  console.log("delete");
-  console.log(await deleteProducto(id));
-  setProductos(productos.filter(producto => producto.id !== id));
-}
+  const [rowDialog, setRowDialog] = useState({ id: 0, nombre: '', imagen: '', descripcion: '', precio: 0, categoria: '' });
+  const { getProductos, putProducto, postProducto, deleteProducto } = productoServices;
+  const { funciones, setFunciones } = useFunciones();
 
 
-  useEffect(()=>{
-    (async() => setProductos(await getProductos()))();
-  },[])
 
-  useEffect(()=>{
-    setProductosFiltrados(productos);
-  },[productos])
+  const formik = useFormik({
+    initialValues: {
+      id: -1,
+      nombre: '',
+      imagen: '',
+      descripcion: '',
+      precio: 0,
+      categoria: {id: 0, nombre: ''},
+    },
+    onSubmit: values => {
+      console.log(values);
+      values.id === -1 ? create(values) : update(values.id, values);
+    },
+    validationSchema: Yup.object({
+      nombre: Yup.string().required('El nombre es obligatorio'),
+      descripcion: Yup.string().required('La descripción es obligatoria'),
+      categoria: Yup.object().shape(
+        {
+          id: Yup.number().required('La categoria es obligatoria'), 
+          nombre: Yup.string().required('La categoria es obligatoria')
+        }),
+    })
+  });
 
-  function filtrar(event){
-    if(event.target.value !== ''){
-      setProductosFiltrados(productos.filter(producto => producto.nombre.toLowerCase().includes(event.target.value.toLowerCase())  || producto.categoria.toLowerCase().includes(event.target.value.toLowerCase())));
-  } else {
-    setProductosFiltrados(productos);
+
+  async function update(id, data) {
+    console.log(data);
+    let respuesta = await putProducto(id, data);
+    let copia = { ...data };
+    copia.imagen = respuesta.imagen;
+    copia.categoria = data.categoria;
+    let copiaProducto = productos.map(producto => producto.id === id ? copia : producto);
+    setProductos(copiaProducto);
   }
+
+  async function create(data) {
+    let response = await postProducto(data);
+    data.id = response.id;
+    let copia = { ...data };
+    copia.imagen = response.imagen;
+    copia.categoria = data.categoria;
+    setProductos([...productos, copia]);
+  }
+
+  async function deleter(id) {
+    console.log("delete");
+    console.log(await deleteProducto(id));
+    setProductos(productos.filter(producto => producto.id !== id));
+  }
+
+
+  useEffect(() => {
+    (async () => setProductos(await getProductos()))();
+  }, [])
+
+  useEffect(() => {
+    setProductosFiltrados(productos);
+  }, [productos])
+
+  function filtrar(event) {
+    if (event.target.value !== '') {
+      setProductosFiltrados(productos.filter(producto => producto.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || producto.categoria.toLowerCase().includes(event.target.value.toLowerCase())));
+    } else {
+      setProductosFiltrados(productos);
+    }
   }
 
   return (
     <Box component={"div"}>
-      <ProductoDialog  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <ProductoDialog formik={formik} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog} />
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -76,8 +102,8 @@ async function deleter(id){
           position: "fixed",
         }}>
         <MenuDashboard openMenu={openMenu} />
-        <IconButton  onClick={() => setOpenMenu(!openMenu)} 
-        sx={{marginLeft:1, width: "fit-content", height: "fit-content", backgroundColor:"#001B00", color:"white", '&:hover': {backgroundColor:"#087000"}}}>
+        <IconButton onClick={() => setOpenMenu(!openMenu)}
+          sx={{ marginLeft: 1, width: "fit-content", height: "fit-content", backgroundColor: "#001B00", color: "white", '&:hover': { backgroundColor: "#087000" } }}>
           <MenuOpenIcon />
         </IconButton>
       </Box>
@@ -112,9 +138,9 @@ async function deleter(id){
               onChange={filtrar}
               type={"text"}
               width={300} />
-            <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
+            <BotonCustom onClick={() => {formik.resetForm(); setFunciones({ create }); setOpenDialog(true) }} label={"Crear"} />
           </Box>
-          {productos.length>0?<ProductoTabla deleter={deleter} update={update} rows={productosFiltrados}/>:null}
+          {productos.length > 0 ? <ProductoTabla formik={formik} deleter={deleter} update={update} rows={productosFiltrados} /> : null}
         </Box>
       </Box>
     </Box>

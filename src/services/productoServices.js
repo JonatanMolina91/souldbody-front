@@ -2,7 +2,7 @@ import URL_API from '../../env';
 import axios from 'axios';
 import '../utils/http';
 
-const URL = URL_API() + 'productos';
+const URL = URL_API() + 'api/v1/productos';
 
 async function getProductos() {
   let datos = await axios.get(URL);
@@ -16,7 +16,7 @@ async function putProducto(id, producto) {
   enviar.append('descripcion', producto.descripcion);
   enviar.append('precio', producto.precio);
   enviar.append('imagen', producto.imagen);
-  enviar.append('category_id', producto.caregoria.id);
+  enviar.append('category_id', producto.categoria.id);
   let datos = await axios.post(URL+'/'+id, enviar);
   return datos.data;
 }

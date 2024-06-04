@@ -2,7 +2,7 @@ import URL_API from '../../env';
 import axios from 'axios';
 import '../utils/http';
 
-const URL = URL_API() + 'clases';
+const URL = URL_API() + 'api/v1/clases';
 
 async function getClase() {
   let datos = await axios.get(URL);

@@ -2,20 +2,16 @@ import { Autocomplete, Box, Dialog, DialogTitle, TextField } from '@mui/material
 import React, { useEffect, useState } from 'react';
 import TextFieldContactar from '../../../componentes/TextFieldContactar';
 import BotonCustom from '../../../componentes/BotonCustom';
-import { useFunciones } from '../../../context/dialogProvider';
 import categoriaService from '../../../services/categoriaServices';
 
-const ProductosDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
+const ProductosDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
 
-  const { funciones } = useFunciones();
   const [inputValue, setInputValue] = useState('');
   const { getCategorias } = categoriaService;
-  const [categoria, setCategoria] = useState();
-  const [actual, setActual] = useState({ id: -1, nombre: '', imagen: '', descripcion: '', precio: 0, categoria: null });
+  const [categoria, setCategoria] = useState([]);
 
 
   const handleClose = () => {
-    console.log(row);
     setOpenDialog(false);
   };
 
@@ -25,83 +21,71 @@ const ProductosDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
     })()
   }, [])
 
-  useEffect(() => {
-    if (row?.id)
-      setActual({ ...row });
-  }, [row])
-
-  useEffect(() => {console.log(categoria)}, [categoria])
-
-
-
-  function Guardar() {
-     if (funciones.create !== undefined) {
-      funciones.create(actual);
-    }
-
-    if (funciones.update !== undefined) {
-      funciones.update(actual.id, actual);
-    } 
-    setOpenDialog(false);
-  }
 
   return (
     <Dialog
       open={openDailog}
       onClose={handleClose}>
       <Box
-        padding={2}
-        display="flex"
-        flexDirection="column"
+      component={'form'}
+      onSubmit={formik.handleSubmit}
       >
-        <TextFieldContactar
-          id={'nombre'}
-          label={'Nombre'}
-          value={row?.nombre}
-          onChange={(e) => actual.nombre = e.target.value}
-          type="text"
-          width="90%"
-        />
-        <TextFieldContactar
-          id={'descripcion'}
-          label={'Descripción'}
-          value={row?.descripcion}
-          onChange={(e) => actual.descripcion = e.target.value}
-          type="text"
-          width="90%"
-        />
+        <Box
+          padding={2}
+          display="flex"
+          flexDirection="column"
+        >
+          <TextFieldContactar
+            id={'nombre'}
+            label={'Nombre'}
+            value={formik.values.nombre}
+            error={formik.errors.nombre}
+            onChange={formik.handleChange}
+            type="text"
+            width="90%"
+          />
+          <TextFieldContactar
+            id={'descripcion'}
+            label={'Descripción'}
+            value={formik.values.descripcion}
+            error={formik.errors.descripcion}
+            onChange={formik.handleChange}
+            type="text"
+            width="90%"
+          />
 
-        <TextFieldContactar
-          id={'precio'}
-          label={'Precio'}
-          value={row?.precio}
-          onChange={(e) => actual.precio = e.target.value}
-          type="number"
-          width="90%"
-        />
-        <Autocomplete
-          disablePortal
-          id="categoria"
-          inputValue={inputValue}
-          onInputChange={(event, newInputValue) => {
+          <TextFieldContactar
+            id={'precio'}
+            label={'Precio'}
+            value={formik.values.precio}
+            onChange={formik.handleChange}
+            type="number"
+            width="90%"
+          />
+          <Autocomplete
+            disablePortal
+            id="categoria"
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
               setInputValue(newInputValue);
-          }} 
-          options={categoria}
-          value={actual.categoria}
-          getOptionLabel={(option) => option.nombre}
-          onChange={(e, value) => actual.categoria = value}
-          sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="Categoria" />}
-        />
-        <input onChange={(e)=>actual.imagen=e.target.files[0]} accept='image/*'   type='file'/>
-      </Box>
-      <Box
-        padding={2}
-        display={"flex"}
-        justifyContent={"space-around"}>
-        <BotonCustom onClick={Guardar} label="Guardar" />
-        {funciones.update !== undefined ? <BotonCustom onClick={() => {deleter(row.id); setOpenDialog(false);}} label="Eliminar" /> : null}
-        <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
+            }}
+            options={categoria}
+            value={formik.values.categoria || null}
+            getOptionLabel={(option) => option.nombre}
+            onChange={(e, value) => {formik.setFieldValue('categoria', value)}}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField helperText={formik.errors.categoria} error={formik.errors.categoria ? true : false} {...params} label="Categoria" />}
+          />
+          <input onChange={(e) => formik.setFieldValue('imagen', e.target.files[0])} accept='image/*' type='file' />
+        </Box>
+        <Box
+          padding={2}
+          display={"flex"}
+          justifyContent={"space-around"}>
+          <BotonCustom type={'submit'} label="Guardar" />
+          {formik.id !== -1 ? <BotonCustom onClick={() => { deleter(row.id); setOpenDialog(false); }} label="Eliminar" /> : null}
+          <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
+        </Box>
       </Box>
     </Dialog>
   );

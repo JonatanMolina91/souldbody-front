@@ -2,7 +2,7 @@ import URL_API from '../../env';
 import axios from 'axios';
 import '../utils/http';
 
-const URL = URL_API() + 'categorias';
+const URL = URL_API() + 'api/v1/categorias';
 
 async function getCategorias() {
   let datos = await axios.get(URL);

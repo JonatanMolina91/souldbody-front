@@ -8,6 +8,8 @@ import categoriaService from '../../services/categoriaServices';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import CategoriaDialog from './dialog/CategoriaDialog';
 import CategoriaTabla from './tablas/CategoriaTabla';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';     
 
 const Categoria = () => {
 
@@ -19,11 +21,25 @@ const Categoria = () => {
   const {getCategorias, putCategoria, postCategoria, deleteCategoria} = categoriaService;
   const {funciones, setFunciones} = useFunciones();
 
-  
+  const formik = useFormik({
+    initialValues: {
+      id:  -1,
+      nombre: '',
+      imagen: '',
+      descripcion:  '',
+    },
+    onSubmit: values => {
+      console.log(values);
+     values.id === -1? create(values): update(values.id, values);
+    },
+    validationSchema: Yup.object({
+      nombre: Yup.string().required('El nombre es obligatorio'),
+      descripcion: Yup.string().required('La descripción es obligatoria'),
+    })
+  });
 
 
   async function update(id, data){
-    console.log("update");
     let respuesta = await putCategoria(id, data);
     let copia = {...data};
     copia.imagen = respuesta.imagen;
@@ -32,7 +48,6 @@ const Categoria = () => {
   }
   
   async function create(data){
-    setRowDialog({id:0, nombre: '', imagen:'', descripcion: ''});
     let response = await postCategoria(data);
     data.id = response.id;
     let copia = {...data};
@@ -41,7 +56,6 @@ const Categoria = () => {
   }
   
   async function deleter(id){
-    console.log("delete");
     console.log(await deleteCategoria(id));
     setCategorias(categorias.filter(categoria => categoria.id !== id));
   }
@@ -66,7 +80,7 @@ const Categoria = () => {
 
   return (
     <Box component={"div"}>
-      <CategoriaDialog  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <CategoriaDialog  formik={formik} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -114,7 +128,7 @@ const Categoria = () => {
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {categorias.length>0?<CategoriaTabla deleter={deleter} update={update} rows={categoriasFiltrados}/>:null}
+          {categorias.length>0?<CategoriaTabla formik={formik} deleter={deleter} update={update} rows={categoriasFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

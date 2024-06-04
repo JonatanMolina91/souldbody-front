@@ -5,9 +5,11 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Box, CardActionArea } from '@mui/material';
 import { Link } from 'react-router-dom';
+import getURL from  '../../../../env';
 
 
 export default function CardFamilia({categoria}) {
+  const URL = getURL();
   return (
     <Card
      sx={{ width:'50%', marginBottom: 2}}>
@@ -15,7 +17,7 @@ export default function CardFamilia({categoria}) {
         <Box sx={{textDecoration: "none", color:"black"}} to={"/productos/"+categoria.id} component={Link}>
         <CardMedia
           component="img"
-          image={"https://souldbody-337c4235c4cf.herokuapp.com/"+categoria.imagen}
+          image={URL+categoria.imagen}
           alt={"foto categoria "+ categoria.nombre}
         />
         <CardContent

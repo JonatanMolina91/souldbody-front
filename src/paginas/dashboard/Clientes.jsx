@@ -49,7 +49,6 @@ const Clientes = () => {
 
 async function update(id, data){
   if(data.password === data.repeatPassword){
-  console.log("update");
   let respuesta = await putCliente(id, data);
   let copia = {...data};
   copia.foto = respuesta.foto;
@@ -81,13 +80,11 @@ async function create(data){
 }
 
 async function deleter(id){
-  console.log("delete");
   console.log(await deleteCliente(id));
   setClientes(clientes.filter(cliente => cliente.id !== id));
 }
 
 function filtrar(event) {
-  console.log(event.target.value);
   if(event.target.value !== ''){
     setClientesFiltrados(clientes.filter(cliente => cliente.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || cliente.apellidos.toLowerCase().includes(event.target.value.toLowerCase()) || cliente.email.toLowerCase().includes(event.target.value.toLowerCase())));
 } else {

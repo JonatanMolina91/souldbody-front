@@ -5,8 +5,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { medidasBarraMenu } from './medidasBarraMenu';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/userProvider';
+import getURL from '../../../env';
 
 const BarraMenu = () => {
+  const URL = getURL();
   const pages = ['home', 'productos', 'clases', 'contactar'];
   const { user } = useUser();
   const settings = user.rol === '' ? ['login'] : ['logout', 'dashboard'];
@@ -123,7 +125,7 @@ const BarraMenu = () => {
         <Avatar
         sx={{cursor: "pointer"}}
           onClick={handleOpenUserMenu}
-          src={user.foto === ""?"/broken-image.jpg":"https://souldbody-337c4235c4cf.herokuapp.com/"+user.foto}
+          src={user.foto === ""?"/broken-image.jpg":URL+user.foto}
         />
         </Tooltip>
         <Menu

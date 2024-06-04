@@ -1,15 +1,13 @@
 import {  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { useFunciones } from '../../../context/dialogProvider';
 import CategoriaDialog from '../dialog/CategoriaDialog';
 import BotonCustom from '../../../componentes/BotonCustom';
 import FotoDialog from '../dialog/FotoDialog';
 
-const UsuarioTabla = ({rows, update, deleter}) => {
+const UsuarioTabla = ({rows, deleter, formik}) => {
   
     const [openDialog, setOpenDialog] = useState(false);
     const [rowDialog, setRowDialog] = useState({});
-    const {funciones, setFunciones} = useFunciones();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [openFoto, setOpenFoto] = useState(false);
@@ -25,11 +23,16 @@ const UsuarioTabla = ({rows, update, deleter}) => {
       'Imagen',
     ]
 
+    function handleRow(row) {
+      formik.setValues(row);
+      setOpenDialog(true);
+    }
+
     return (
       <Paper sx={{width: "90%", height:"100%"}} elevation={3}>
-         <FotoDialog openDailog={openFoto} setOpenDailog={setOpenFoto} url={rowDialog.imagen}/>
+         <FotoDialog  openDailog={openFoto} setOpenDailog={setOpenFoto} url={rowDialog.imagen}/>
         <TableContainer >
-          <CategoriaDialog deleter={deleter} setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+          <CategoriaDialog formik={formik} deleter={deleter} setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
         <Table  aria-label="simple table">
           <TableHead>
             <TableRow >
@@ -39,9 +42,9 @@ const UsuarioTabla = ({rows, update, deleter}) => {
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow  sx={{"&:hover":{backgroundColor:"#A6EEA1"}, cursor:"pointer"}} >
-                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}} >{row.id}</TableCell>
-                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}} >{row.nombre}</TableCell>
-                 <TableCell onClick={()=> {setRowDialog(row); setFunciones({update}); setOpenDialog(true)}} >{row.descripcion}</TableCell>
+                 <TableCell onClick={()=> handleRow(row)}>{row.id}</TableCell>
+                 <TableCell onClick={()=> handleRow(row)} >{row.nombre}</TableCell>
+                 <TableCell onClick={()=> handleRow(row)}>{row.descripcion}</TableCell>
                  <TableCell><BotonCustom onClick={()=>{setRowDialog(row); setOpenFoto(true)}} label={"Ver"}/></TableCell>
               </TableRow>
             ))}
