@@ -6,10 +6,12 @@ import Objetivos from './Objetivos';
 import BotonCustom from '../../componentes/BotonCustom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import contactarSerives from '../../services/contactarSerives';
 
 const Contactar = () => {
 
   const [formValues, setFormValues] = useState();
+  const {postContactar} = contactarSerives;
 
   const formik = useFormik({
     initialValues: {
@@ -28,8 +30,7 @@ const Contactar = () => {
       algoMas: '',
     },
     onSubmit: values => {
-      console.log("hola");
-      setFormValues(values);
+      sendForm(values);
     },
     validationSchema: Yup.object({
       nombre: Yup.string().required("Nombre requerido"),
@@ -47,17 +48,14 @@ const Contactar = () => {
     })
   });
 
-  useEffect(() => {
-    if (formValues) {
-      console.log(formValues);
-    }
-  }, [formValues]);
-
+  async function sendForm(values) {
+    postContactar(values);
+  }
+  
   return (
     <Box
       component={"form"}
       padding={5}
-      action='mailto:battusay000@gmail.com'
       onSubmit={formik.handleSubmit}
       display="flex"
       flexDirection="column"
@@ -72,7 +70,7 @@ const Contactar = () => {
         multiline
         onChange={formik.handleChange}
         rows={4}
-        sx={{ width: '30%' }}
+        sx={{ width: 300 }}
       />
       <Box component={"div"} width='100%' textAlign='center'>
         <BotonCustom type="submit" label='Enviar' />

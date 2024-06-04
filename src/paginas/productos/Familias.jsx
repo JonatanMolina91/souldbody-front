@@ -20,7 +20,7 @@ function Familias() {
         <Grid container 
         padding={1}>
             {categorias.map((categoria) => {
-                    return <Grid item xs={6}
+                    return <Grid item xs={12} md={6}
                     display='flex'
                     key={categoria.id}
                     justifyContent='center'>

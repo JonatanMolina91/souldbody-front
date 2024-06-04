@@ -25,7 +25,7 @@ const Productos = () => {
         <Grid container
         padding={2}>
             {productos.map((producto)=> {
-                return <Grid item xs={3} key={producto.id} 
+                return <Grid item xs={12} md={6} key={producto.id} 
                 display='flex'
                 justifyContent='center'>
                     <CardProducto producto={producto} />
