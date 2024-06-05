@@ -5,7 +5,6 @@ import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import productoServices from '../../services/productoServices';
-import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import ProductoDialog from './dialog/ProductosDialog';
 import ProductoTabla from './tablas/ProductoTabla';
 import { useFormik } from 'formik';
@@ -19,11 +18,11 @@ const Productos = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({ id: 0, nombre: '', imagen: '', descripcion: '', precio: 0, categoria: '' });
   const { getProductos, putProducto, postProducto, deleteProducto } = productoServices;
-  const { funciones, setFunciones } = useFunciones();
 
 
 
   const formik = useFormik({
+    isInitialValid: false,
     initialValues: {
       id: -1,
       nombre: '',
@@ -33,7 +32,6 @@ const Productos = () => {
       categoria: null
     },
     onSubmit: values => {
-      console.log(values);
       values.id === -1 ? create(values) : update(values.id, values);
     },
     validationSchema: Yup.object({
@@ -45,7 +43,6 @@ const Productos = () => {
 
 
   async function update(id, data) {
-    console.log(data);
     let respuesta = await putProducto(id, data);
     let copia = { ...data };
     copia.imagen = respuesta.imagen;
@@ -64,8 +61,7 @@ const Productos = () => {
   }
 
   async function deleter(id) {
-    console.log("delete");
-    console.log(await deleteProducto(id));
+    await deleteProducto(id);
     setProductos(productos.filter(producto => producto.id !== id));
   }
 
@@ -134,7 +130,7 @@ const Productos = () => {
               onChange={filtrar}
               type={"text"}
               width={300} />
-            <BotonCustom onClick={() => {formik.resetForm(); setFunciones({ create }); setOpenDialog(true) }} label={"Crear"} />
+            <BotonCustom onClick={() => {formik.resetForm();  setOpenDialog(true) }} label={"Crear"} />
           </Box>
           {productos.length > 0 ? <ProductoTabla formik={formik} deleter={deleter} update={update} rows={productosFiltrados} /> : null}
         </Box>

@@ -1,16 +1,14 @@
 import { Box, Dialog } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TextFieldContactar from '../../../componentes/TextFieldContactar';
 import BotonCustom from '../../../componentes/BotonCustom';
-import  {useFunciones}  from '../../../context/dialogProvider';
 
 const CategoriaDialog = ({ openDailog, formik, setOpenDialog, row, deleter }) => {
 
-  const {funciones} = useFunciones();
+
 
 
   const handleClose = () => {
-    console.log(row);
     setOpenDialog(false);
   };
 
@@ -52,8 +50,8 @@ const CategoriaDialog = ({ openDailog, formik, setOpenDialog, row, deleter }) =>
       padding={2}
       display={"flex"}
       justifyContent={"space-around"}>
-        <BotonCustom type={'submit'} label="Guardar"/>
-        {formik.id !== -1 ? <BotonCustom onClick={() => { deleter(row.id); setOpenDialog(false); }} label="Eliminar" /> : null}
+        <BotonCustom onClick={()=>formik.isValid?setOpenDialog(false):null} type={'submit'} label="Guardar"/>
+        {formik.values.id !== -1 ? <BotonCustom onClick={() => { deleter(formik.values.id); setOpenDialog(false); }} label="Eliminar" /> : null}
         <BotonCustom onClick={()=>setOpenDialog(false)} label="Volver"/>
       </Box>
       </Box>

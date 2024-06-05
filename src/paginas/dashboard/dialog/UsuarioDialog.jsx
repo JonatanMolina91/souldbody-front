@@ -2,7 +2,7 @@ import { Box, Button, Dialog, DialogTitle } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import TextFieldContactar from '../../../componentes/TextFieldContactar';
 import BotonCustom from '../../../componentes/BotonCustom';
-import { useFunciones } from '../../../context/dialogProvider';
+
 
 const UsuarioDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
 
@@ -77,7 +77,7 @@ const UsuarioDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
           padding={2}
           display={"flex"}
           justifyContent={"space-around"}>
-          <BotonCustom onClick={()=>setOpenDialog(false)} type={'submit'} label="Guardar" />
+          <BotonCustom onClick={()=>formik.isValid?setOpenDialog(false):null} type={'submit'} label="Guardar" />
           {formik.values.id !== -1 ? <BotonCustom onClick={() => { deleter(formik.values.id); setOpenDialog(false); }} label="Eliminar" /> : null}
           <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
         </Box>

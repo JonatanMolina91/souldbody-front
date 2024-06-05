@@ -4,7 +4,6 @@ import { Box, IconButton } from '@mui/material';
 import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import  coachService  from '../../services/coachServices';
 import UsuarioDialog from './dialog/UsuarioDialog';
 import UsuarioTabla from './tablas/UsuarioTabla';
@@ -21,9 +20,9 @@ const Coaches = () => {
   const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', password: '', repeatPassword: '', email: '', foto: ''});
   const { getCoaches, postCoach, putCoach, deleteCoach } = coachService;
   const {user} = useUser();
-  const {funciones, setFunciones} = useFunciones();
 
   const formik = useFormik({
+    isInitialValid: false,
     initialValues: {
       id:  -1,
       nombre: '',
@@ -33,7 +32,6 @@ const Coaches = () => {
       repeatPassword:  '',
     },
     onSubmit: values => {
-      console.log(values);
      values.id === -1? create(values): update(values.id, values);
     },
     validationSchema: Yup.object({
@@ -52,7 +50,6 @@ async function update(id, data){
   copia.foto = respuesta.foto;
   copia.password = '';
   copia.repeatPassword = '';
-  console.log(copia);
   let copiacoaches = coaches.map(coach => coach.id === id? copia: coach);
   setCoaches(copiacoaches);
   } else {
@@ -61,12 +58,9 @@ async function update(id, data){
 }
 
 async function create(data){
-  console.log(data);
   if(data.password === data.repeatPassword){
   let response = await postCoach(data);
-  console.log(response.id);
   data.id = response.id;
-  console.log(data);
   let copia = {...data};
   copia.password = '';
   copia.repeatPassword = '';
@@ -78,8 +72,7 @@ async function create(data){
 }
 
 async function deleter(id){
-  console.log("delete");
-  console.log(await deleteCoach(id));
+  await deleteCoach(id);
   setCoaches(coaches.filter(coach => coach.id !== id));
 }
 
@@ -93,7 +86,6 @@ async function deleter(id){
   },[coaches])
 
   function filtrar(event) {
-    console.log(event.target.value);
     if(event.target.value !== ''){
       setCoachesFiltrados(coaches.filter(coach => coach.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || coach.apellidos.toLowerCase().includes(event.target.value.toLowerCase()) || coach.email.toLowerCase().includes(event.target.value.toLowerCase())));
   } else {
@@ -149,7 +141,7 @@ async function deleter(id){
               onChange={filtrar}
               type={"text"}
               width={300} />
-            <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
+            <BotonCustom onClick={()=>{formik.resetForm(); setOpenDialog(true)}} label={"Crear"} />
           </Box>
           {coaches.length>0?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={coachesFiltrados}/>:null}
         </Box>

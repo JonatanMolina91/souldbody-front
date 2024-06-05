@@ -2,7 +2,6 @@ import React from 'react'
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme, alpha } from '@mui/material/styles';
 import Router from './router/index';
-import { FuncionesProvider } from './context/dialogProvider';
 import { UserProvider, useUser } from './context/userProvider';
 
 
@@ -34,11 +33,9 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <FuncionesProvider>
         <UserProvider>
         <Router />
         </UserProvider>
-      </FuncionesProvider>
     </ThemeProvider>
   );
 

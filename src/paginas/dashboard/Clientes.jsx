@@ -4,7 +4,6 @@ import { Box, IconButton } from '@mui/material';
 import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import  clientesServices  from '../../services/clientesServices';
 import UsuarioDialog from './dialog/UsuarioDialog';
 import UsuarioTabla from './tablas/UsuarioTabla';
@@ -20,9 +19,10 @@ const Clientes = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({});
   const { getClientes, postCliente, putCliente, deleteCliente} = clientesServices;
-  const {funciones, setFunciones} = useFunciones();
+
 
   const formik = useFormik({
+    isInitialValid: false,
     initialValues: {
       id:  -1,
       nombre: '',
@@ -32,7 +32,6 @@ const Clientes = () => {
       repeatPassword:  '',
     },
     onSubmit: values => {
-      console.log(values);
      values.id === -1? create(values): update(values.id, values);
     },
     validationSchema: Yup.object({
@@ -54,7 +53,6 @@ async function update(id, data){
   copia.foto = respuesta.foto;
   copia.password = '';
   copia.repeatPassword = '';
-  console.log(copia);
   let copiaclientes = clientes.map(cliente => cliente.id === id? copia: cliente);
   setClientes(copiaclientes);
   } else {
@@ -63,12 +61,9 @@ async function update(id, data){
 }
 
 async function create(data){
-  console.log(data);
   if(data.password === data.repeatPassword){
   let response = await postCliente(data);
-  console.log(response.id);
   data.id = response.id;
-  console.log(data);
   let copia = {...data};
   copia.foto = response.foto;
   copia.password = '';
@@ -80,7 +75,7 @@ async function create(data){
 }
 
 async function deleter(id){
-  console.log(await deleteCliente(id));
+  await deleteCliente(id);
   setClientes(clientes.filter(cliente => cliente.id !== id));
 }
 
@@ -150,7 +145,7 @@ function filtrar(event) {
               type={"text"}
               width={300} 
               onChange={filtrar} />
-            <BotonCustom onClick={()=>{ setFunciones({create}); formik.resetForm();setOpenDialog(true)}} label={"Crear"} />
+            <BotonCustom onClick={()=>{  formik.resetForm();setOpenDialog(true)}} label={"Crear"} />
           </Box>
           {clientes.length>0?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={clientesFiltrados}/>:null}
         </Box>

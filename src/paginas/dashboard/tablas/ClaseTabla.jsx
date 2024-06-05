@@ -48,11 +48,11 @@ const UsuarioTabla = ({rows, formik, deleter}) => {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell>
+          <TableCell onClick={()=> handleRow(row)}>
             {row.nombre}
           </TableCell>
-          <TableCell>
-            {row.coach.nombre}
+          <TableCell onClick={()=> handleRow(row)}>
+            {row.coach?.nombre}
           </TableCell>
         </TableRow>
 
@@ -113,7 +113,7 @@ const UsuarioTabla = ({rows, formik, deleter}) => {
                   <TableCell>{row.nombre}</TableCell>
                   <TableCell>{row.descripcion}</TableCell>
                   <TableCell>{"https://www.youtube.com/watch?v="+row.video}</TableCell>
-                  <TableCell>{row.coach.nombre}</TableCell>
+                  <TableCell>{row.coach?.nombre}</TableCell>
                   <TableCell>{row.fecha}</TableCell>
                   <TableCell>{row.inicio}</TableCell>
                   <TableCell>{row.fin}</TableCell>

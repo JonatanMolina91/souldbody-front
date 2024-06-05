@@ -11,7 +11,6 @@ async function getClientes() {
 }
 
 async function postCliente(data) {
-  console.log(data.foto);
   let enviar = new FormData();
   enviar.append('nombre', data.nombre);
   enviar.append('apellidos', data.apellidos);
@@ -23,7 +22,6 @@ async function postCliente(data) {
 }
 
 async function putCliente(id, data) {
-  console.log(data);
   let actualizar = new FormData();
   actualizar.append('nombre', data.nombre);
   actualizar.append('apellidos', data.apellidos);

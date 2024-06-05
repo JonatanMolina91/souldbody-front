@@ -45,7 +45,6 @@ const Login = () => {
 
 async function send(values) {
   let datos = await login(values); 
-  console.log(datos);
   if(datos.status === 200){
     setCookie("token", datos.data.token);
     setCookie("rol", datos.data.rol);

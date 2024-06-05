@@ -7,7 +7,6 @@ import ClasesEdit from '../../paginas/dashboard/Clases';
 import Asistencias from '../../paginas/dashboard/Asistencias';
 
 const UseLogin = (user) => {
-    console.log(user);
     switch(user.rol){
       case "admin":
         return  [

@@ -46,7 +46,7 @@ const UsuarioTabla = ({rows, deleter, formik}) => {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell>
+          <TableCell onClick={()=> handleRow(row)}>
             {row.nombre}
           </TableCell>
           <TableCell align='center'><BotonCustom onClick={() => { setRowDialog(row); setOpenFoto(true) }} label={"Ver"} /></TableCell>

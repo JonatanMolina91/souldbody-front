@@ -10,7 +10,6 @@ async function getHorario() {
 }
 
 async function putHorario(id, clase) {
-  console.log(URL+'/'+id);
   let datos = await axios.put(URL+'/'+id, JSON.stringify(clase), {headers:{'Content-Type': 'application/json'}});
   return datos.data;
 }

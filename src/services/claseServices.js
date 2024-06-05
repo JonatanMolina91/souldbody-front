@@ -20,14 +20,15 @@ async function getVista() {
 }
 
 async function putClase(id, clase) {
-  console.log(URL+'/'+id);
-  let datos = await axios.put(URL+'/'+id, JSON.stringify(clase), {headers:{'Content-Type': 'application/json'}});
+  let copia = {...clase};
+  copia.coach_id = clase.coach?.id || null;
+  let datos = await axios.put(URL+'/'+id, JSON.stringify(copia), {headers:{'Content-Type': 'application/json'}});
   return datos.data;
 }
 
 async function postClase(clase) {
   let copia = {...clase};
-  copia.coach_id = clase.coach.id;
+  copia.coach_id = clase.coach?.id || null;
   delete copia.coach;
   let datos = await axios.post(URL, JSON.stringify(copia), {headers:{'Content-Type': 'application/json'}});
   return datos.data;

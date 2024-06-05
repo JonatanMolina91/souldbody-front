@@ -28,7 +28,6 @@ export const UserProvider = ({children}) => {
 
   function setLogin(user){
     let token = getCookie('token');
-    console.log(token);
     if(token !== undefined){
     setUser({
       token: token, 

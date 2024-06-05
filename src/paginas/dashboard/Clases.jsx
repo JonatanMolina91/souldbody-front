@@ -5,7 +5,6 @@ import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import claseServices from '../../services/claseServices';
-import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import ClaseDialog from './dialog/ClaseDialog';
 import ClaseTabla from './tablas/ClaseTabla';
 import { useFormik } from 'formik';
@@ -19,17 +18,17 @@ const Productos = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:0, nombre: '', descripcion: '',  video:'',  coach: ''});
   const { getClase, putClase,  postClase, deleteClase } = claseServices;
-  const {funciones, setFunciones} = useFunciones();
 
   const formik = useFormik({
+    isInitialValid: false,
     initialValues: {
       id: -1,
       fecha: null,
       inicio: null,
       fin: null,
-      nombre: '',
-      descripcion: '',
-      video: '',
+      nombre: "",
+      descripcion: "",
+      video: "",
       coach: null,
       huecos: 0,
     },
@@ -43,25 +42,23 @@ const Productos = () => {
   });
 
 async function update(id, data){
-  data.video = data.video.split("=")[1];
-  console.log(await putClase(id, data));
+  data.video = data.video?.split("=")[1] || null;
+  await putClase(id, data);
   delete data.coach_id;
   setClases(clases.map(clase => clase.id === id ? data : clase));
 }
 
 async function create(data){
   setRowDialog({id:0, nombre: '', descripcion: '',  video:'',  coach: ''});
-  data.video = data.video.split("=")[1];
+  data.video = data.video?.split("=")[1] || null;
    let response = await postClase(data);
-  console.log(response.id);
   data.id = response.id;
   delete data.coach_id;
   setClases([...clases, data]); 
 }
 
 async function deleter(id){
-  console.log("delete");
-  console.log(await deleteClase(id));
+  await deleteClase(id);
   setClases(clases.filter(clase => clase.id !== id));
 }
 
@@ -130,7 +127,7 @@ async function deleter(id){
               onChange={filtrar}
               type={"text"}
               width={300} />
-            <BotonCustom onClick={()=>{ setFunciones({create}); formik.resetForm(); setOpenDialog(true)}} label={"Crear"} />
+            <BotonCustom onClick={()=>{  formik.resetForm(); setOpenDialog(true)}} label={"Crear"} />
           </Box>
           {clases.length>0?<ClaseTabla formik={formik} deleter={deleter} update={update} rows={clasesFiltrados}/>:null}
         </Box>

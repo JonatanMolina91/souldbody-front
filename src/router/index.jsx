@@ -15,9 +15,6 @@ import { useUser } from "../context/userProvider";
     useEffect(() => {
       setLogin();
     }, []);
-    useEffect (() => {
-      console.log(user);
-    }, [user]);
     
     let router = createBrowserRouter([
       { path: '/', element: <Invitado/> , children: UseInvitado()}, 

@@ -82,8 +82,8 @@ const ProductosDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
           padding={2}
           display={"flex"}
           justifyContent={"space-around"}>
-          <BotonCustom type={'submit'} label="Guardar" />
-          {formik.id !== -1 ? <BotonCustom onClick={() => { deleter(row.id); setOpenDialog(false); }} label="Eliminar" /> : null}
+          <BotonCustom onClick={()=>formik.isValid?setOpenDialog(false):null} type={'submit'} label="Guardar" />
+          {formik.values.id !== -1 ? <BotonCustom onClick={() => { deleter(formik.values.id); setOpenDialog(false); }} label="Eliminar" /> : null}
           <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
         </Box>
       </Box>

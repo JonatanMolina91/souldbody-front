@@ -11,7 +11,7 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
  
   const [inputValue, setInputValue] = useState('');
   const { getCoaches } = coachService;
-  const [coaches, setCoaches] = useState();
+  const [coaches, setCoaches] = useState([]);
 
 
   const handleClose = () => {
@@ -118,7 +118,7 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
         padding={2}
         display={"flex"}
         justifyContent={"space-around"}>
-        <BotonCustom onClick={()=>setOpenDialog(false)} type={'submit'}label="Guardar" />
+        <BotonCustom onClick={()=>formik.isValid?setOpenDialog(false):null} type={'submit'}label="Guardar" />
         {formik.values.id !== -1 ? <BotonCustom onClick={() => { deleter(formik.values.id); setOpenDialog(false); }} label="Eliminar" /> : null}
         <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
       </Box>

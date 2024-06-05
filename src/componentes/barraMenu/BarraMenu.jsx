@@ -68,7 +68,6 @@ const BarraMenu = () => {
   }
 
   function halderLogout() {
-    console.log("logout");
     setLogout();
     navigate('/');
   }

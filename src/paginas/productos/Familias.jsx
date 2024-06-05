@@ -2,22 +2,26 @@ import React, { useEffect, useState } from 'react';
 import CartProducto from './card/CardFamilia';
 import { Box, Grid } from '@mui/material';
 import categoriaServices from '../../services/categoriaServices';
+import Loading from '../../componentes/Loading';
 
 
 
 function Familias() {
     const {getCategorias} = categoriaServices;
-
     const [categorias, setCategorias] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
-       ( async()=> setCategorias(await getCategorias()))();
+       ( async()=> {
+        setCategorias(await getCategorias());
+        setLoading(false);
+    })();
     },[])
 
-    useEffect(()=>console.log(categorias),[categorias]);
+  
 
     return (
-        <Grid container 
+        !loading?<Grid container 
         padding={1}>
             {categorias.map((categoria) => {
                     return <Grid item xs={12} md={6}
@@ -28,7 +32,7 @@ function Familias() {
                         categoria={categoria} />
                     </Grid>
             })}
-        </Grid>
+        </Grid>:<Loading/>
     );
 
 }

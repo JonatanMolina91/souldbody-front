@@ -5,7 +5,6 @@ import TextFieldContactar from '../../componentes/TextFieldContactar';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import categoriaService from '../../services/categoriaServices';
-import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import CategoriaDialog from './dialog/CategoriaDialog';
 import CategoriaTabla from './tablas/CategoriaTabla';
 import { useFormik } from 'formik';
@@ -19,9 +18,9 @@ const Categoria = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [rowDialog, setRowDialog] = useState({id:0, nombre: '', imagen:'', descripcion: ''});
   const {getCategorias, putCategoria, postCategoria, deleteCategoria} = categoriaService;
-  const {funciones, setFunciones} = useFunciones();
 
   const formik = useFormik({
+    isInitialValid: false,
     initialValues: {
       id:  -1,
       nombre: '',
@@ -29,7 +28,6 @@ const Categoria = () => {
       descripcion:  '',
     },
     onSubmit: values => {
-      console.log(values);
      values.id === -1? create(values): update(values.id, values);
     },
     validationSchema: Yup.object({
@@ -56,7 +54,7 @@ const Categoria = () => {
   }
   
   async function deleter(id){
-    console.log(await deleteCategoria(id));
+    await deleteCategoria(id);
     setCategorias(categorias.filter(categoria => categoria.id !== id));
   }
   
@@ -126,7 +124,7 @@ const Categoria = () => {
               onChange={filtrar}
               type={"text"}
               width={300} />
-            <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
+            <BotonCustom onClick={()=>{formik.resetForm(); setOpenDialog(true)}} label={"Crear"} />
           </Box>
           {categorias.length>0?<CategoriaTabla formik={formik} deleter={deleter} update={update} rows={categoriasFiltrados}/>:null}
         </Box>

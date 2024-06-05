@@ -19,7 +19,6 @@ async function logout() {
   let datos = await axios.get("logout");
   document.cookie = "token=; max-age=0";
   document.cookie = "rol=; max-age=0";
-  console.log(datos);
   return datos.data;
 }
 

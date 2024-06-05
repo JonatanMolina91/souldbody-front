@@ -48,11 +48,11 @@ const ProductoTabla = ({ rows, formik, deleter }) => {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell>
+          <TableCell onClick={()=> handleRow(row)}>
             {row.nombre}
           </TableCell>
-          <TableCell>
-            {row.categoria.nombre}
+          <TableCell onClick={()=> handleRow(row)}>
+            {row.categoria?.nombre}
           </TableCell>
         </TableRow>
 
@@ -110,7 +110,7 @@ const ProductoTabla = ({ rows, formik, deleter }) => {
                 <TableCell onClick={()=> handleRow(row)}>{row.id}</TableCell>
                 <TableCell onClick={()=> handleRow(row)}>{row.nombre}</TableCell>
                 <TableCell onClick={()=> handleRow(row)}>{row.descripcion}</TableCell>
-                <TableCell onClick={()=> handleRow(row)}>{row.categoria.nombre}</TableCell>
+                <TableCell onClick={()=> handleRow(row)}>{row.categoria?.nombre}</TableCell>
                 <TableCell onClick={()=> handleRow(row)}>{row.precio}</TableCell>
                 <TableCell><BotonCustom onClick={() => { setRowDialog(row); setOpenFoto(true) }} label={"Ver"} /></TableCell>
               </TableRow>

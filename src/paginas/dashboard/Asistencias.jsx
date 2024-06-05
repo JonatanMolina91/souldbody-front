@@ -13,6 +13,7 @@ import getURL from '../../../env';
 const Asistencias = () => {
 
 
+  const URL = getURL();
   const [openMenu, setOpenMenu] = useState(false);
   const [fecha, setFecha] = useState();
   const [clases, setClases] = useState([]);
@@ -31,9 +32,7 @@ const Asistencias = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log(clases);
-  }, [clases]);
+  
 
   async function changeFecha(e) {
     setClases(await showClase(e));
@@ -42,17 +41,15 @@ const Asistencias = () => {
 
 
   function avatar(huecos, clientes) {
-    console.log(huecos, clientes);
     let salida = [];
     if(clientes === undefined) clientes = [];
     for (let i = 0; i < clientes.length; i++) {
-      console.log(clientes[i].foto);
-      salida.push (<Avatar key={clientes[i].foto.id}
+      salida.push (<Avatar key={"d"+clientes[i].id}
       sx={{width:100, height:100, margin:1}} 
-      src={"http://127.0.0.1:8000/"+clientes[i].foto} />);
+      src={URL+clientes[i].foto} />);
     }
     for (let i = 0; i < (huecos-clientes.length); i++) {
-      salida.push (<Avatar key={i}
+      salida.push (<Avatar key={"a"+i}
       sx={{width:100, height:100, margin:1}} 
       src="/broken-image.jpg" />);
     }
@@ -166,9 +163,25 @@ const Asistencias = () => {
               direction="row"
              
             >
+              <Box display="flock"
+              >
+              <Box display="flex">
+                <Typography margin={3} variant='h4'>Hora inicio:</Typography>
               <Typography margin={3} variant='h4'>{clase.inicio}</Typography>
+              </Box>
+              <Box display="flex">
+              <Typography margin={3} variant='h4'>Hora fin:</Typography>
+              <Typography margin={3} variant='h4'>{clase.fin}</Typography>
+              </Box>
+              <Box display="flex">
+              <Typography margin={3} variant='h4'>Clase:</Typography>
               <Typography margin={3} variant='h4'>{clase.nombre}</Typography>
+              </Box>
+              <Box display="flex">
+              <Typography margin={3} variant='h4'>Coach:</Typography>
               <Typography margin={3} variant='h4'>{clase.coach}</Typography>
+              </Box>
+              </Box>
               <Grid
               container
               direction="row"

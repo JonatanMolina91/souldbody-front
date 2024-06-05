@@ -12,7 +12,6 @@ async function postHorarioClase(clase) {
 }
 
 async function deleteHorarioClase(clase) {
-  console.log(JSON.stringify(clase));
   let datos = await axios(
     {
       method: 'DELETE',

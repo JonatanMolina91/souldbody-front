@@ -13,7 +13,6 @@ async function getCoaches() {
 }
 
 async function postCoach(data) {
-  console.log(data.foto);
   let enviar = new FormData();
   enviar.append('nombre', data.nombre);
   enviar.append('apellidos', data.apellidos);
@@ -24,7 +23,6 @@ async function postCoach(data) {
 }
 
 async function putCoach(id, data) {
-  console.log(data);
   let actualizar = new FormData();
   actualizar.append('nombre', data.nombre);
   actualizar.append('apellidos', data.apellidos);
