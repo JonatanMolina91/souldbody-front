@@ -151,7 +151,7 @@ async function deleter(id){
               width={300} />
             <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {coaches.length>0?<UsuarioTabla deleter={deleter} update={update} rows={coachesFiltrados}/>:null}
+          {coaches.length>0?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={coachesFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

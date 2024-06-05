@@ -5,15 +5,15 @@ import { TimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 
 
-const TimeCustom = ({value, id, onChange, label}) => {
+const TimeCustom = ({value, id, onChange, label, width}) => {
 
 
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimePicker
-                defaultValue={dayjs(value, 'HH:mm') || null}
-                sx={{marginTop: 2}}
+                defaultValue={value!==undefined && value !== null  ? dayjs(value, 'HH:mm') : null}
+                sx={{marginTop: 2, width: width }}
                 label={label}
                 name={id}
                 id={id}

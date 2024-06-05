@@ -2,68 +2,39 @@ import { Autocomplete, Box, Dialog, DialogTitle, TextField } from '@mui/material
 import React, { useEffect, useState } from 'react';
 import TextFieldContactar from '../../../componentes/TextFieldContactar';
 import BotonCustom from '../../../componentes/BotonCustom';
-import { useFunciones } from '../../../context/dialogProvider';
 import coachService from '../../../services/coachServices';
 import TimeCustom from '../../../componentes/TimeCustom';
 import DateCustom from '../../../componentes/DateCustom';
 
-const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
+const CategoriaDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
 
-  const { funciones } = useFunciones();
+ 
   const [inputValue, setInputValue] = useState('');
   const { getCoaches } = coachService;
   const [coaches, setCoaches] = useState();
-  const [actual, setActual] = useState({
-    id: -1,
-    nombre: '',
-    descripcion: '',
-    video: '',
-    coach_id: '',
-    fecha: '',
-    inicio: '',
-    fin: '',
-    huecos: ''
-  });
 
 
   const handleClose = () => {
-    console.log(row);
     setOpenDialog(false);
   };
 
   useEffect(() => {
     (async () => {
-      let co = await getCoaches();
-      setCoaches(co.map(coach => { return { id: coach.id, label: coach.nombre } }));
+      setCoaches(await getCoaches());
     })()
   }, [])
 
-  useEffect(() => {
-    if (row?.id)
-      setActual({ ...row });
-  }, [row])
+  
 
-  useEffect(() => { console.log(coaches) }, [coaches])
-
-
-
-  function Guardar() {
-    actual.coach_id = coaches.find(coach => coach.label === actual.coach).id;
-    console.log(actual);
-    if (funciones.create !== undefined) {
-      funciones.create(actual);
-    }
-
-    if (funciones.update !== undefined) {
-      funciones.update(actual.id, actual);
-    }
-    setOpenDialog(false);
-  }
 
   return (
     <Dialog
       open={openDailog}
       onClose={handleClose}>
+        <Box
+      component={'form'}
+      onSubmit={formik.handleSubmit}
+      >
       <Box
         padding={2}
         display="flex"
@@ -72,8 +43,9 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
         <TextFieldContactar
           id={'nombre'}
           label={'Nombre'}
-          value={row?.nombre}
-          onChange={(e) => actual.nombre = e.target.value}
+          value={formik.values.nombre}
+          onChange={formik.handleChange}
+          error={formik.errors.nombre}
           type="text"
           width="90%"
         />
@@ -81,8 +53,9 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
         <TextFieldContactar
           id={'descripcion'}
           label={'Descripción'}
-          value={row?.descripcion}
-          onChange={(e) => actual.descripcion = e.target.value}
+          value={formik.values.descripcion}
+          onChange={formik.handleChange}
+          error={formik.errors.descripcion}
           type="text"
           width="90%"
         />
@@ -90,8 +63,8 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
         <TextFieldContactar
           id={'video'}
           label={'Video'}
-          value={row?.video}
-          onChange={(e) => actual.video = e.target.value}
+          value={formik.values.video !== ""?"https://www.youtube.com/watch?v="+formik.values.video:null}
+          onChange={formik.handleChange}
           type="text"
           width="90%"
         />
@@ -99,29 +72,33 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
         <TextFieldContactar
           id={'huecos'}
           label={'Huecos'}
-          value={row?.huecos}
-          onChange={(e) => actual.huecos = e.target.value}
+          value={formik.values.huecos}
+          onChange={formik.handleChange}
           type="number"
+          min={0}
           width="90%"
         />
 
         <DateCustom
-          value={row?.fecha}
+          value={formik.values.fecha}
+          width={310}
           id={'fecha'}
-          onChange={(e) => actual.fecha = e.format('YYYY-MM-DD')}
+          onChange={(e) => formik.setFieldValue('fecha', e.format("YYYY-MM-DD"))}
         />
         <TimeCustom
-          value={row?.inicio}
+        width={310}
+          value={formik.values.inicio}
           id={'inicio'}
           label={'Inicio'}
-          onChange={(e) => actual.inicio = e.format("HH:mm")}
+          onChange={(e) => formik.setFieldValue('inicio', e.format("HH:mm"))}
         />
 
         <TimeCustom
-          value={row?.fin}
+        width={310}
+          value={formik.values.fin}
           id={'fin'}
           label={'Fin'}
-          onChange={(e) => actual.fin = e.format("HH:mm")} />
+          onChange={(e) => formik.setFieldValue('fin', e.format("HH:mm"))} />
         <Autocomplete
           disablePortal
           id="coach"
@@ -130,9 +107,10 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
             setInputValue(newInputValue);
           }}
           options={coaches}
-          value={actual.coach === undefined ? null : actual.coach}
-          onChange={(e, value) => actual.coach = value.label}
-          sx={{ width: 300 }}
+          getOptionLabel={(option) => option.nombre}
+          value={formik.values.coach !== undefined ? formik.values.coach : null}
+          onChange={(e, value) => { formik.setFieldValue('coach', value) }}
+          sx={{ width: 310, marginTop: 2 }}
           renderInput={(params) => <TextField {...params} label="Coach" />}
         />
       </Box>
@@ -140,9 +118,10 @@ const CategoriaDialog = ({ openDailog, setOpenDialog, row, deleter }) => {
         padding={2}
         display={"flex"}
         justifyContent={"space-around"}>
-        <BotonCustom onClick={Guardar} label="Guardar" />
-        {funciones.update !== undefined ? <BotonCustom onClick={() => {deleter(row.id); setOpenDialog(false);}} label="Eliminar" /> : null}
+        <BotonCustom onClick={()=>setOpenDialog(false)} type={'submit'}label="Guardar" />
+        {formik.values.id !== -1 ? <BotonCustom onClick={() => { deleter(formik.values.id); setOpenDialog(false); }} label="Eliminar" /> : null}
         <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
+      </Box>
       </Box>
     </Dialog>
   );

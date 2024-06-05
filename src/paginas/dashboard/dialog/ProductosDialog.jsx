@@ -70,9 +70,9 @@ const ProductosDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
               setInputValue(newInputValue);
             }}
             options={categoria}
-            value={formik.values.categoria || null}
+            value={formik.values.categoria}
             getOptionLabel={(option) => option.nombre}
-            onChange={(e, value) => {formik.setFieldValue('categoria', value)}}
+            onChange={(e, value) => { formik.setFieldValue('categoria', value) }}
             sx={{ width: 300 }}
             renderInput={(params) => <TextField helperText={formik.errors.categoria} error={formik.errors.categoria ? true : false} {...params} label="Categoria" />}
           />

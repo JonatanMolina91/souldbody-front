@@ -8,6 +8,7 @@ import claseServices from '../../services/claseServices';
 import clientesServices from '../../services/clientesServices';
 import { useUser } from '../../context/userProvider';
 import dayjs from 'dayjs';
+import getURL from '../../../env';
 
 const Asistencias = () => {
 
@@ -26,7 +27,6 @@ const Asistencias = () => {
 
   useEffect(() => {
     (async()=>{
-      setClases(await showClase(dayjs().format('YYYY-MM-DD')));
       if(user.rol==="admin")setClientes(await getClientes());
     })();
   }, []);
@@ -47,12 +47,12 @@ const Asistencias = () => {
     if(clientes === undefined) clientes = [];
     for (let i = 0; i < clientes.length; i++) {
       console.log(clientes[i].foto);
-      salida.push (<Avatar 
+      salida.push (<Avatar key={clientes[i].foto.id}
       sx={{width:100, height:100, margin:1}} 
       src={"http://127.0.0.1:8000/"+clientes[i].foto} />);
     }
     for (let i = 0; i < (huecos-clientes.length); i++) {
-      salida.push (<Avatar 
+      salida.push (<Avatar key={i}
       sx={{width:100, height:100, margin:1}} 
       src="/broken-image.jpg" />);
     }
@@ -148,36 +148,19 @@ const Asistencias = () => {
             display={"flex"}
             width={"100%"}
             justifyContent={"center"}
-            alignItems={"center"}>
+            alignItems={"center"}
+            marginBottom={3}>
             <DateCustom 
             value={fecha}
             id={'fecha'}
             onChange={(e) => changeFecha(e.format('YYYY-MM-DD'))}
             />
           </Box>
-
-          <Paper 
-          sx={{width:"50%", margin:5, backgroundColor:"rgba(166, 238, 161, 0.5)"}}
-          elevation={3}>
-
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-            padding={1}>
-              {clases.map((clase) =><Typography variant='h4' padding={1}>{clase.inicio}</Typography>)
-              }
-            </Grid>
-
-            
-          </Paper>
-
         
 
-          {clases.map((clase) => {
+          {clases.map((clase, index) => {
            return (
-            <Paper  sx={{marginBottom:3, width:"80%", backgroundColor:"rgba(166, 238, 161, 0.5)"}} elevation={3}>
+            <Paper key={index}  sx={{marginBottom:3, width:"80%", backgroundColor:"rgba(166, 238, 161, 0.5)"}} elevation={3}>
            <Grid
               container
               direction="row"

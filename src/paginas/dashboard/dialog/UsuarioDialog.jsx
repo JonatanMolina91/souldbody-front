@@ -3,13 +3,10 @@ import React, { useEffect, useState } from 'react';
 import TextFieldContactar from '../../../componentes/TextFieldContactar';
 import BotonCustom from '../../../componentes/BotonCustom';
 import { useFunciones } from '../../../context/dialogProvider';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 const UsuarioDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
 
-  const { funciones } = useFunciones();
+  
 
   const handleClose = () => {
     setOpenDialog(false);
@@ -80,8 +77,8 @@ const UsuarioDialog = ({ openDailog, setOpenDialog, formik, deleter }) => {
           padding={2}
           display={"flex"}
           justifyContent={"space-around"}>
-          <BotonCustom type={'submit'} label="Guardar" />
-          {formik.id !== -1 ? <BotonCustom onClick={() => { deleter(row.id); setOpenDialog(false); }} label="Eliminar" /> : null}
+          <BotonCustom onClick={()=>setOpenDialog(false)} type={'submit'} label="Guardar" />
+          {formik.values.id !== -1 ? <BotonCustom onClick={() => { deleter(formik.values.id); setOpenDialog(false); }} label="Eliminar" /> : null}
           <BotonCustom onClick={() => setOpenDialog(false)} label="Volver" />
         </Box>
       </Box>

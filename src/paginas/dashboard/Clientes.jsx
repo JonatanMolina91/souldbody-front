@@ -150,7 +150,7 @@ function filtrar(event) {
               type={"text"}
               width={300} 
               onChange={filtrar} />
-            <BotonCustom onClick={()=>{ setFunciones({create}); formik.setValues({});setOpenDialog(true)}} label={"Crear"} />
+            <BotonCustom onClick={()=>{ setFunciones({create}); formik.resetForm();setOpenDialog(true)}} label={"Crear"} />
           </Box>
           {clientes.length>0?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={clientesFiltrados}/>:null}
         </Box>

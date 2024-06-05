@@ -1,7 +1,7 @@
 import { TextField, ThemeProvider, createTheme,  } from '@mui/material';
 import React from 'react';
 
-const TextFieldContactar = ({id, label, type, width, value, onChange, error}) => {
+const TextFieldContactar = ({id, label, type, width, value, onChange, error, min}) => {
     const theme = createTheme({
         palette: {
           myCustomColor: {
@@ -23,6 +23,7 @@ const TextFieldContactar = ({id, label, type, width, value, onChange, error}) =>
         margin='normal'
         type={type}
         onChange={onChange}
+        inputProps={{min: min}}
         />
         </ThemeProvider>
     );

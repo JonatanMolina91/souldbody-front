@@ -8,6 +8,8 @@ import claseServices from '../../services/claseServices';
 import { FuncionesProvider, useFunciones } from '../../context/dialogProvider';
 import ClaseDialog from './dialog/ClaseDialog';
 import ClaseTabla from './tablas/ClaseTabla';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Productos = () => {
 
@@ -19,7 +21,26 @@ const Productos = () => {
   const { getClase, putClase,  postClase, deleteClase } = claseServices;
   const {funciones, setFunciones} = useFunciones();
 
-  
+  const formik = useFormik({
+    initialValues: {
+      id: -1,
+      fecha: null,
+      inicio: null,
+      fin: null,
+      nombre: '',
+      descripcion: '',
+      video: '',
+      coach: null,
+      huecos: 0,
+    },
+    onSubmit: values => {
+     values.id === -1? create(values): update(values.id, values);
+    },
+    validationSchema: Yup.object({
+      nombre: Yup.string().required('El nombre es obligatorio'),
+      descripcion: Yup.string().required('La descripción es obligatoria'),
+    })
+  });
 
 async function update(id, data){
   data.video = data.video.split("=")[1];
@@ -63,7 +84,7 @@ async function deleter(id){
 
   return (
     <Box component={"div"}>
-      <ClaseDialog  setRow={setRowDialog} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <ClaseDialog  formik={formik} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -109,9 +130,9 @@ async function deleter(id){
               onChange={filtrar}
               type={"text"}
               width={300} />
-            <BotonCustom onClick={()=>{ setFunciones({create});setOpenDialog(true)}} label={"Crear"} />
+            <BotonCustom onClick={()=>{ setFunciones({create}); formik.resetForm(); setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {clases.length>0?<ClaseTabla deleter={deleter} update={update} rows={clasesFiltrados}/>:null}
+          {clases.length>0?<ClaseTabla formik={formik} deleter={deleter} update={update} rows={clasesFiltrados}/>:null}
         </Box>
       </Box>
     </Box>

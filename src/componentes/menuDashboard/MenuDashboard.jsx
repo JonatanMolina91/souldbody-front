@@ -37,7 +37,7 @@ const MenuDashboard = ({openMenu}) => {
       <Paper elevation={3}  >
          <List>
           <ListItem sx={{display: "flex", flexDirection: "column", }}>
-            {text().map((tex)=><ListItemButton sx={{flex: 0}}><Typography to={"/dashboard/"+tex} sx={{textDecoration: "none", color:"black"}} component={Link} variant='h6'>{tex.toUpperCase()}</Typography></ListItemButton>)}
+            {text().map((tex, index)=><ListItemButton key={index} sx={{flex: 0}}><Typography to={"/dashboard/"+tex} sx={{textDecoration: "none", color:"black"}} component={Link} variant='h6'>{tex.toUpperCase()}</Typography></ListItemButton>)}
           </ListItem>
          </List>
          </Paper>

@@ -30,7 +30,7 @@ const Productos = () => {
       imagen: '',
       descripcion: '',
       precio: 0,
-      categoria: {id: 0, nombre: ''},
+      categoria: null
     },
     onSubmit: values => {
       console.log(values);
@@ -39,11 +39,7 @@ const Productos = () => {
     validationSchema: Yup.object({
       nombre: Yup.string().required('El nombre es obligatorio'),
       descripcion: Yup.string().required('La descripción es obligatoria'),
-      categoria: Yup.object().shape(
-        {
-          id: Yup.number().required('La categoria es obligatoria'), 
-          nombre: Yup.string().required('La categoria es obligatoria')
-        }),
+       categoria: Yup.object().required('La categoria es obligatoria'), 
     })
   });
 
