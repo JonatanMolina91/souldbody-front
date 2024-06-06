@@ -7,8 +7,8 @@ import DateCustom from '../../componentes/DateCustom';
 import claseServices from '../../services/claseServices';
 import clientesServices from '../../services/clientesServices';
 import { useUser } from '../../context/userProvider';
-import dayjs from 'dayjs';
 import getURL from '../../../env';
+import Loading from '../../componentes/Loading';
 
 const Asistencias = () => {
 
@@ -23,6 +23,8 @@ const Asistencias = () => {
   const {showClase, postApuntarse, postDesapuntarse} = claseServices;
   const {getClientes} = clientesServices;
   const {user} = useUser();
+  const [loading, setLoading] = useState(false);
+  const [send, setSend] = useState(false);
 
 
 
@@ -35,7 +37,10 @@ const Asistencias = () => {
   
 
   async function changeFecha(e) {
+    setLoading(true);
+    setFecha(e);
     setClases(await showClase(e));
+    setLoading(false);
   }
 
 
@@ -58,6 +63,7 @@ const Asistencias = () => {
   }
 
   function apuntarse(clase) {
+    setSend(true);
      let copiaUser = {...user};
     delete copiaUser.token;
     delete copiaUser.rol;
@@ -71,9 +77,11 @@ const Asistencias = () => {
     } else {
       alert(clase.huecos === clase.clientes.length?"la clase esta llena":"ya estas apuntado");
     } 
+    setSend(false);
   }
 
   function apuntarseAdmin(clase) {
+    setSend(true);
     if(selectCliente !== null) {
      let apuntado = clase.clientes.some((cliente) => +selectCliente.user_id === +cliente.user_id);
    if(!apuntado && clase.huecos !== clase.clientes.length) {
@@ -86,9 +94,11 @@ const Asistencias = () => {
   } else {
     alert("selecciona un cliente");
   } 
+  setSend(false);
  }
 
   async function Desapuntarse(clase) {
+    setSend(true);
     let copiaUser = {...user};
     delete copiaUser.token;
     delete copiaUser.rol;
@@ -102,6 +112,7 @@ const Asistencias = () => {
     } else {
       alert("no estas apuntado");
     } 
+    setSend(false);
   }
 
   return (
@@ -155,7 +166,7 @@ const Asistencias = () => {
           </Box>
         
 
-          {clases.map((clase, index) => {
+          {!loading?clases.map((clase, index) => {
            return (
             <Paper key={index}  sx={{marginBottom:3, width:"80%", backgroundColor:"rgba(166, 238, 161, 0.5)"}} elevation={3}>
            <Grid
@@ -166,20 +177,20 @@ const Asistencias = () => {
               <Box display="flock"
               >
               <Box display="flex">
-                <Typography margin={3} variant='h4'>Hora inicio:</Typography>
-              <Typography margin={3} variant='h4'>{clase.inicio}</Typography>
+                <Typography  variant='h4'>Hora inicio:</Typography>
+              <Typography variant='h4'>{clase.inicio}</Typography>
               </Box>
               <Box display="flex">
-              <Typography margin={3} variant='h4'>Hora fin:</Typography>
-              <Typography margin={3} variant='h4'>{clase.fin}</Typography>
+              <Typography  variant='h4'>Hora fin:</Typography>
+              <Typography  variant='h4'>{clase.fin}</Typography>
               </Box>
               <Box display="flex">
-              <Typography margin={3} variant='h4'>Clase:</Typography>
-              <Typography margin={3} variant='h4'>{clase.nombre}</Typography>
+              <Typography  variant='h4'>Clase:</Typography>
+              <Typography  variant='h4'>{clase.nombre}</Typography>
               </Box>
               <Box display="flex">
-              <Typography margin={3} variant='h4'>Coach:</Typography>
-              <Typography margin={3} variant='h4'>{clase.coach}</Typography>
+              <Typography  variant='h4'>Coach:</Typography>
+              <Typography  variant='h4'>{clase.coach}</Typography>
               </Box>
               </Box>
               <Grid
@@ -193,12 +204,13 @@ const Asistencias = () => {
             </Grid>
             <Box 
             padding={1}>
-            {user.rol==="customer" && !clase.clientes.some((cliente) => +user.id === +cliente.user_id) && clase.huecos !== clase.clientes.length?<BotonCustom onClick={()=>apuntarse(clase)} label={"Apuntarse"} />:null}
-            {user.rol==="customer" && clase.clientes.some((cliente) => +user.id === +cliente.user_id) && clase.huecos?<BotonCustom label="Desapuntarse" onClick={() => Desapuntarse(clase)} />:null}
+            {user.rol==="customer" && !clase.clientes.some((cliente) => +user.id === +cliente.user_id) && clase.huecos !== clase.clientes.length?<BotonCustom disabled={send} onClick={()=>apuntarse(clase)} label={"Apuntarse"} />:null}
+            {user.rol==="customer" && clase.clientes.some((cliente) => +user.id === +cliente.user_id) && clase.huecos?<BotonCustom disabled={send} label="Desapuntarse" onClick={() => Desapuntarse(clase)} />:null}
            {user.rol==="admin"?<Box>
-              <BotonCustom onClick={()=>apuntarseAdmin(clase)} label="Apuntar"/>
+              <BotonCustom disabled={send} onClick={()=>apuntarseAdmin(clase)} label="Apuntar"/>
               <Autocomplete
           disablePortal
+          disabled={send}
           id="coach"
           inputValue={inputValue}
           onInputChange={(event, newInputValue) => {
@@ -215,7 +227,7 @@ const Asistencias = () => {
             </Box>:null}
             </Box>
             </Paper>)
-          })  
+          }):<Loading/>  
             }
 
         </Box>

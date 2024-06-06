@@ -9,6 +9,7 @@ import CategoriaDialog from './dialog/CategoriaDialog';
 import CategoriaTabla from './tablas/CategoriaTabla';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';     
+import Loading from '../../componentes/Loading';
 
 const Categoria = () => {
 
@@ -16,8 +17,8 @@ const Categoria = () => {
   const [categorias, setCategorias] = useState([]);
   const [categoriasFiltrados, setCategoriasFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({id:0, nombre: '', imagen:'', descripcion: ''});
   const {getCategorias, putCategoria, postCategoria, deleteCategoria} = categoriaService;
+  const [loading, setLoading] = useState(true);
 
   const formik = useFormik({
     isInitialValid: false,
@@ -61,7 +62,10 @@ const Categoria = () => {
 
 
   useEffect(()=>{
-    (async() => setCategorias(await getCategorias()))();
+    (async() => {
+      setCategorias(await getCategorias());
+      setLoading(false);
+    })();
   },[])
 
   useEffect(()=>{
@@ -78,7 +82,7 @@ const Categoria = () => {
 
   return (
     <Box component={"div"}>
-      <CategoriaDialog  formik={formik} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <CategoriaDialog  formik={formik}  openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -126,7 +130,7 @@ const Categoria = () => {
               width={300} />
             <BotonCustom onClick={()=>{formik.resetForm(); setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {categorias.length>0?<CategoriaTabla formik={formik} deleter={deleter} update={update} rows={categoriasFiltrados}/>:null}
+          {!loading?<CategoriaTabla formik={formik} deleter={deleter} update={update} rows={categoriasFiltrados}/>:<Loading/>}
         </Box>
       </Box>
     </Box>

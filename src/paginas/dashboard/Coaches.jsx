@@ -10,6 +10,7 @@ import UsuarioTabla from './tablas/UsuarioTabla';
 import { useUser } from '../../context/userProvider';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Loading from '../../componentes/Loading';
 
 const Coaches = () => {
 
@@ -17,9 +18,9 @@ const Coaches = () => {
   const [coaches, setCoaches] = useState([]);
   const [coachesFiltrados, setCoachesFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({id:-1, nombre: '', apellidos:'', password: '', repeatPassword: '', email: '', foto: ''});
   const { getCoaches, postCoach, putCoach, deleteCoach } = coachService;
   const {user} = useUser();
+  const [loading, setLoading] = useState(true);
 
   const formik = useFormik({
     isInitialValid: false,
@@ -43,7 +44,6 @@ const Coaches = () => {
   
 
 async function update(id, data){
-  setRowDialog({id:-1, nombre: '', apellidos:'', password: '', repeatPassword: '', email: '', foto: ''});
   if(data.password === data.repeatPassword){
   let respuesta = await putCoach(id, data);
   let copia = {...data};
@@ -78,7 +78,10 @@ async function deleter(id){
 
 
   useEffect(()=>{
-    (async() => setCoaches(await getCoaches(user.token)))();
+    (async() => {
+      setCoaches(await getCoaches());
+      setLoading(false);
+    })();
   },[])
 
   useEffect(()=>{
@@ -143,7 +146,7 @@ async function deleter(id){
               width={300} />
             <BotonCustom onClick={()=>{formik.resetForm(); setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {coaches.length>0?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={coachesFiltrados}/>:null}
+          {!loading?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={coachesFiltrados}/>:<Loading/>}
         </Box>
       </Box>
     </Box>

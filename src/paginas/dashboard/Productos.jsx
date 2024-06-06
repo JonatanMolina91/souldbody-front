@@ -9,6 +9,7 @@ import ProductoDialog from './dialog/ProductosDialog';
 import ProductoTabla from './tablas/ProductoTabla';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Loading from '../../componentes/Loading';
 
 const Productos = () => {
 
@@ -16,8 +17,8 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({ id: 0, nombre: '', imagen: '', descripcion: '', precio: 0, categoria: '' });
   const { getProductos, putProducto, postProducto, deleteProducto } = productoServices;
+  const [loading, setLoading] = useState(true);
 
 
 
@@ -67,7 +68,10 @@ const Productos = () => {
 
 
   useEffect(() => {
-    (async () => setProductos(await getProductos()))();
+    (async () => {
+      setProductos(await getProductos());
+      setLoading(false);
+    })();
   }, [])
 
   useEffect(() => {
@@ -84,7 +88,7 @@ const Productos = () => {
 
   return (
     <Box component={"div"}>
-      <ProductoDialog formik={formik} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog} />
+      <ProductoDialog formik={formik} openDailog={openDialog} setOpenDialog={setOpenDialog} />
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -132,7 +136,7 @@ const Productos = () => {
               width={300} />
             <BotonCustom onClick={() => {formik.resetForm();  setOpenDialog(true) }} label={"Crear"} />
           </Box>
-          {productos.length > 0 ? <ProductoTabla formik={formik} deleter={deleter} update={update} rows={productosFiltrados} /> : null}
+          {!loading ? <ProductoTabla formik={formik} deleter={deleter} update={update} rows={productosFiltrados} /> : <Loading />}
         </Box>
       </Box>
     </Box>

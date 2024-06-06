@@ -9,6 +9,7 @@ import UsuarioDialog from './dialog/UsuarioDialog';
 import UsuarioTabla from './tablas/UsuarioTabla';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Loading from '../../componentes/Loading';
 
 
 const Clientes = () => {
@@ -17,8 +18,8 @@ const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({});
   const { getClientes, postCliente, putCliente, deleteCliente} = clientesServices;
+  const [loading, setLoading] = useState(true);
 
 
   const formik = useFormik({
@@ -90,7 +91,10 @@ function filtrar(event) {
 
 
   useEffect(()=>{
-    (async() => setClientes(await getClientes()))();
+    (async() => {
+      setClientes(await getClientes());
+      setLoading(false);
+    })();
   },[])
 
   useEffect(()=>{
@@ -147,7 +151,7 @@ function filtrar(event) {
               onChange={filtrar} />
             <BotonCustom onClick={()=>{  formik.resetForm();setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {clientes.length>0?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={clientesFiltrados}/>:null}
+          {!loading?<UsuarioTabla formik={formik} deleter={deleter} update={update} rows={clientesFiltrados}/>:<Loading/>}
         </Box>
       </Box>
     </Box>

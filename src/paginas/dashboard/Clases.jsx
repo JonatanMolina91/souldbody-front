@@ -9,6 +9,7 @@ import ClaseDialog from './dialog/ClaseDialog';
 import ClaseTabla from './tablas/ClaseTabla';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Loading from '../../componentes/Loading';
 
 const Productos = () => {
 
@@ -16,8 +17,8 @@ const Productos = () => {
   const [clases, setClases] = useState([]);
   const [clasesFiltrados, setClasesFiltrados] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [rowDialog, setRowDialog] = useState({id:0, nombre: '', descripcion: '',  video:'',  coach: ''});
   const { getClase, putClase,  postClase, deleteClase } = claseServices;
+  const [loading, setLoading] = useState(true);
 
   const formik = useFormik({
     isInitialValid: false,
@@ -42,15 +43,14 @@ const Productos = () => {
   });
 
 async function update(id, data){
-  data.video = data.video?.split("=")[1] || null;
+  data.video = data.video?.split("=")[1];
   await putClase(id, data);
   delete data.coach_id;
   setClases(clases.map(clase => clase.id === id ? data : clase));
 }
 
 async function create(data){
-  setRowDialog({id:0, nombre: '', descripcion: '',  video:'',  coach: ''});
-  data.video = data.video?.split("=")[1] || null;
+  data.video = data.video?.split("=")[1];
    let response = await postClase(data);
   data.id = response.id;
   delete data.coach_id;
@@ -64,7 +64,10 @@ async function deleter(id){
 
 
   useEffect(()=>{
-    (async() => setClases(await getClase()))();
+    (async() => {
+      setClases(await getClase());
+      setLoading(false);
+    })();
   },[])
 
   useEffect(()=>{
@@ -81,7 +84,7 @@ async function deleter(id){
 
   return (
     <Box component={"div"}>
-      <ClaseDialog  formik={formik} row={rowDialog} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
+      <ClaseDialog  formik={formik} openDailog={openDialog} setOpenDialog={setOpenDialog}/>
       <Box component={"div"}
         display="flex"
         direction={"column"}
@@ -129,7 +132,7 @@ async function deleter(id){
               width={300} />
             <BotonCustom onClick={()=>{  formik.resetForm(); setOpenDialog(true)}} label={"Crear"} />
           </Box>
-          {clases.length>0?<ClaseTabla formik={formik} deleter={deleter} update={update} rows={clasesFiltrados}/>:null}
+          {!loading?<ClaseTabla formik={formik} deleter={deleter} update={update} rows={clasesFiltrados}/>:<Loading/>}
         </Box>
       </Box>
     </Box>

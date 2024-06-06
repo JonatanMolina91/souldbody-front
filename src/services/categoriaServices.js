@@ -17,9 +17,8 @@ async function getProductos(id) {
 async function putCategoria(id, categoria) {
   let enviar = new FormData();
   enviar.append('nombre', categoria.nombre);
-  enviar.append('apellidos', categoria.apellidos);
-  enviar.append('email', categoria.email);
-  enviar.append('foto', categoria.foto);
+  enviar.append('imagen', categoria.imagen);
+  enviar.append('descripcion', categoria.descripcion);
   let datos = await axios.post(URL+'/'+id, enviar);
   return datos.data;
 }

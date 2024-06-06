@@ -79,7 +79,7 @@ const UsuarioTabla = ({rows, formik, deleter}) => {
                     <TableCell colSpan={4} align='center' ><Typography fontWeight={"bold"} variant='p'   color={'#087000'}>Video</Typography></TableCell>
                     </TableRow>
                   <TableRow>
-                  <TableCell colSpan={4}  align='center'><Typography  variant='p'>{"https://www.youtube.com/watch?v="+row.video}</Typography></TableCell>
+                  <TableCell colSpan={4}  align='center'><Typography  variant='p'>{row.video!==null?"https://www.youtube.com/watch?v="+row.video:null}</Typography></TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -112,7 +112,7 @@ const UsuarioTabla = ({rows, formik, deleter}) => {
                   <TableCell>{row.id}</TableCell>
                   <TableCell>{row.nombre}</TableCell>
                   <TableCell>{row.descripcion}</TableCell>
-                  <TableCell>{"https://www.youtube.com/watch?v="+row.video}</TableCell>
+                  <TableCell>{row.video!==null?"https://www.youtube.com/watch?v="+row.video:null}</TableCell>
                   <TableCell>{row.coach?.nombre}</TableCell>
                   <TableCell>{row.fecha}</TableCell>
                   <TableCell>{row.inicio}</TableCell>

@@ -16,6 +16,7 @@ const Login = () => {
   const {setLogin} = useUser();
   const navigate = useNavigate();
   const [alert, setAlert] = useState({message: '', type: '', show: false});
+  const [send, setSend] = useState(false);
 
   function setCookie(name, value, options = {}) {
 
@@ -43,7 +44,8 @@ const Login = () => {
   }
   
 
-async function send(values) {
+async function sendForm(values) {
+  setSend(true);
   let datos = await login(values); 
   if(datos.status === 200){
     setCookie("token", datos.data.token);
@@ -66,6 +68,7 @@ async function send(values) {
     setAlert({message: '', type: '', show: false});
   }, 3000);
 }
+  setSend(false);
 }
 
 const formik = useFormik({
@@ -74,7 +77,7 @@ const formik = useFormik({
     password: '',
   },
   onSubmit: values => {
-    send(values);
+    sendForm(values);
   },
   validationSchema: Yup.object({
     email: Yup.string().email("Email no válido").required("Email requerido"),
@@ -103,6 +106,7 @@ const formik = useFormik({
       padding={1}
       >
         <TextFieldContactar 
+        disabled={send}
         value={formik.values.email} 
         label={'Email'}
         id='email'
@@ -111,13 +115,14 @@ const formik = useFormik({
         error={formik.errors.email}
         />
         <TextFieldContactar 
+        disabled={send}
         value={formik.values.password} 
         label={'Contraseña'}
         id='password'
         type={'password'}
         onChange={formik.handleChange}
         error={formik.errors.password}/>
-        <BotonCustom type="submit" label='Iniciar Sesión' />
+        <BotonCustom disabled={send} type="submit" label='Iniciar Sesión' />
       </Box>
     </Paper>
     {alert.show? <AlertCustom message={alert.message} type={alert.type}></AlertCustom>:null}

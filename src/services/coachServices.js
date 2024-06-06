@@ -18,6 +18,7 @@ async function postCoach(data) {
   enviar.append('apellidos', data.apellidos);
   enviar.append('email', data.email);
   enviar.append('foto', data.foto);
+  enviar.append('password', data.password);
   let response = await axios.post(URL, enviar);
   return response.data;
 }
@@ -28,7 +29,8 @@ async function putCoach(id, data) {
   actualizar.append('apellidos', data.apellidos);
   actualizar.append('email', data.email);
   actualizar.append('foto', data.foto);
-  let response = await axios.post(URL+"/actualizar/"+id, actualizar);
+  actualizar.append('password', data.password);
+  let response = await axios.post(URL+"/"+id, actualizar);
   return response.data;
 }
 
