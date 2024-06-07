@@ -1,5 +1,5 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Box, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import InformacionPersonal from './InformacionPersonal';
 import Interes from './Interes';
 import Objetivos from './Objetivos';
@@ -7,11 +7,14 @@ import BotonCustom from '../../componentes/BotonCustom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import contactarSerives from '../../services/contactarSerives';
+import AlertCustom from '../../componentes/AlertCustom';
 
 const Contactar = () => {
 
-  const [formValues, setFormValues] = useState();
+
   const {postContactar} = contactarSerives;
+  const [send, setSend] = useState(false);
+  const [alert, setAlert] = useState({open: false, message: '', type: ''});
 
   const formik = useFormik({
     initialValues: {
@@ -36,9 +39,9 @@ const Contactar = () => {
       nombre: Yup.string().required("Nombre requerido"),
       apellidos: Yup.string().required("Apellidos requeridos"),
       email: Yup.string().email("Email no válido").required("Email requerido"),
-      bodyTen: Yup.boolean(),
+      bodyten: Yup.boolean(),
       edurece: Yup.boolean(),
-      souldFit: Yup.boolean(),
+      souldfit: Yup.boolean(),
       libre: Yup.boolean(),
       grasa: Yup.boolean(),
       musculatura: Yup.boolean(),
@@ -49,7 +52,14 @@ const Contactar = () => {
   });
 
   async function sendForm(values) {
+    setSend(true);
     postContactar(values);
+    formik.resetForm();
+    setSend(false);
+    setAlert({open: true, message: 'Se a enviado el formulario', type: 'success'});
+    setTimeout(() => {
+      setAlert({open: false, message: '', type: ''});
+    }, 3000);
   }
   
   return (
@@ -66,6 +76,7 @@ const Contactar = () => {
       <Objetivos formik={formik}/>
       <TextField
         id="algoMas"
+        value={formik.values.algoMas}
         label="Cúentanos algo mas"
         multiline
         onChange={formik.handleChange}
@@ -73,8 +84,9 @@ const Contactar = () => {
         sx={{ width: 300 }}
       />
       <Box component={"div"} width='100%' textAlign='center'>
-        <BotonCustom type="submit" label='Enviar' />
+        <BotonCustom disabled={send} type="submit" label='Enviar' />
       </Box>
+      <AlertCustom open={alert.open} message={alert.message} type={alert.type} />
     </Box>
   );
 };
