@@ -80,7 +80,10 @@ const Productos = () => {
 
   function filtrar(event) {
     if (event.target.value !== '') {
-      setProductosFiltrados(productos.filter(producto => producto.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || producto.categoria.toLowerCase().includes(event.target.value.toLowerCase())));
+      setProductosFiltrados(productos.filter(producto => 
+        producto.nombre !== null?producto.nombre.toLowerCase().includes(event.target.value.toLowerCase()):null ||
+        producto.categoria !== null?producto.categoria.toLowerCase().includes(event.target.value.toLowerCase()):null
+      ));
     } else {
       setProductosFiltrados(productos);
     }

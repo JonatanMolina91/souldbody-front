@@ -74,7 +74,9 @@ const Categoria = () => {
 
   function filtrar(event){
     if(event.target.value !== ''){
-      setCategoriasFiltrados(categorias.filter(categoria => categoria.nombre.toLowerCase().includes(event.target.value.toLowerCase())));
+      setCategoriasFiltrados(categorias.filter(categoria => 
+        categoria.nombre!==null?categoria.nombre.toLowerCase().includes(event.target.value.toLowerCase()):null
+      ));
     } else {
       setCategoriasFiltrados(categorias);
     }

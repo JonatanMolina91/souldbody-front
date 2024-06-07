@@ -82,7 +82,11 @@ async function deleter(id){
 
 function filtrar(event) {
   if(event.target.value !== ''){
-    setClientesFiltrados(clientes.filter(cliente => cliente.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || cliente.apellidos.toLowerCase().includes(event.target.value.toLowerCase()) || cliente.email.toLowerCase().includes(event.target.value.toLowerCase())));
+    setClientesFiltrados(clientes.filter(cliente => 
+      cliente.nombre !== null? cliente.nombre.toLowerCase().includes(event.target.value.toLowerCase()):null || 
+      cliente.apellidos !== null?cliente.apellidos.toLowerCase().includes(event.target.value.toLowerCase()):null || 
+      cliente.email !== null?cliente.email.toLowerCase().includes(event.target.value.toLowerCase()):null
+    ));
 } else {
   setClientesFiltrados(clientes);
 }

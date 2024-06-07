@@ -90,7 +90,11 @@ async function deleter(id){
 
   function filtrar(event) {
     if(event.target.value !== ''){
-      setCoachesFiltrados(coaches.filter(coach => coach.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || coach.apellidos.toLowerCase().includes(event.target.value.toLowerCase()) || coach.email.toLowerCase().includes(event.target.value.toLowerCase())));
+      setCoachesFiltrados(coaches.filter(coach => 
+        coach.nombre !== null?coach.nombre.toLowerCase().includes(event.target.value.toLowerCase()):null || 
+        coach.apellidos !== null?coach.apellidos.toLowerCase().includes(event.target.value.toLowerCase()):null || 
+        coach.email !== null?coach.email.toLowerCase().includes(event.target.value.toLowerCase()):null
+      ));
   } else {
     setCoachesFiltrados(coaches);
   }

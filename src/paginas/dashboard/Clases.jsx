@@ -76,7 +76,11 @@ async function deleter(id){
 
   function filtrar(event){
     if(event.target.value !== ''){
-      setClasesFiltrados(clases.filter(clase => clase.nombre.toLowerCase().includes(event.target.value.toLowerCase()) || clase.coach.toLowerCase().includes(event.target.value.toLowerCase()) || clase.fecha.toLowerCase().includes(event.target.value.toLowerCase())));
+      setClasesFiltrados(clases.filter(clase => 
+        clase.nombre !== null? clase.nombre.toLowerCase().includes(event.target.value.toLowerCase()):null ||
+        clase.coach !== null? clase.coach.nombre.toLowerCase().includes(event.target.value.toLowerCase()): null || 
+        clase.fecha !== null? clase.fecha.toLowerCase().includes(event.target.value.toLowerCase()):null
+      ));
     }else{
       setClasesFiltrados(clases);
     }
