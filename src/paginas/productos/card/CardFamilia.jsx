@@ -13,7 +13,7 @@ export default function CardFamilia({categoria}) {
   return (
     <Card
      sx={{ width:'50%', marginBottom: 2}}>
-      <CardActionArea>
+      <CardActionArea sx={{height:"100%"}}>
         <Box sx={{textDecoration: "none", color:"black"}} to={"/productos/"+categoria.id} component={Link}>
         <CardMedia
           component="img"

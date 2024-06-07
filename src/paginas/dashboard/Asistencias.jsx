@@ -168,29 +168,23 @@ const Asistencias = () => {
 
           {!loading?clases.map((clase, index) => {
            return (
-            <Paper key={index}  sx={{marginBottom:3, width:"80%", backgroundColor:"rgba(166, 238, 161, 0.5)"}} elevation={3}>
+            <Paper   key={index}  sx={{ padding: 4,marginBottom:3, width:"50%", backgroundColor:"rgba(166, 238, 161, 0.5)"}} elevation={3}>
            <Grid
               container
               direction="row"
+              
              
             >
               <Box display="flock"
               >
               <Box display="flex">
-                <Typography  variant='h4'>Hora inicio:</Typography>
-              <Typography variant='h4'>{clase.inicio}</Typography>
+              <Typography fontWeight={"bold"} color={"#001B00"} variant='h5'>{clase.inicio} - {clase.fin}</Typography>
               </Box>
               <Box display="flex">
-              <Typography  variant='h4'>Hora fin:</Typography>
-              <Typography  variant='h4'>{clase.fin}</Typography>
+              <Typography color={"#009400"}  variant='h5'>{clase.nombre}</Typography>
               </Box>
               <Box display="flex">
-              <Typography  variant='h4'>Clase:</Typography>
-              <Typography  variant='h4'>{clase.nombre}</Typography>
-              </Box>
-              <Box display="flex">
-              <Typography  variant='h4'>Coach:</Typography>
-              <Typography  variant='h4'>{clase.coach}</Typography>
+              <Typography color={"#716F6F"}  variant='h5'>{clase.coach}</Typography>
               </Box>
               </Box>
               <Grid
