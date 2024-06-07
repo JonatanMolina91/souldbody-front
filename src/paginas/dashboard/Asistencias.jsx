@@ -50,12 +50,12 @@ const Asistencias = () => {
     if(clientes === undefined) clientes = [];
     for (let i = 0; i < clientes.length; i++) {
       salida.push (<Avatar key={"d"+clientes[i].id}
-      sx={{width:100, height:100, margin:1}} 
+      sx={{width:{xs:40, sm: 55, md: 60, lg:100}, height:{xs:40, sm: 55, md: 60, lg:100}, margin:1}} 
       src={URL+clientes[i].foto} />);
     }
     for (let i = 0; i < (huecos-clientes.length); i++) {
       salida.push (<Avatar key={"a"+i}
-      sx={{width:100, height:100, margin:1}} 
+      sx={{width:{xs:40, sm: 55, md: 60, lg:100}, height:{xs:40, sm: 55, md: 60, lg:100}, margin:1}} 
       src="/broken-image.jpg" />);
     }
 
@@ -214,7 +214,7 @@ const Asistencias = () => {
           getOptionLabel={(option) => option.nombre}
           value={selectCliente === undefined ? null : selectCliente}
           onChange={(e, value) => setSelectCliente(value)}
-          sx={{ width: 300, marginTop:1 }}
+          sx={{ width: {xs: "100%", sm:"80%", md:"50%", lg:"30%"}, marginTop:1 }}
           renderInput={(params) => <TextField {...params} label="Clientes" />}
         />
 
