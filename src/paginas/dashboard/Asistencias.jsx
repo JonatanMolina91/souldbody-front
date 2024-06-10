@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MenuDashboard from '../../componentes/menuDashboard/MenuDashboard';
-import { Autocomplete, Avatar, Box, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
+import { Autocomplete, Avatar, Box, Grid, IconButton, Paper, TextField, Tooltip, Typography } from '@mui/material';
 import BotonCustom from '../../componentes/BotonCustom';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import DateCustom from '../../componentes/DateCustom';
@@ -49,9 +49,13 @@ const Asistencias = () => {
     let salida = [];
     if(clientes === undefined) clientes = [];
     for (let i = 0; i < clientes.length; i++) {
-      salida.push (<Avatar key={"d"+clientes[i].id}
+      salida.push (
+        <Tooltip title={clientes[i].nombre}>
+      <Avatar key={"d"+clientes[i].id}
       sx={{width:{xs:40, sm: 55, md: 60, lg:100}, height:{xs:40, sm: 55, md: 60, lg:100}, margin:1}} 
-      src={URL+clientes[i].foto} />);
+      src={URL+clientes[i].foto} />
+      </Tooltip>)
+      ;
     }
     for (let i = 0; i < (huecos-clientes.length); i++) {
       salida.push (<Avatar key={"a"+i}
